@@ -2,21 +2,19 @@
 import Image from "next/image";
 import { useState } from "react";
 
-const Dropdown = ({ title, options }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
+const Dropdown = ({ title, options, isOpen, setOpenDropdown }) => {
   return (
-    <div className="relative">
+    <div className="relative group">
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="text-white px-4 py-2 bg-gray-800 rounded-md hover:bg-gray-700"
+        onClick={() => setOpenDropdown(isOpen ? null : title)} // Toggle dropdown
+        className="text-white px-4 py-2 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200"
       >
         {title}
       </button>
       {isOpen && (
-        <ul className="absolute left-0 mt-2 w-40 bg-gray-900 border border-gray-700 rounded-md shadow-lg">
+        <ul className="absolute left-0 mt-2 w-40 bg-gray-800 border border-gray-700 rounded-md shadow-lg transition-all duration-200 transform opacity-0 group-hover:opacity-100">
           {options.map((option, index) => (
-            <li key={index} className="px-4 py-2 hover:bg-gray-700 cursor-pointer">
+            <li key={index} className="px-4 py-2 hover:bg-gray-700 cursor-pointer transition-all duration-150">
               {option}
             </li>
           ))}
@@ -26,19 +24,29 @@ const Dropdown = ({ title, options }) => {
   );
 };
 
+
+
 export default function Home() {
+  const [openDropdown, setOpenDropdown] = useState(null);
   return (
-    <div className="min-h-screen bg-black/80 text-white p-8 sm:p-20 flex flex-col justify-between">
-      <header className="flex justify-between items-center w-full py-4 px-8 bg-gray-900/90 rounded-md shadow-lg">
+    <div className="min-h-screen bg-black text-white p-8 sm:p-20 flex flex-col justify-between"
+      style={{ backgroundImage: "url('/images.jpeg')", backgroundSize: "cover", backgroundPosition: "center", backgroundBlendMode: "darken", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+      
+      <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold text-green-400 font-mono">Better Picks</h1>
         <nav className="flex gap-6">
-          <Dropdown title="NBA" options={["Latest Games", "Team Stats", "Player Analysis"]} />
-          <Dropdown title="NFL" options={["Game Predictions", "Team Performance", "Betting Insights"]} />
-          <Dropdown title="Account" options={["Profile", "Settings", "Logout"]} />
-          <Dropdown title="Performance Analysis" options={["Trends", "Success Rate", "AI Insights"]} />
+          <Dropdown title="NBA" options={["Latest Games", "Team Stats", "Player Analysis"]}
+            isOpen={openDropdown === "NBA"} setOpenDropdown={setOpenDropdown} />
+          <Dropdown title="NFL" options={["Game Predictions", "Team Performance", "Betting Insights"]}
+            isOpen={openDropdown === "NFL"} setOpenDropdown={setOpenDropdown} />
+          <Dropdown title="Account" options={["Profile", "Settings", "Logout"]}
+            isOpen={openDropdown === "Account"} setOpenDropdown={setOpenDropdown} />
+          <Dropdown title="Performance Analysis" options={["Trends", "Success Rate", "AI Insights"]}
+            isOpen={openDropdown === "Performance Analysis"} setOpenDropdown={setOpenDropdown} />
         </nav>
       </header>
-      <main className="flex flex-col gap-8 items-center sm:items-start mt-16 flex-grow">
+
+      <main className="flex flex-col gap-8 items-center sm:items-start mt-16 flex-grow"> 
         <h2 className="text-2xl sm:text-3xl font-extrabold text-center sm:text-left text-green-400">
           Your Ultimate Sports Betting Analyzer
         </h2>
@@ -61,6 +69,7 @@ export default function Home() {
           </a>
         </div>
       </main>
+
       <footer className="flex gap-6 flex-wrap items-center justify-center text-gray-300 text-sm mt-auto py-4">
         <a className="hover:text-green-400 transition-colors" href="/features">Features</a>
         <a className="hover:text-green-400 transition-colors" href="/pricing">Pricing</a>
@@ -69,3 +78,4 @@ export default function Home() {
     </div>
   );
 }
+
