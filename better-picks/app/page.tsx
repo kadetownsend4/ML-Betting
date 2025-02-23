@@ -30,7 +30,7 @@ export default function Home() {
   const [openDropdown, setOpenDropdown] = useState(null);
   return (
     <div className="min-h-screen bg-black text-white p-8 sm:p-20 flex flex-col justify-between"
-      style={{ backgroundImage: "url('/images.jpeg')", backgroundSize: "cover", backgroundPosition: "center", backgroundBlendMode: "darken", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+      style={{ backgroundImage: "url('/LEGOAT.jpeg')", backgroundSize: "cover", backgroundPosition: "center", backgroundBlendMode: "darken", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
       
       <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold text-green-400 font-mono">Better Picks</h1>
