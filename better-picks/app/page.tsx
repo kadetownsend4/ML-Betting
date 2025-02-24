@@ -1,8 +1,9 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import Link from 'next/link'; // Import the Link component
 
-const Dropdown = ({ title, options, isOpen, setOpenDropdown }) => {
+const Dropdown = ({ title, options, isOpen, setOpenDropdown, links }) => {
   return (
     <div className="relative group">
       <button
@@ -15,7 +16,9 @@ const Dropdown = ({ title, options, isOpen, setOpenDropdown }) => {
         <ul className="absolute left-0 mt-2 w-40 bg-gray-800 border border-gray-700 rounded-md shadow-lg transition-all duration-200 transform opacity-0 group-hover:opacity-100">
           {options.map((option, index) => (
             <li key={index} className="px-4 py-2 hover:bg-gray-700 cursor-pointer transition-all duration-150">
-              {option}
+              <Link href={links[index]} passHref>
+                {option}
+              </Link>
             </li>
           ))}
         </ul>
@@ -26,8 +29,31 @@ const Dropdown = ({ title, options, isOpen, setOpenDropdown }) => {
 
 
 
+
+
 export default function Home() {
   const [openDropdown, setOpenDropdown] = useState(null);
+
+  const linksNBA = ["/latest-games", "/team-stats", "/player-analysis"];
+
+  const nflLinks = [
+    "/nfl/predictions",   // Game Predictions link
+    "/nfl/performance",   // Team Performance link
+    "/nfl/betting-insights" // Betting Insights link
+  ];
+
+  const accountLinks = [
+    "/account/profile",  // Profile link
+    "/account/settings", // Settings link
+    "/account/logout"    // Logout link
+  ];
+
+  const performanceLinks = [
+    "/performance/trends", // Trends link
+    "/performance/success-rate", // Success Rate link
+    "/performance/ai-insights"  // AI Insights link
+  ];
+
   return (
     <div className="min-h-screen bg-black text-white p-8 sm:p-20 flex flex-col justify-between"
       style={{ backgroundImage: "url('/LEGOAT.jpeg')", backgroundSize: "cover", backgroundPosition: "center", backgroundBlendMode: "darken", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
@@ -36,13 +62,13 @@ export default function Home() {
         <h1 className="text-2xl font-bold text-green-400 font-mono">Better Picks</h1>
         <nav className="flex gap-6">
           <Dropdown title="NBA" options={["Latest Games", "Team Stats", "Player Analysis"]}
-            isOpen={openDropdown === "NBA"} setOpenDropdown={setOpenDropdown} />
+            isOpen={openDropdown === "NBA"} setOpenDropdown={setOpenDropdown} links={linksNBA} />
           <Dropdown title="NFL" options={["Game Predictions", "Team Performance", "Betting Insights"]}
-            isOpen={openDropdown === "NFL"} setOpenDropdown={setOpenDropdown} />
+            isOpen={openDropdown === "NFL"} setOpenDropdown={setOpenDropdown} links={nflLinks} />
           <Dropdown title="Account" options={["Profile", "Settings", "Logout"]}
-            isOpen={openDropdown === "Account"} setOpenDropdown={setOpenDropdown} />
+            isOpen={openDropdown === "Account"} setOpenDropdown={setOpenDropdown} links={accountLinks} />
           <Dropdown title="Performance Analysis" options={["Trends", "Success Rate", "AI Insights"]}
-            isOpen={openDropdown === "Performance Analysis"} setOpenDropdown={setOpenDropdown} />
+            isOpen={openDropdown === "Performance Analysis"} setOpenDropdown={setOpenDropdown} links={performanceLinks} />
         </nav>
       </header>
 
@@ -78,4 +104,3 @@ export default function Home() {
     </div>
   );
 }
-
