@@ -1,93 +1,118 @@
 "use client";
-import { useState } from "react";
-import Image from "next/image"; // Ensure Image is imported from Next.js
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { FaBasketballBall } from "react-icons/fa";
 
+// Full NBA Team Logos
 const teamLogos: Record<string, string> = {
-  "Boston Celtics": "/logos/Boston_CelticsLogo.svg",
-  "Miami Heat": "/logos/heat.png",
-  "Los Angeles Lakers": "/logos/lakers.png",
-  "Golden State Warriors": "/logos/warriors.png",
-  "Milwaukee Bucks": "/logos/bucks.png",
-  "Brooklyn Nets": "/logos/nets.png",
-  "Philadelphia 76ers": "/logos/76ers.png",
-  "New York Knicks": "/logos/knicks.png",
+  "Boston Celtics": "/logos/celtics.jpg",
+  "Miami Heat": "/logos/heat.jpg",
+  "Los Angeles Lakers": "/logos/lakers.jpg",
+  "Golden State Warriors": "/logos/warriors.jpg",
+  "Milwaukee Bucks": "/logos/bucks.jpg",
+  "Brooklyn Nets": "/logos/nets.jpg",
+  "Philadelphia 76ers": "/logos/76ers.jpg",
+  "New York Knicks": "/logos/knicks.jpg",
+  "Chicago Bulls": "/logos/bulls.jpg",
+  "Phoenix Suns": "/logos/suns.jpg",
+  "Dallas Mavericks": "/logos/mavs.jpg",
+  "Denver Nuggets": "/logos/nuggets.jpg",
+  "Houston Rockets": "/logos/rockets.jpg",
+  "Memphis Grizzlies": "/logos/grizzlies.jpg",
+  "Atlanta Hawks": "/logos/hawks.jpg",
+  "New Orleans Pelicans": "/logos/pelicans.jpg",
+  "Indiana Pacers": "/logos/pacers.jpg",
+  "Toronto Raptors": "/logos/raptors.jpg",
+  "Washington Wizards": "/logos/wizards.jpg",
+  "Sacramento Kings": "/logos/kings.jpg",
+  "Orlando Magic": "/logos/magic.jpg",
+  "Utah Jazz": "/logos/jazz.jpg",
+  "Charlotte Hornets": "/logos/hornets.jpg",
+  "Detroit Pistons": "/logos/pistons.jpg",
+  "Minnesota Timberwolves": "/logos/wolves.jpg",
+  "Oklahoma City Thunder": "/logos/thunder.jpg",
+  "San Antonio Spurs": "/logos/spurs.jpg",
+  "Cleveland Cavaliers": "/logos/cavs.jpg",
+  "Portland Trail Blazers": "/logos/blazers.jpg",
 };
 
+// Fetch game data dynamically (replace with actual API)
+async function fetchRecentGames() {
+  return [
+    { home: "Boston Celtics", away: "Miami Heat", homeScore: 112, awayScore: 107, date: "2024-03-01" },
+    { home: "Los Angeles Lakers", away: "Golden State Warriors", homeScore: 125, awayScore: 119, date: "2024-02-29" },
+    { home: "Milwaukee Bucks", away: "Brooklyn Nets", homeScore: 108, awayScore: 99, date: "2024-02-28" },
+    { home: "Philadelphia 76ers", away: "New York Knicks", homeScore: 101, awayScore: 97, date: "2024-02-27" },
+    { home: "Chicago Bulls", away: "Phoenix Suns", homeScore: 110, awayScore: 115, date: "2024-02-26" },
+    { home: "Dallas Mavericks", away: "Denver Nuggets", homeScore: 108, awayScore: 102, date: "2024-02-25" },
+    { home: "Houston Rockets", away: "Memphis Grizzlies", homeScore: 99, awayScore: 105, date: "2024-02-24" },
+    { home: "Atlanta Hawks", away: "New Orleans Pelicans", homeScore: 107, awayScore: 108, date: "2024-02-23" },
+  ];
+}
+
 export default function LatestGames() {
-  const [games] = useState([
-    { home: "Boston Celtics", away: "Miami Heat", homeScore: 112, awayScore: 107, date: "Feb 29, 2024" },
-    { home: "Los Angeles Lakers", away: "Golden State Warriors", homeScore: 125, awayScore: 119, date: "Feb 28, 2024" },
-    { home: "Milwaukee Bucks", away: "Brooklyn Nets", homeScore: 108, awayScore: 99, date: "Feb 27, 2024" },
-    { home: "Philadelphia 76ers", away: "New York Knicks", homeScore: 101, awayScore: 97, date: "Feb 26, 2024" },
-  ]);
+  const [games, setGames] = useState([]);
+
+  useEffect(() => {
+    async function loadGames() {
+      const recentGames = await fetchRecentGames();
+      const sortedGames = recentGames.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      setGames(sortedGames);
+    }
+    loadGames();
+  }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white p-8 sm:p-20 flex flex-col justify-between">
-      {/* Header */}
-      <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold text-green-400 font-mono">NBA Latest Games</h1>
-        <nav className="flex gap-6">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
+      {/* Header with Navigation */}
+      <header className="flex justify-between items-center w-full max-w-5xl py-5 px-10 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg">
+        <h1 className="text-4xl tracking-wide uppercase text-green-400 flex items-center gap-2 font-['Rajdhani']">
+          <FaBasketballBall className="text-green-400" /> NBA Latest Games
+        </h1>
+        <nav className="flex gap-8 text-lg">
           <a href="/nba/games" className="hover:text-green-400 transition-colors">Latest Games</a>
           <a href="/nba/stats" className="hover:text-green-400 transition-colors">Team Stats</a>
           <a href="/nba/player-analysis" className="hover:text-green-400 transition-colors">Player Analysis</a>
         </nav>
       </header>
 
-      {/* Main Content */}
-      <main className="mt-10">
-        <h2 className="text-3xl font-extrabold text-green-400 text-center sm:text-left">Recent NBA Games</h2>
-        <table className="w-full mt-6 border-collapse border border-gray-600">
-          <thead>
-            <tr className="bg-gray-800 text-green-400">
-              <th className="border border-gray-600 px-4 py-2 text-left">Date</th>
-              <th className="border border-gray-600 px-4 py-2 text-left">Home Team</th>
-              <th className="border border-gray-600 px-4 py-2">Score</th>
-              <th className="border border-gray-600 px-4 py-2 text-left">Away Team</th>
-            </tr>
-          </thead>
-          <tbody>
-            {games.map((game, index) => (
-              <tr key={index} className="border border-gray-600">
-                <td className="border border-gray-600 px-4 py-2">{game.date}</td>
-                
-                {/* Home Team with Logo */}
-                <td className="border border-gray-600 px-4 py-2">
-                  <div className="flex items-center gap-2">
-                    {teamLogos[game.home] && (
-                      <Image src={teamLogos[game.home]} alt={game.home} width={24} height={24} className="rounded-full" />
-                    )}
-                    <span>{game.home}</span>
-                  </div>
-                </td>
-                
-                {/* Score */}
-                <td className="border border-gray-600 px-4 py-2 text-center">
-                  {game.homeScore} - {game.awayScore}
-                </td>
-                
-                {/* Away Team with Logo */}
-                <td className="border border-gray-600 px-4 py-2">
-                  <div className="flex items-center gap-2">
-                    {teamLogos[game.away] && (
-                      <Image src={teamLogos[game.away]} alt={game.away} width={24} height={24} className="rounded-full" />
-                    )}
-                    <span>{game.away}</span>
-                  </div>
-                </td>
+      {/* Scrollable Scores Section */}
+      <div className="w-full max-w-5xl mt-10 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6">
+        <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-4">Recent NBA Games</h2>
+        <div className="overflow-y-auto max-h-[500px] rounded-lg p-2">
+          <table className="w-full border-collapse border border-gray-700 text-lg">
+            <thead className="sticky top-0 bg-gray-800 text-green-400">
+              <tr>
+                <th className="border border-gray-700 px-6 py-3 text-left">Date</th>
+                <th className="border border-gray-700 px-6 py-3 text-left">Home Team</th>
+                <th className="border border-gray-700 px-6 py-3">Score</th>
+                <th className="border border-gray-700 px-6 py-3 text-left">Away Team</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </main>
+            </thead>
+            <tbody>
+              {games.map((game, index) => (
+                <tr key={index} className="border border-gray-700">
+                  <td className="border border-gray-700 px-6 py-3">{game.date}</td>
+                  <td className="border border-gray-700 px-6 py-3 flex items-center gap-3">
+                    <Image src={teamLogos[game.home]} alt={game.home} width={35} height={35} className="rounded-full" />
+                    <span>{game.home}</span>
+                  </td>
+                  <td className="border border-gray-700 px-6 py-3 text-center">{game.homeScore} - {game.awayScore}</td>
+                  <td className="border border-gray-700 px-6 py-3 flex items-center gap-3">
+                    <Image src={teamLogos[game.away]} alt={game.away} width={35} height={35} className="rounded-full" />
+                    <span>{game.away}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       {/* Footer */}
-      <footer className="flex gap-6 flex-wrap items-center justify-center text-gray-300 text-sm mt-auto py-4">
-        <a className="hover:text-green-400 transition-colors" href="/features">Features</a>
-        <a className="hover:text-green-400 transition-colors" href="/pricing">Pricing</a>
-        <a className="hover:text-green-400 transition-colors" href="/contact">Contact Us</a>
+      <footer className="mt-auto py-6 text-gray-400">
+        <p>&copy; 2025 NBA Stats. All rights reserved.</p>
       </footer>
     </div>
   );
 }
-
-
