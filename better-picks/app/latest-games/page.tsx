@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image"; // Ensure Image is imported from Next.js
 
 const teamLogos: Record<string, string> = {
-  "Boston Celtics": "/public/logos/Boston_CelticsLogo.svg",
+  "Boston Celtics": "/logos/Boston_CelticsLogo.svg",
   "Miami Heat": "/logos/heat.png",
   "Los Angeles Lakers": "/logos/lakers.png",
   "Golden State Warriors": "/logos/warriors.png",
@@ -48,11 +49,31 @@ export default function LatestGames() {
             {games.map((game, index) => (
               <tr key={index} className="border border-gray-600">
                 <td className="border border-gray-600 px-4 py-2">{game.date}</td>
-                <td className="border border-gray-600 px-4 py-2">{game.home}</td>
+                
+                {/* Home Team with Logo */}
+                <td className="border border-gray-600 px-4 py-2">
+                  <div className="flex items-center gap-2">
+                    {teamLogos[game.home] && (
+                      <Image src={teamLogos[game.home]} alt={game.home} width={24} height={24} className="rounded-full" />
+                    )}
+                    <span>{game.home}</span>
+                  </div>
+                </td>
+                
+                {/* Score */}
                 <td className="border border-gray-600 px-4 py-2 text-center">
                   {game.homeScore} - {game.awayScore}
                 </td>
-                <td className="border border-gray-600 px-4 py-2">{game.away}</td>
+                
+                {/* Away Team with Logo */}
+                <td className="border border-gray-600 px-4 py-2">
+                  <div className="flex items-center gap-2">
+                    {teamLogos[game.away] && (
+                      <Image src={teamLogos[game.away]} alt={game.away} width={24} height={24} className="rounded-full" />
+                    )}
+                    <span>{game.away}</span>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -68,4 +89,5 @@ export default function LatestGames() {
     </div>
   );
 }
+
 
