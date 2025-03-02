@@ -1,67 +1,71 @@
-// // app/latest-games/page.tsx
-// "use client";
-// import { useState } from "react";
+"use client";
+import { useState } from "react";
 
-// export default function LatestGames() {
-//   const [openDropdown, setOpenDropdown] = useState(null);
+const teamLogos: Record<string, string> = {
+  "Boston Celtics": "/public/logos/Boston_CelticsLogo.svg",
+  "Miami Heat": "/logos/heat.png",
+  "Los Angeles Lakers": "/logos/lakers.png",
+  "Golden State Warriors": "/logos/warriors.png",
+  "Milwaukee Bucks": "/logos/bucks.png",
+  "Brooklyn Nets": "/logos/nets.png",
+  "Philadelphia 76ers": "/logos/76ers.png",
+  "New York Knicks": "/logos/knicks.png",
+};
 
-//   // Define the links for each dropdown option
-//   const nbaLinks = [
-//     "/nba/games",       // Latest Games link
-//     "/nba/stats",       // Team Stats link
-//     "/nba/player-analysis" // Player Analysis link
-//   ];
+export default function LatestGames() {
+  const [games] = useState([
+    { home: "Boston Celtics", away: "Miami Heat", homeScore: 112, awayScore: 107, date: "Feb 29, 2024" },
+    { home: "Los Angeles Lakers", away: "Golden State Warriors", homeScore: 125, awayScore: 119, date: "Feb 28, 2024" },
+    { home: "Milwaukee Bucks", away: "Brooklyn Nets", homeScore: 108, awayScore: 99, date: "Feb 27, 2024" },
+    { home: "Philadelphia 76ers", away: "New York Knicks", homeScore: 101, awayScore: 97, date: "Feb 26, 2024" },
+  ]);
 
-//   const nflLinks = [
-//     "/nfl/predictions",   // Game Predictions link
-//     "/nfl/performance",   // Team Performance link
-//     "/nfl/betting-insights" // Betting Insights link
-//   ];
+  return (
+    <div className="min-h-screen bg-black text-white p-8 sm:p-20 flex flex-col justify-between">
+      {/* Header */}
+      <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg">
+        <h1 className="text-2xl font-bold text-green-400 font-mono">NBA Latest Games</h1>
+        <nav className="flex gap-6">
+          <a href="/nba/games" className="hover:text-green-400 transition-colors">Latest Games</a>
+          <a href="/nba/stats" className="hover:text-green-400 transition-colors">Team Stats</a>
+          <a href="/nba/player-analysis" className="hover:text-green-400 transition-colors">Player Analysis</a>
+        </nav>
+      </header>
 
-//   const accountLinks = [
-//     "/account/profile",  // Profile link
-//     "/account/settings", // Settings link
-//     "/account/logout"    // Logout link
-//   ];
+      {/* Main Content */}
+      <main className="mt-10">
+        <h2 className="text-3xl font-extrabold text-green-400 text-center sm:text-left">Recent NBA Games</h2>
+        <table className="w-full mt-6 border-collapse border border-gray-600">
+          <thead>
+            <tr className="bg-gray-800 text-green-400">
+              <th className="border border-gray-600 px-4 py-2 text-left">Date</th>
+              <th className="border border-gray-600 px-4 py-2 text-left">Home Team</th>
+              <th className="border border-gray-600 px-4 py-2">Score</th>
+              <th className="border border-gray-600 px-4 py-2 text-left">Away Team</th>
+            </tr>
+          </thead>
+          <tbody>
+            {games.map((game, index) => (
+              <tr key={index} className="border border-gray-600">
+                <td className="border border-gray-600 px-4 py-2">{game.date}</td>
+                <td className="border border-gray-600 px-4 py-2">{game.home}</td>
+                <td className="border border-gray-600 px-4 py-2 text-center">
+                  {game.homeScore} - {game.awayScore}
+                </td>
+                <td className="border border-gray-600 px-4 py-2">{game.away}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </main>
 
-//   const performanceLinks = [
-//     "/performance/trends", // Trends link
-//     "/performance/success-rate", // Success Rate link
-//     "/performance/ai-insights"  // AI Insights link
-//   ];
+      {/* Footer */}
+      <footer className="flex gap-6 flex-wrap items-center justify-center text-gray-300 text-sm mt-auto py-4">
+        <a className="hover:text-green-400 transition-colors" href="/features">Features</a>
+        <a className="hover:text-green-400 transition-colors" href="/pricing">Pricing</a>
+        <a className="hover:text-green-400 transition-colors" href="/contact">Contact Us</a>
+      </footer>
+    </div>
+  );
+}
 
-//   return (
-//     <div className="min-h-screen bg-black text-white p-8 sm:p-20 flex flex-col justify-between"
-//       style={{ backgroundImage: "url('/LEGOAT.jpeg')", backgroundSize: "cover", backgroundPosition: "center", backgroundBlendMode: "darken", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-      
-//       <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg">
-//         <h1 className="text-2xl font-bold text-green-400 font-mono">Better Picks</h1>
-//         <nav className="flex gap-6">
-//           <Dropdown title="NBA" options={["Latest Games", "Team Stats", "Player Analysis"]}
-//             isOpen={openDropdown === "NBA"} setOpenDropdown={setOpenDropdown} links={nbaLinks} />
-//           <Dropdown title="NFL" options={["Game Predictions", "Team Performance", "Betting Insights"]}
-//             isOpen={openDropdown === "NFL"} setOpenDropdown={setOpenDropdown} links={nflLinks} />
-//           <Dropdown title="Account" options={["Profile", "Settings", "Logout"]}
-//             isOpen={openDropdown === "Account"} setOpenDropdown={setOpenDropdown} links={accountLinks} />
-//           <Dropdown title="Performance Analysis" options={["Trends", "Success Rate", "AI Insights"]}
-//             isOpen={openDropdown === "Performance Analysis"} setOpenDropdown={setOpenDropdown} links={performanceLinks} />
-//         </nav>
-//       </header>
-
-//       <main className="flex flex-col gap-8 items-center sm:items-start mt-16 flex-grow">
-//         <h2 className="text-2xl sm:text-3xl font-extrabold text-center sm:text-left text-green-400">
-//           Latest NBA Games
-//         </h2>
-//         <p className="text-sm sm:text-base text-center sm:text-left opacity-80">
-//           This page will display the latest NBA games and their details.
-//         </p>
-//       </main>
-
-//       <footer className="flex gap-6 flex-wrap items-center justify-center text-gray-300 text-sm mt-auto py-4">
-//         <a className="hover:text-green-400 transition-colors" href="/features">Features</a>
-//         <a className="hover:text-green-400 transition-colors" href="/pricing">Pricing</a>
-//         <a className="hover:text-green-400 transition-colors" href="/contact">Contact Us</a>
-//       </footer>
-//     </div>
-//   );
-// }
