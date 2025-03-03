@@ -1,8 +1,7 @@
 import pandas as pd
 
-class NBAModelClass:
-
-    def _init_(self, feature_set, model_name):
+class ModelClass:
+    def __init__(self, feature_set, model_name):
         self.feature_set = feature_set
         self.model_name = model_name
 
@@ -14,6 +13,7 @@ class NBAModelClass:
     
     def preprocess_data(self, og_data):
         data = pd.read_csv(og_data)
+        data.dropna()
         data["TS_PCT"] = data["PTS"]/(2*(data["FGA"]+(0.475*data["FTA"])))
         data["STL+BLK"] = data["STL"] + data["BLK"]
         data["TOV_PCT"] = data["TOTAL_TURNOVERS"]/(data["FGA"]+(0.475*data["FTA"])+data["AST"]+data["TOTAL_TURNOVERS"])
@@ -69,3 +69,4 @@ class NBAModelClass:
                 colRenameDict[col] = 'AWAY_' + col 
         awayTeamFrame.rename(columns=colRenameDict,inplace=True)
         data = pd.merge(homeTeamFrame, awayTeamFrame, how="inner", on=["GAME_ID","SEASON"]).drop(['GAME_ID','AWAY_TEAM_ID','HOME_TEAM_ID'],axis=1)
+        return data
