@@ -33,9 +33,11 @@ const teamLogos: Record<string, string> = {
   "Oklahoma City Thunder": "/logos/thunder.jpg",
   "San Antonio Spurs": "/logos/spurs.jpg",
   "Cleveland Cavaliers": "/logos/cavs.jpg",
-  "Portland Trail Blazers": "/logos/blazers.jpg",
+  "LA Clippers": "/logos/clippers.jpg",
+  "Portland Trail Blazers": "/logos/trailblazers.jpg",
 };
 
+// Fetch game data dynamically (replace with actual API)
 // Fetch game data dynamically (replace with actual API)
 async function fetchRecentGames() {
   return [
@@ -47,8 +49,16 @@ async function fetchRecentGames() {
     { home: "Dallas Mavericks", away: "Denver Nuggets", homeScore: 108, awayScore: 102, date: "2024-02-25" },
     { home: "Houston Rockets", away: "Memphis Grizzlies", homeScore: 99, awayScore: 105, date: "2024-02-24" },
     { home: "Atlanta Hawks", away: "New Orleans Pelicans", homeScore: 107, awayScore: 108, date: "2024-02-23" },
+    { home: "Indiana Pacers", away: "Toronto Raptors", homeScore: 120, awayScore: 117, date: "2024-02-22" },
+    { home: "Washington Wizards", away: "Sacramento Kings", homeScore: 98, awayScore: 110, date: "2024-02-21" },
+    { home: "Orlando Magic", away: "Utah Jazz", homeScore: 105, awayScore: 102, date: "2024-02-20" },
+    { home: "Charlotte Hornets", away: "Detroit Pistons", homeScore: 102, awayScore: 99, date: "2024-02-19" },
+    { home: "Minnesota Timberwolves", away: "Oklahoma City Thunder", homeScore: 118, awayScore: 121, date: "2024-02-18" },
+    { home: "San Antonio Spurs", away: "Cleveland Cavaliers", homeScore: 97, awayScore: 112, date: "2024-02-17" },
+    { home: "Portland Trail Blazers", away: "LA Clippers", homeScore: 95, awayScore: 108, date: "2024-02-16" },
   ];
 }
+
 
 export default function LatestGames() {
   const [games, setGames] = useState([]);
@@ -69,11 +79,13 @@ export default function LatestGames() {
         <h1 className="text-4xl tracking-wide uppercase text-green-400 flex items-center gap-2 font-['Rajdhani']">
           <FaBasketballBall className="text-green-400" /> NBA Latest Games
         </h1>
-        <nav className="flex gap-8 text-lg">
-          <a href="/nba/games" className="hover:text-green-400 transition-colors">Latest Games</a>
-          <a href="/nba/stats" className="hover:text-green-400 transition-colors">Team Stats</a>
-          <a href="/nba/player-analysis" className="hover:text-green-400 transition-colors">Player Analysis</a>
-        </nav>
+      <nav className="flex gap-8 text-lg">
+        <a href="/" className="hover:text-green-400 transition-colors">Home</a>
+        <a href="/nba/games" className="hover:text-green-400 transition-colors">Latest Games</a>
+        <a href="/nba/stats" className="hover:text-green-400 transition-colors">Team Stats</a>
+        <a href="/nba/player-analysis" className="hover:text-green-400 transition-colors">Player Analysis</a>
+      </nav>
+
       </header>
 
       {/* Scrollable Scores Section */}
