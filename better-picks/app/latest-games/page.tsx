@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaBasketballBall } from "react-icons/fa";
 
-// Full NBA Team Logos
 const teamLogos: Record<string, string> = {
   "Boston Celtics": "/logos/celtics.jpg",
   "Miami Heat": "/logos/heat.jpg",
@@ -51,7 +50,9 @@ async function fetchRecentGames() {
 }
 
 export default function LatestGames() {
-  const [games, setGames] = useState([]);
+  const [games, setGames] = useState<
+    { home: string; away: string; homeScore: number; awayScore: number; date: string }[]
+  >([]);
 
   useEffect(() => {
     async function loadGames() {
@@ -94,12 +95,12 @@ export default function LatestGames() {
                 <tr key={index} className="border border-gray-700">
                   <td className="border border-gray-700 px-6 py-3">{game.date}</td>
                   <td className="border border-gray-700 px-6 py-3 flex items-center gap-3">
-                    <Image src={teamLogos[game.home]} alt={game.home} width={35} height={35} className="rounded-full" />
+                    <Image src={teamLogos[game.home]} alt={game.home} width={35} height={35} className="rounded-full" unoptimized />
                     <span>{game.home}</span>
                   </td>
                   <td className="border border-gray-700 px-6 py-3 text-center">{game.homeScore} - {game.awayScore}</td>
                   <td className="border border-gray-700 px-6 py-3 flex items-center gap-3">
-                    <Image src={teamLogos[game.away]} alt={game.away} width={35} height={35} className="rounded-full" />
+                    <Image src={teamLogos[game.away]} alt={game.away} width={35} height={35} className="rounded-full" unoptimized />
                     <span>{game.away}</span>
                   </td>
                 </tr>
@@ -109,7 +110,6 @@ export default function LatestGames() {
         </div>
       </div>
 
-      {/* Footer */}
       <footer className="mt-auto py-6 text-gray-400">
         <p>&copy; 2025 NBA Stats. All rights reserved.</p>
       </footer>
