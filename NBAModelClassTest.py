@@ -1,6 +1,6 @@
 from NBAModelClass import ModelClass
 
-svm_og = ModelClass("REG", "SVM")
+svm_og = ModelClass("CF", "SVM")
 
 print(svm_og.get_feature_set())
 print(svm_og.get_model_name())
