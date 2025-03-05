@@ -64,24 +64,27 @@ class ModelClass:
             awayTeamFrame = awayTeamFrame[['LAST_3_GAME_AVG_OE','LAST_3_GAME_AVG_HOME_WIN_PCTG','NUM_REST_DAYS','LAST_3_GAME_AVG_AWAY_WIN_PCTG','LAST_3_GAME_AVG_TOTAL_WIN_PCTG','LAST_3_GAME_AVG_ROLLING_SCORING_MARGIN','LAST_3_GAME_AVG_ROLLING_OE','TEAM_ID','GAME_ID','GAME_DATE','SEASON']]
         colRenameDict = {}
         for col in homeTeamFrame.columns:
-            if (col != 'GAME_ID') & (col != 'SEASON') :
+            if (col != 'GAME_ID') & (col != 'SEASON') & (col != 'GAME_DATE'):
                 colRenameDict[col] = 'HOME_' + col 
         homeTeamFrame.rename(columns=colRenameDict,inplace=True)
         colRenameDict = {}
         for col in awayTeamFrame.columns:
-            if (col != 'GAME_ID') & (col != 'SEASON'):
+            if (col != 'GAME_ID') & (col != 'SEASON') & (col != 'GAME_DATE'):
                 colRenameDict[col] = 'AWAY_' + col 
         awayTeamFrame.rename(columns=colRenameDict,inplace=True)
         data = pd.merge(homeTeamFrame, awayTeamFrame, how="inner", on=["GAME_ID","SEASON"]).drop(['GAME_ID','AWAY_TEAM_ID','HOME_TEAM_ID'],axis=1)
         self.preprocessed_data = data
 
-    def run(self, start_date, end_date):
+    def run(self, start_date_test, end_date_test):
         df = self.preprocessed_data
-        df = df.drop(["SEASON", "Unnamed: 0"], axis = 1)
+        df = df.drop("SEASON", axis = 1)
         excluded_col = df[['HOME_W','GAME_DATE']]
         df_to_scale = df.drop(['HOME_W','GAME_DATE'], axis=1)
         scaler = StandardScaler()
         scaled_data = scaler.fit_transform(df_to_scale)
         scaled_df = pd.DataFrame(scaled_data, columns=df_to_scale.columns)
         final_df = pd.concat([scaled_df, excluded_col], axis=1)
-        
+        #train = final_df[(final_df['GAME_DATE'] >= start_date_train) & (final_df['GAME_DATE'] <= end_date_train)]
+        test = final_df[(final_df['GAME_DATE'] >= start_date_test) & (final_df['GAME_DATE'] <= end_date_test)]
+        print(test)
+
