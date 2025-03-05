@@ -94,7 +94,7 @@ export default function LatestGames() {
         <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-4">Recent NBA Games</h2>
         <div className="overflow-y-auto max-h-[500px] rounded-lg p-2">
           <table className="w-full border-collapse border border-gray-700 text-lg">
-            <thead className="sticky top-0 bg-gray-800 text-green-400">
+            <thead className="bg-gray-800 text-green-400">
               <tr>
                 <th className="border border-gray-700 px-6 py-3 text-left">Date</th>
                 <th className="border border-gray-700 px-6 py-3 text-left">Home Team</th>

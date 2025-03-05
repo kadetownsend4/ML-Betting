@@ -1,55 +1,109 @@
 "use client";
-import Image from "next/image";
 import { useState } from "react";
-import Link from 'next/link';
+import Link from "next/link";
 
-const Dropdown = ({ title, options, isOpen, setOpenDropdown, links }) => {
-  return (
-    <div className="relative group">
-      <button
-        onClick={() => setOpenDropdown(isOpen ? null : title)}
-        className="text-white px-4 py-2 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-200"
-      >
-        {title}
-      </button>
-      {isOpen && (
-        <ul className="absolute left-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded-md shadow-lg transition-all duration-200 transform opacity-0 group-hover:opacity-100">
-          {options.map((option, index) => (
-            <li key={index} className="px-4 py-2 hover:bg-gray-700 cursor-pointer transition-all duration-150">
-              <Link href={links[index]} passHref>
-                {option}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-};
+const menuItems = [
+  {
+    title: "NBA",
+    links: [
+      { name: "Latest Games", path: "/latest-games" },
+      { name: "Team Stats", path: "/team-stats" },
+      { name: "Player Analysis", path: "/player-analysis" },
+    ],
+  },
+  {
+    title: "NFL",
+    links: [
+      { name: "Game Predictions", path: "/nfl/predictions" },
+      { name: "Team Performance", path: "/nfl/performance" },
+      { name: "Betting Insights", path: "/nfl/betting-insights" },
+    ],
+  },
+  {
+    title: "Performance Analysis",
+    links: [
+      { name: "Trends", path: "/performance/trends" },
+      { name: "Success Rate", path: "/performance/success-rate" },
+      { name: "AI Insights", path: "/performance/ai-insights" },
+    ],
+  },
+  {
+    title: "Account",
+    links: [
+      { name: "Profile", path: "/account/profile" },
+      { name: "Settings", path: "/account/settings" },
+      { name: "Login", path: "/account/login" },
+    ],
+  },
+];
 
 export default function Home() {
-  const [openDropdown, setOpenDropdown] = useState(null);
-
-  const linksNBA = ["/latest-games", "/team-stats", "/player-analysis"];
-  const nflLinks = ["/nfl/predictions", "/nfl/performance", "/nfl/betting-insights"];
-  const accountLinks = ["/account/profile", "/account/settings", "/account/logout"];
-  const performanceLinks = ["/performance/trends", "/performance/success-rate", "/performance/ai-insights"];
+  const [activeDropdown, setActiveDropdown] = useState(null);
 
   return (
     <div className="min-h-screen bg-black text-white p-8 sm:p-20 flex flex-col justify-between"
       style={{ backgroundImage: "url('/background.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundBlendMode: "darken", backgroundColor: "rgba(0, 0, 0, 0.6)" }}>
 
-      <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg">
+      <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg relative">
         <h1 className="text-2xl font-bold text-green-400 font-mono">Better Picks</h1>
-        <nav className="flex gap-6">
-          <Dropdown title="NBA" options={["Latest Games", "Team Stats", "Player Analysis"]}
-            isOpen={openDropdown === "NBA"} setOpenDropdown={setOpenDropdown} links={linksNBA} />
-          <Dropdown title="NFL" options={["Game Predictions", "Team Performance", "Betting Insights"]}
-            isOpen={openDropdown === "NFL"} setOpenDropdown={setOpenDropdown} links={nflLinks} />
-          <Dropdown title="Account" options={["Profile", "Settings", "Logout"]}
-            isOpen={openDropdown === "Account"} setOpenDropdown={setOpenDropdown} links={accountLinks} />
-          <Dropdown title="Performance Analysis" options={["Trends", "Success Rate", "AI Insights"]}
-            isOpen={openDropdown === "Performance Analysis"} setOpenDropdown={setOpenDropdown} links={performanceLinks} />
+        <nav className="flex space-x-10 relative">
+          {menuItems.slice(0, -1).map((item, index) => (
+            <div
+              key={index}
+              className="relative group"
+              onMouseEnter={() => setActiveDropdown(item.title)}
+              onMouseLeave={() => setActiveDropdown(null)}
+            >
+              <button className="text-lg font-semibold hover:text-green-400 transition">
+                {item.title}
+              </button>
+              {activeDropdown === item.title && (
+                <div
+                  className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-4 flex flex-wrap justify-center gap-4 transition-all"
+                  style={{ transitionDelay: "0.3s" }} // Adds a 300ms delay to the hover effect
+                  onMouseEnter={() => setActiveDropdown(item.title)}
+                  onMouseLeave={() => setActiveDropdown(null)}
+                >
+                  {item.links.map((link, idx) => (
+                    <Link
+                      key={idx}
+                      href={link.path}
+                      className="block px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md transition text-center w-full"
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+          <div
+            className="relative group ml-auto"
+            onMouseEnter={() => setActiveDropdown("Account")}
+            onMouseLeave={() => setActiveDropdown(null)}
+          >
+            <button className="text-lg font-semibold hover:text-green-400 transition">
+              Account
+            </button>
+            {activeDropdown === "Account" && (
+              <div
+                className="absolute right-0 mt-2 w-80 bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-4 flex flex-wrap justify-center gap-4 transition-all"
+                style={{ transitionDelay: "0.5s" }} // Adds a 300ms delay to the hover effect
+                onMouseEnter={() => setActiveDropdown("Account")}
+                onMouseLeave={() => setActiveDropdown(null)}
+              >
+                {menuItems.find(item => item.title === "Account").links.map((link, idx) => (
+                  <Link
+                    key={idx}
+                    href={link.path}
+                    className="block px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md transition text-center w-full"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </nav>
       </header>
 
