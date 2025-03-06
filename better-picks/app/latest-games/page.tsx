@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaBasketballBall } from "react-icons/fa";
+import PostList from "../components/PostList";
 
-// Full NBA Team Logos
 const teamLogos: Record<string, string> = {
   "Boston Celtics": "/logos/celtics.jpg",
   "Miami Heat": "/logos/heat.jpg",
@@ -39,38 +39,40 @@ const teamLogos: Record<string, string> = {
 
 // Fetch game data dynamically (replace with actual API)
 // Fetch game data dynamically (replace with actual API)
-async function fetchRecentGames() {
-  return [
-    { home: "Boston Celtics", away: "Miami Heat", homeScore: 112, awayScore: 107, date: "2024-03-01" },
-    { home: "Los Angeles Lakers", away: "Golden State Warriors", homeScore: 125, awayScore: 119, date: "2024-02-29" },
-    { home: "Milwaukee Bucks", away: "Brooklyn Nets", homeScore: 108, awayScore: 99, date: "2024-02-28" },
-    { home: "Philadelphia 76ers", away: "New York Knicks", homeScore: 101, awayScore: 97, date: "2024-02-27" },
-    { home: "Chicago Bulls", away: "Phoenix Suns", homeScore: 110, awayScore: 115, date: "2024-02-26" },
-    { home: "Dallas Mavericks", away: "Denver Nuggets", homeScore: 108, awayScore: 102, date: "2024-02-25" },
-    { home: "Houston Rockets", away: "Memphis Grizzlies", homeScore: 99, awayScore: 105, date: "2024-02-24" },
-    { home: "Atlanta Hawks", away: "New Orleans Pelicans", homeScore: 107, awayScore: 108, date: "2024-02-23" },
-    { home: "Indiana Pacers", away: "Toronto Raptors", homeScore: 120, awayScore: 117, date: "2024-02-22" },
-    { home: "Washington Wizards", away: "Sacramento Kings", homeScore: 98, awayScore: 110, date: "2024-02-21" },
-    { home: "Orlando Magic", away: "Utah Jazz", homeScore: 105, awayScore: 102, date: "2024-02-20" },
-    { home: "Charlotte Hornets", away: "Detroit Pistons", homeScore: 102, awayScore: 99, date: "2024-02-19" },
-    { home: "Minnesota Timberwolves", away: "Oklahoma City Thunder", homeScore: 118, awayScore: 121, date: "2024-02-18" },
-    { home: "San Antonio Spurs", away: "Cleveland Cavaliers", homeScore: 97, awayScore: 112, date: "2024-02-17" },
-    { home: "Portland Trail Blazers", away: "LA Clippers", homeScore: 95, awayScore: 108, date: "2024-02-16" },
-  ];
-}
+// async function fetchRecentGames() {
+//   return [
+//     { home: "Boston Celtics", away: "Miami Heat", homeScore: 112, awayScore: 107, date: "2024-03-01" },
+//     { home: "Los Angeles Lakers", away: "Golden State Warriors", homeScore: 125, awayScore: 119, date: "2024-02-29" },
+//     { home: "Milwaukee Bucks", away: "Brooklyn Nets", homeScore: 108, awayScore: 99, date: "2024-02-28" },
+//     { home: "Philadelphia 76ers", away: "New York Knicks", homeScore: 101, awayScore: 97, date: "2024-02-27" },
+//     { home: "Chicago Bulls", away: "Phoenix Suns", homeScore: 110, awayScore: 115, date: "2024-02-26" },
+//     { home: "Dallas Mavericks", away: "Denver Nuggets", homeScore: 108, awayScore: 102, date: "2024-02-25" },
+//     { home: "Houston Rockets", away: "Memphis Grizzlies", homeScore: 99, awayScore: 105, date: "2024-02-24" },
+//     { home: "Atlanta Hawks", away: "New Orleans Pelicans", homeScore: 107, awayScore: 108, date: "2024-02-23" },
+//     { home: "Indiana Pacers", away: "Toronto Raptors", homeScore: 120, awayScore: 117, date: "2024-02-22" },
+//     { home: "Washington Wizards", away: "Sacramento Kings", homeScore: 98, awayScore: 110, date: "2024-02-21" },
+//     { home: "Orlando Magic", away: "Utah Jazz", homeScore: 105, awayScore: 102, date: "2024-02-20" },
+//     { home: "Charlotte Hornets", away: "Detroit Pistons", homeScore: 102, awayScore: 99, date: "2024-02-19" },
+//     { home: "Minnesota Timberwolves", away: "Oklahoma City Thunder", homeScore: 118, awayScore: 121, date: "2024-02-18" },
+//     { home: "San Antonio Spurs", away: "Cleveland Cavaliers", homeScore: 97, awayScore: 112, date: "2024-02-17" },
+//     { home: "Portland Trail Blazers", away: "LA Clippers", homeScore: 95, awayScore: 108, date: "2024-02-16" },
+//   ];
+// }
 
 
 export default function LatestGames() {
-  const [games, setGames] = useState([]);
+  const [games, setGames] = useState<
+    { home: string; away: string; homeScore: number; awayScore: number; date: string }[]
+  >([]);
 
-  useEffect(() => {
-    async function loadGames() {
-      const recentGames = await fetchRecentGames();
-      const sortedGames = recentGames.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-      setGames(sortedGames);
-    }
-    loadGames();
-  }, []);
+  // useEffect(() => {
+  //   async function loadGames() {
+  //     const recentGames = await fetchRecentGames();
+  //     const sortedGames = recentGames.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  //     setGames(sortedGames);
+  //   }
+  //   loadGames();
+  // }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
@@ -79,13 +81,12 @@ export default function LatestGames() {
         <h1 className="text-4xl tracking-wide uppercase text-green-400 flex items-center gap-2 font-['Rajdhani']">
           <FaBasketballBall className="text-green-400" /> NBA Latest Games
         </h1>
-      <nav className="flex gap-8 text-lg">
-        <a href="/" className="hover:text-green-400 transition-colors">Home</a>
-        <a href="/nba/games" className="hover:text-green-400 transition-colors">Latest Games</a>
-        <a href="/nba/stats" className="hover:text-green-400 transition-colors">Team Stats</a>
-        <a href="/nba/player-analysis" className="hover:text-green-400 transition-colors">Player Analysis</a>
-      </nav>
-
+        <nav className="flex gap-8 text-lg">
+          <a href="/" className="hover:text-green-400 transition-colors">Home</a>
+          <a href="/nba/games" className="hover:text-green-400 transition-colors">Latest Games</a>
+          <a href="/nba/stats" className="hover:text-green-400 transition-colors">Team Stats</a>
+          <a href="/nba/player-analysis" className="hover:text-green-400 transition-colors">Player Analysis</a>
+        </nav>
       </header>
 
       {/* Scrollable Scores Section */}
@@ -106,12 +107,12 @@ export default function LatestGames() {
                 <tr key={index} className="border border-gray-700">
                   <td className="border border-gray-700 px-6 py-3">{game.date}</td>
                   <td className="border border-gray-700 px-6 py-3 flex items-center gap-3">
-                    <Image src={teamLogos[game.home]} alt={game.home} width={35} height={35} className="rounded-full" />
+                    <Image src={teamLogos[game.home]} alt={game.home} width={35} height={35} className="rounded-full" unoptimized />
                     <span>{game.home}</span>
                   </td>
                   <td className="border border-gray-700 px-6 py-3 text-center">{game.homeScore} - {game.awayScore}</td>
                   <td className="border border-gray-700 px-6 py-3 flex items-center gap-3">
-                    <Image src={teamLogos[game.away]} alt={game.away} width={35} height={35} className="rounded-full" />
+                    <Image src={teamLogos[game.away]} alt={game.away} width={35} height={35} className="rounded-full" unoptimized />
                     <span>{game.away}</span>
                   </td>
                 </tr>
@@ -119,9 +120,16 @@ export default function LatestGames() {
             </tbody>
           </table>
         </div>
+
+        {/* 🏀 Insert PostList component below the games table */}
+        <div className="mt-10">
+          <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-4">
+            Latest NBA Posts
+          </h2>
+          <PostList />
+        </div>
       </div>
 
-      {/* Footer */}
       <footer className="mt-auto py-6 text-gray-400">
         <p>&copy; 2025 NBA Stats. All rights reserved.</p>
       </footer>
