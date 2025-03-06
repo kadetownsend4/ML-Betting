@@ -1,6 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
 
 const menuItems = [
   {
@@ -40,73 +43,123 @@ const menuItems = [
 export default function Home() {
   const [activeDropdown, setActiveDropdown] = useState(null);
 
-  return (
-    <div className="min-h-screen bg-black text-white p-8 sm:p-20 flex flex-col justify-between"
-      style={{ backgroundImage: "url('/background.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundBlendMode: "darken", backgroundColor: "rgba(0, 0, 0, 0.6)" }}>
+  const particlesInit = async (engine) => { 
+    console.log("Particles engine initialized");  // Check if this logs
+    try {
+      await loadFull(engine);
+    } catch (error) {
+      console.error("Error loading particles:", error);  // Catch any error during loadFull
+    }
+  };
+  
 
-      <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg relative">
+  
+  return (
+    <div className="min-h-screen text-white p-8 sm:p-20 flex flex-col justify-between relative overflow-hidden">
+      {/* Particle Background */}
+      <Particles
+  id="tsparticles"
+  init={particlesInit}
+  options={{
+    background: { color: "#2D6A4F" },
+    particles: {
+      number: { value: 50 },
+      shape: { type: "star" },
+      size: { value: 10 },
+      opacity: { value: 20.0 },
+      move: { speed: 1, direction: "none", outModes: "bounce" },
+    },
+  }}
+  className="absolute inset-0 -z-10"
+/>
+
+
+
+      {/* Header */}
+        <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 
+        backdrop-blur-md rounded-lg shadow-lg border border-white/15">
         <h1 className="text-2xl font-bold text-green-400 font-mono">Better Picks</h1>
         <nav className="flex space-x-10 relative">
           {menuItems.slice(0, -1).map((item, index) => (
             <div
               key={index}
-              className="relative group"
+              className="relative group flex flex-col items-center"
               onMouseEnter={() => setActiveDropdown(item.title)}
               onMouseLeave={() => setActiveDropdown(null)}
             >
               <button className="text-lg font-semibold hover:text-green-400 transition">
                 {item.title}
               </button>
-              {activeDropdown === item.title && (
-                <div
-                  className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-4 flex flex-wrap justify-center gap-4 transition-all"
-                  style={{ transitionDelay: "0.3s" }} // Adds a 300ms delay to the hover effect
-                  onMouseEnter={() => setActiveDropdown(item.title)}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
-                  {item.links.map((link, idx) => (
-                    <Link
-                      key={idx}
-                      href={link.path}
-                      className="block px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md transition text-center w-full"
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
-                </div>
-              )}
+
+              {/* Animated Dropdown - Centered */}
+              <AnimatePresence>
+                {activeDropdown === item.title && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="absolute left-1/8 mt-2 w-40 bg-white/5 
+                    backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-5"
+                    onMouseEnter={() => setActiveDropdown(item.title)}
+                    onMouseLeave={() => setActiveDropdown(null)}
+                  >
+                    {item.links.map((link, idx) => (
+                      <Link
+                        key={idx}
+                        href={link.path}
+                        className="block px-4 py-2 bg-transparent hover:bg-white/20 
+                        rounded-lg transition-all duration-200 ease-in-out text-center w-full"
+                      >
+                        {link.name}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           ))}
+
+          {/* Account Dropdown */}
           <div
-            className="relative group ml-auto"
+            className="relative group ml-auto flex flex-col items-center"
             onMouseEnter={() => setActiveDropdown("Account")}
             onMouseLeave={() => setActiveDropdown(null)}
           >
             <button className="text-lg font-semibold hover:text-green-400 transition">
               Account
             </button>
-            {activeDropdown === "Account" && (
-              <div
-                className="absolute right-0 mt-2 w-80 bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-4 flex flex-wrap justify-center gap-4 transition-all"
-                style={{ transitionDelay: "0.5s" }} // Adds a 300ms delay to the hover effect
-                onMouseEnter={() => setActiveDropdown("Account")}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                {menuItems.find(item => item.title === "Account").links.map((link, idx) => (
-                  <Link
-                    key={idx}
-                    href={link.path}
-                    className="block px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md transition text-center w-full"
-                  >
-                    {link.name}
-                  </Link>
-                ))}
-              </div>
-            )}
+
+            <AnimatePresence>
+              {activeDropdown === "Account" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="absolute left-1/8 mt-2 w-40 bg-white/10 backdrop-blur-md 
+                  border border-white/20 rounded-2xl shadow-xl p-5"
+                  onMouseEnter={() => setActiveDropdown("Account")}
+                  onMouseLeave={() => setActiveDropdown(null)}
+                >
+                  {menuItems.find(item => item.title === "Account").links.map((link, idx) => (
+                    <Link
+                      key={idx}
+                      href={link.path}
+                      className="block px-4 py-2 bg-transparent hover:bg-white/20 
+                      rounded-lg transition-all duration-200 ease-in-out text-center w-full"
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </nav>
       </header>
 
+      {/* Main Content */}
       <main className="flex flex-col gap-8 items-center sm:items-start mt-16 flex-grow">
         <h2 className="text-3xl font-extrabold text-center sm:text-left text-green-400 mb-4">
           Your Ultimate Sports Betting Analyzer
@@ -117,13 +170,15 @@ export default function Home() {
 
         <div className="flex gap-6 items-center flex-col sm:flex-row">
           <a
-            className="rounded-full border border-transparent transition-all transform hover:scale-105 flex items-center justify-center bg-green-500 text-black font-semibold gap-2 hover:bg-green-600 text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md"
-            href="/dashboard"
+          className="rounded-full border border-transparent transition-all transform hover:scale-105 
+          flex items-center justify-center bg-gradient-to-r from-green-400 to-green-600 text-black font-semibold 
+          gap-2 text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md hover:shadow-xl"
+          href="/dashboard"
           >
-            Get Started
+          Get Started
           </a>
           <a
-            className="rounded-full border border-gray-500 dark:border-gray-300 transition-all transform hover:scale-105 flex items-center justify-center hover:bg-gray-600 dark:hover:bg-gray-400 hover:border-transparent text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md"
+            className="rounded-full border border-gray-500 transition-all transform hover:scale-105 flex items-center justify-center hover:bg-gray-600 hover:border-transparent text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md"
             href="/about"
           >
             Learn More
@@ -131,6 +186,7 @@ export default function Home() {
         </div>
       </main>
 
+      {/* Footer */}
       <footer className="flex gap-8 flex-wrap items-center justify-center text-gray-300 text-base mt-auto py-6">
         <a className="hover:text-green-400 transition-colors" href="/features">Features</a>
         <a className="hover:text-green-400 transition-colors" href="/pricing">Pricing</a>
