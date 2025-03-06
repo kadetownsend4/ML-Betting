@@ -25,6 +25,11 @@ export default function TeamStats() {
     loadStats();
   }, []);
 
+  const [westernTeams] = useState([
+    { name: "Los Angeles Lakers", wins: 35, losses: 22, ppg: 113.5 },
+    { name: "Golden State Warriors", wins: 30, losses: 27, ppg: 114.8 },
+  ]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
       {/* Header with Navigation */}
@@ -94,3 +99,4 @@ export default function TeamStats() {
     </div>
   );
 }
+
