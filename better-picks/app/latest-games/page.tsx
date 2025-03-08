@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaBasketballBall } from "react-icons/fa";
 import PostList from "../components/PostList";
+import Dashboard from "../components/Dashboard";
 
 const teamLogos: Record<string, string> = {
   "Boston Celtics": "/logos/celtics.jpg",
@@ -37,8 +38,7 @@ const teamLogos: Record<string, string> = {
   "Portland Trail Blazers": "/logos/trailblazers.jpg",
 };
 
-//Fetch game data dynamically (replace with actual API)
-//Fetch game data dynamically (replace with actual API)
+// Fetch game data dynamically (replace with actual API)
 async function fetchRecentGames() {
   return [
     { home: "Boston Celtics", away: "Miami Heat", homeScore: 112, awayScore: 107, date: "2024-03-01" },
@@ -59,34 +59,21 @@ async function fetchRecentGames() {
   ];
 }
 
-
 export default function LatestGames() {
   const [games, setGames] = useState<
     { home: string; away: string; homeScore: number; awayScore: number; date: string }[]
   >([]);
 
-  // useEffect(() => {
-  //   async function loadGames() {
-  //     const recentGames = await fetchRecentGames();
-  //     const sortedGames = recentGames.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  //     setGames(sortedGames);
-  //   }
-  //   loadGames();
-  // }, []);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
-      {/* Header with Navigation */}
+      {/* Header with Dashboard Component */}
       <header className="flex justify-between items-center w-full max-w-5xl py-5 px-10 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg">
         <h1 className="text-4xl tracking-wide uppercase text-green-400 flex items-center gap-2 font-['Rajdhani']">
           <FaBasketballBall className="text-green-400" /> NBA Latest Games
         </h1>
-        <nav className="flex gap-8 text-lg">
-          <a href="/" className="hover:text-green-400 transition-colors">Home</a>
-          <a href="/nba/games" className="hover:text-green-400 transition-colors">Latest Games</a>
-          <a href="/nba/stats" className="hover:text-green-400 transition-colors">Team Stats</a>
-          <a href="/nba/player-analysis" className="hover:text-green-400 transition-colors">Player Analysis</a>
-        </nav>
+        
+        {/* Replacing Navigation with Dashboard Component */}
+        <Dashboard />
       </header>
 
       {/* Scrollable Scores Section */}
