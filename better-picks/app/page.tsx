@@ -1,20 +1,7 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Particles } from "react-tsparticles";
-import { loadFull } from "tsparticles";
-import { Engine } from "tsparticles-engine"; // Import Engine type
-
-const particlesInit = async (engine) => { 
-  console.log("Particles engine initialized ✅");
-  try {
-    await loadFull(engine);
-  } catch (error) {
-    console.error("Error loading particles:", error);
-  }
-};
-
 
 const menuItems = [
   {
@@ -54,43 +41,11 @@ const menuItems = [
 export default function Home() {
   const [activeDropdown, setActiveDropdown] = useState(null);
 
-  const particlesInit = async (engine: Engine) => {
-  console.log("Particles engine initialized ✅"); // This should appear in the console
-  try {
-    await loadFull(engine);
-  } catch (error) {
-    console.error("Error loading particles:", error);
-  }
-};
-
-  
-
-  
   return (
-    <div className="min-h-screen text-white p-8 sm:p-20 flex flex-col justify-between relative overflow-hidden">
-      {/* Particle Background */}
-      <Particles
-  id="tsparticles"
-  init={particlesInit}
-  options={{
-    background: { color: "#555555" },
-    particles: {
-      number: { value: 100 },
-      shape: { type: "circle" }, // Change from "star" to "circle"
-      size: { value: 3 }, // Reduce size for a more subtle effect
-      opacity: { value: 1.0 }, // Adjust opacity to make them visible
-      move: { speed: 2, direction: "none", outModes: "bounce" }, // Increase speed
-    },
-  }}
-  className="absolute inset-0 -z-10"
-/>
-
-
-
-
+    <div className="min-h-screen text-white p-8 sm:p-20 flex flex-col justify-between relative overflow-hidden bg-gradient">
       {/* Header */}
-        <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 
-        backdrop-blur-md rounded-lg shadow-lg border border-white/15">
+      <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
+
         <h1 className="text-3xl font-extrabold text-purple-500 font-mono">Better Picks</h1>
         <nav className="flex space-x-10 relative">
           {menuItems.slice(0, -1).map((item, index) => (
@@ -113,7 +68,7 @@ export default function Home() {
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="absolute left-1/8 mt-2 w-40 bg-white/5 
-                    backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-5"
+                    backdrop-blur-md border border-white/10 rounded-3xl shadow-xl p-3"
                     onMouseEnter={() => setActiveDropdown(item.title)}
                     onMouseLeave={() => setActiveDropdown(null)}
                   >
@@ -182,17 +137,16 @@ export default function Home() {
         </p>
 
         <div className="flex gap-6 items-center flex-col sm:flex-row">
-          <a
-          className="rounded-full border border-transparent transition-all transform hover:scale-105 
-          flex items-center justify-center bg-gradient-to-r from-green-400 to-green-600 text-black font-semibold 
-          gap-2 text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md hover:shadow-xl"
-          href="/dashboard"
-          >
-          Get Started
-          </a>
+        <a
+        href="/dashboard"
+        className="jsx-7dd05aa38b830a2d rounded-full border border-transparent transition-all transform hover:scale-105 flex items-center justify-center bg-gradient-to-r from-green-400 to-green-600 text-black font-semibold gap-2 text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md hover:shadow-xl"
+        >
+        Get Started
+        </a>
+
           <a
             className="rounded-full border border-gray-500 transition-all transform hover:scale-105 flex items-center justify-center hover:bg-gray-600 hover:border-transparent text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md"
-            href="/about"
+            href="/learn-more"
           >
             Learn More
           </a>
@@ -205,6 +159,35 @@ export default function Home() {
         <a className="hover:text-green-400 transition-colors" href="/pricing">Pricing</a>
         <a className="hover:text-green-400 transition-colors" href="/contact">Contact Us</a>
       </footer>
+
+      {/* Gamblers disclaimer */ }
+      <div className="mt-6 text-center text-sm text-gray-400">
+        <p>
+          Gambling problem? Call 1-800-GAMBLER for help. Must be 18 or older to gamble. 
+        </p>
+      </div>
+      
+
+      {/* Animated Gradient Background */}
+      <style jsx>{`
+        @keyframes gradient {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        .bg-gradient {
+          background: linear-gradient(270deg, #1a1a2e, #16213e, #0f3460, #e94560);
+          background-size: 400% 400%;
+          animation: gradient 10s ease infinite;
+        }
+      `}</style>
     </div>
   );
 }
