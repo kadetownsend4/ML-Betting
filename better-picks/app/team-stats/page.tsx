@@ -2,6 +2,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
+// Import the Dashboard component
+import Dashboard from "../components/Dashboard";  // Adjust the path according to your project structure
+
 // Sample team stats data (replace with actual API data)
 async function fetchTeamStats() {
   return [
@@ -34,20 +37,24 @@ export default function TeamStats() {
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
       {/* Header with Navigation */}
       <header className="flex justify-between items-center w-full max-w-6xl py-5 px-10 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg">
-        <h1 className="text-4xl tracking-wide uppercase text-green-400 font-['Rajdhani']">
-          NBA Team Stats
-        </h1>
+        <div className="flex items-center gap-10">
+          {/* NBA Team Stats Title */}
+          <h1 className="text-4xl tracking-wide uppercase text-green-400 font-['Rajdhani']">
+            NBA Team Stats
+          </h1>
+
+          {/* Dashboard Component with Links */}
+          <Dashboard /> {/* Dashboard component is rendered with links inside */}
+        </div>
+        
+        {/* New Navigation with only relevant links */}
         <nav className="flex gap-8 text-lg">
-          <Link href="/" className="hover:text-green-400 transition-colors">Home</Link>
-          <Link href="/nba/games" className="hover:text-green-400 transition-colors">Latest Games</Link>
-          <Link href="/nba/stats" className="hover:text-green-400 transition-colors">Team Stats</Link>
-          <Link href="/nba/player-analysis" className="hover:text-green-400 transition-colors">Player Analysis</Link>
+          {/* Navigation links (e.g., Home, Latest Games, etc.) can go here if needed */}
         </nav>
       </header>
 
       {/* Scrollable Table Section */}
       <div className="w-full max-w-6xl mt-10 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6">
-        <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-4">Team Statistics</h2>
         <div className="overflow-y-auto max-h-[500px] rounded-lg p-2">
           <table className="w-full border-collapse border border-gray-700 text-lg">
             <thead className="sticky top-0 bg-gray-800 text-green-400">
@@ -88,7 +95,8 @@ export default function TeamStats() {
         </div>
       </div>
 
-      {/* Home Button */}
+      {/* Optional Home Button */}
+      {/* 
       <div className="mt-6">
         <Link href="/">
           <button className="bg-green-500 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:bg-green-600 transition">
@@ -96,7 +104,7 @@ export default function TeamStats() {
           </button>
         </Link>
       </div>
+      */}
     </div>
   );
 }
-

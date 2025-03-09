@@ -3,9 +3,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 
+// Menu items with the "Home" page link added without dropdown
 const menuItems = [
   {
-    title: "Home", path:"/home"
+    title: "Home", path: "/home", noDropdown: true // Add `noDropdown` for the "Home" item
   },
   {
     title: "NBA",
@@ -26,7 +27,7 @@ const menuItems = [
   {
     title: "Performance Analysis",
     links: [
-      { name: "Trends", path: "/performance/trends" },
+      { name: "Trending Player Props", path: "/trends" },
       { name: "Success Rate", path: "/performance/success-rate" },
       { name: "AI Insights", path: "/performance/ai-insights" },
     ],
@@ -42,33 +43,47 @@ const menuItems = [
 ];
 
 const Dashboard: React.FC = () => {
-  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   return (
     <header className="flex justify-between items-center w-full py-4 px-8 relative z-50 bg-gray-900 text-green-500">
       <nav className="flex space-x-10 relative">
-      {menuItems.map((item, index) => (
-      <div
-        key={index}
-        className="relative group"
-        onMouseEnter={() => setActiveDropdown(item.title)}
-        onMouseLeave={() => setActiveDropdown(null)}
-      >
-        <button className="text-lg font-semibold hover:text-white transition flex items-center">
-          {item.title} {item.links && <ChevronDown size={25} className="ml-1" />}
-        </button>
-        {activeDropdown === item.title && item.links && (
-          <div className="absolute left-0 mt-2 w-40 bg-gray-800 rounded-md shadow-lg border border-gray-200 z-50">
-            {item.links.map((link, idx) => (
+        {menuItems.map((item, index) => (
+          <div
+            key={index}
+            className="relative group"
+            onMouseEnter={() => item.links && setActiveDropdown(item.title)}
+            onMouseLeave={() => setActiveDropdown(null)}
+          >
+            {/* Render the "Home" item directly, no dropdown */}
+            {item.noDropdown ? (
               <Link
-                key={idx}
-                href={link.path}
-                className="block px-4 py-2 text-lg font-semibold hover:text-white transition text-center w-full text-green-500"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
+                href={item.path}
+                className="block text-lg font-semibold hover:text-white transition text-center w-full text-green-500"
+              >
+                {item.title}
+              </Link>
+            ) : (
+              <>
+                {/* Render items with dropdown */}
+                <button className="text-lg font-semibold hover:text-white transition flex items-center">
+                  {item.title} <ChevronDown size={25} className="ml-1" />
+                </button>
+
+                {activeDropdown === item.title && item.links && (
+                  <div className="absolute left-0 mt-2 w-40 bg-gray-800 rounded-md shadow-lg border border-gray-200 z-50">
+                    {item.links.map((link, idx) => (
+                      <Link
+                        key={idx}
+                        href={link.path}
+                        className="block px-4 py-2 text-lg font-semibold hover:text-white transition text-center w-full text-green-500"
+                      >
+                        {link.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </div>
         ))}
