@@ -1,5 +1,14 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn import svm
+from sklearn.svm import SVC
+from sklearn.naive_bayes import GaussianNB
+from sklearn import ensemble
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import RandomForestClassifier
 
 class ModelClass:
     def __init__(self, feature_set, model_name):
@@ -75,7 +84,7 @@ class ModelClass:
         data = pd.merge(homeTeamFrame, awayTeamFrame, how="inner", on=["GAME_ID","SEASON"]).drop(['GAME_ID','AWAY_TEAM_ID','HOME_TEAM_ID'],axis=1)
         self.preprocessed_data = data
 
-    def run(self, start_date_test, end_date_test):
+    def run(self, start_date_test, end_date_test, start_date_train, end_date_train):
         df = self.preprocessed_data
         df = df.drop("SEASON", axis = 1)
         excluded_col = df[['HOME_W','GAME_DATE']]
@@ -84,7 +93,28 @@ class ModelClass:
         scaled_data = scaler.fit_transform(df_to_scale)
         scaled_df = pd.DataFrame(scaled_data, columns=df_to_scale.columns)
         final_df = pd.concat([scaled_df, excluded_col], axis=1)
-        #train = final_df[(final_df['GAME_DATE'] >= start_date_train) & (final_df['GAME_DATE'] <= end_date_train)]
+        train = final_df[(final_df['GAME_DATE'] >= start_date_train) & (final_df['GAME_DATE'] <= end_date_train)]
         test = final_df[(final_df['GAME_DATE'] >= start_date_test) & (final_df['GAME_DATE'] <= end_date_test)]
-        print(test)
-
+        x_train = train.drop(["HOME_W","GAME_DATE"], axis=1)
+        y_train = train["HOME_W"]
+        x_test = test.drop(["HOME_W","GAME_DATE"], axis=1)
+        y_test = test["HOME_W"]
+        if self.model_name == "LR":
+            model = LogisticRegression()
+        elif self.model_name == "SVM":
+            model = svm.SVC(kernel='linear')
+        elif self.model_name == "GNB":
+            model = GaussianNB()
+        elif self.model_name == "GB":
+            model = ensemble.GradientBoostingClassifier()
+        elif self.model_name == "DT":
+            model = DecisionTreeClassifier(criterion="entropy")
+        elif self.model_name == "KNN":
+            model = KNeighborsClassifier()
+        elif self.model_name == "MLP":
+            model = MLPClassifier()
+        elif self.model_name == "RF":
+            model = RandomForestClassifier()
+        model.fit(x_train, y_train)
+        pred = model.predict(x_test)
+        pred_proba = model.predict_proba(x_test)
