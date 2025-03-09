@@ -1,10 +1,9 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Particles } from "react-tsparticles";
 import { loadFull } from "tsparticles";
-import Dashboard from "../components/Dashboard";
 
 const menuItems = [
   {
@@ -43,51 +42,42 @@ const menuItems = [
 
 export default function Home() {
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const dropdownTimeout = useRef(null);
 
-  const particlesInit = async (engine) => {
-    console.log("Particles engine initialized");
+  const particlesInit = async (engine) => { 
+    console.log("Particles engine initialized");  // Check if this logs
     try {
       await loadFull(engine);
-      console.log("Particles loaded successfully");
     } catch (error) {
-      console.error("Error loading particles:", error);
+      console.error("Error loading particles:", error);  // Catch any error during loadFull
     }
   };
+  
 
-  // Function to handle mouse enter and leave with delay to avoid flickering
-  const handleDropdownEnter = (title) => {
-    if (dropdownTimeout.current) clearTimeout(dropdownTimeout.current);
-    setActiveDropdown(title);
-  };
-
-  const handleDropdownLeave = () => {
-    dropdownTimeout.current = setTimeout(() => {
-      setActiveDropdown(null);
-    }, 200); // Add delay of 200ms to prevent flicker
-  };
-
+  
   return (
     <div className="min-h-screen text-white p-8 sm:p-20 flex flex-col justify-between relative overflow-hidden">
       {/* Particle Background */}
       <Particles
-        id="tsparticles"
-        init={particlesInit}
-        options={{
-          background: { color: "#2D6A4F" },
-          particles: {
-            number: { value: 50 },
-            shape: { type: "star" },
-            size: { value: 10 },
-            opacity: { value: 20.0 },
-            move: { speed: 1, direction: "none", outModes: "bounce" },
-          },
-        }}
-        className="absolute inset-0 -z-10"
-      />
+  id="tsparticles"
+  init={particlesInit}
+  options={{
+    background: { color: "#2D6A4F" },
+    particles: {
+      number: { value: 50 },
+      shape: { type: "star" },
+      size: { value: 10 },
+      opacity: { value: 20.0 },
+      move: { speed: 1, direction: "none", outModes: "bounce" },
+    },
+  }}
+  className="absolute inset-0 -z-10"
+/>
+
+
 
       {/* Header */}
-      <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
+        <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 
+        backdrop-blur-md rounded-lg shadow-lg border border-white/15">
         <h1 className="text-2xl font-bold text-green-400 font-mono">Better Picks</h1>
         <nav className="flex space-x-10 relative">
           {menuItems.slice(0, -1).map((item, index) => (
@@ -109,9 +99,10 @@ export default function Home() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="absolute left-1/8 mt-2 w-40 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-5"
-                    onMouseEnter={() => handleDropdownEnter(item.title)}
-                    onMouseLeave={handleDropdownLeave}
+                    className="absolute left-1/8 mt-2 w-40 bg-white/5 
+                    backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-5"
+                    onMouseEnter={() => setActiveDropdown(item.title)}
+                    onMouseLeave={() => setActiveDropdown(null)}
                   >
                     {item.links.map((link, idx) => (
                       <Link
@@ -167,27 +158,30 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="flex flex-col gap-8 items-center sm:items-start mt-16 flex-grow">
-        <h2 className="text-3xl font-extrabold text-center sm:text-left text-green-400 mb-4">
+        <h2 className="text-3xl font-extrabold text-center sm:text-left text-purple-500 mb-4">
           Your Ultimate Sports Betting Analyzer
         </h2>
         <p className="text-lg sm:text-xl text-center sm:text-left opacity-80 mb-8">
-        Gain the edge with AI-driven betting insights, real-time analytics, and expert picks.
+          Gain the edge with AI-driven betting insights, real-time analytics, and expert picks.
         </p>
-        <a
-        className="rounded-full border border-transparent transition-all transform hover:scale-105 
-        flex items-center justify-center bg-gradient-to-r from-green-400 to-green-600 text-black font-semibold 
-        gap-2 text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md hover:shadow-xl"
-        href="/dashboard"
-        >
-        Get Started
-        </a>
-        <a
-        className="rounded-full border border-gray-500 transition-all transform hover:scale-105 flex items-center justify-center hover:bg-gray-600 hover:border-transparent text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md"
-        href="/about"
-        >
-        Learn More
-        </a>
-        </main>
+
+        <div className="flex gap-6 items-center flex-col sm:flex-row">
+          <a
+          className="rounded-full border border-transparent transition-all transform hover:scale-105 
+          flex items-center justify-center bg-gradient-to-r from-green-400 to-green-600 text-black font-semibold 
+          gap-2 text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md hover:shadow-xl"
+          href="/dashboard"
+          >
+          Get Started
+          </a>
+          <a
+            className="rounded-full border border-gray-500 transition-all transform hover:scale-105 flex items-center justify-center hover:bg-gray-600 hover:border-transparent text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md"
+            href="/about"
+          >
+            Learn More
+          </a>
+        </div>
+      </main>
 
 
       {/* Footer */}
@@ -196,6 +190,35 @@ export default function Home() {
         <a className="hover:text-green-400 transition-colors" href="/pricing">Pricing</a>
         <a className="hover:text-green-400 transition-colors" href="/contact">Contact Us</a>
       </footer>
+
+      {/* Gamblers disclaimer */ }
+      <div className="mt-6 text-center text-sm text-gray-400">
+        <p>
+          Gambling problem? Call 1-800-GAMBLER for help. Must be 18 or older to gamble. 
+        </p>
+      </div>
+      
+
+      {/* Animated Gradient Background */}
+      <style jsx>{`
+        @keyframes gradient {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        .bg-gradient {
+          background: linear-gradient(270deg, #1a1a2e, #16213e, #0f3460, #e94560);
+          background-size: 400% 400%;
+          animation: gradient 10s ease infinite;
+        }
+      `}</style>
     </div>
   );
 }
