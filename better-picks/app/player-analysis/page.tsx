@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaBasketballBall } from "react-icons/fa";
+import Dashboard from "../components/Dashboard";
 
 const playerData = [
   { name: "LeBron James", team: "Lakers", points: 27, assists: 8, rebounds: 7 },
@@ -20,9 +21,7 @@ export default function PlayerAnalysis() {
           <FaBasketballBall className="text-green-400" /> NBA Player Analysis
         </h1>
         <nav className="flex gap-8 text-lg">
-          <a href="/latest-games" className="hover:text-green-400 transition-colors">Latest Games</a>
-          <a href="/team-stats" className="hover:text-green-400 transition-colors">Team Stats</a>
-          <a href="/player-analysis" className="hover:text-green-400 transition-colors">Player Analysis</a>
+        <Dashboard /> {/* Inserted the Dashboard component here */}
         </nav>
       </header>
 

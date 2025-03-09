@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Particles } from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import Dashboard from "../components/Dashboard";
 
 const menuItems = [
   {
@@ -25,9 +26,9 @@ const menuItems = [
   {
     title: "Performance Analysis",
     links: [
-      { name: "Trends", path: "/performance/trends" },
-      { name: "Success Rate", path: "/performance/success-rate" },
-      { name: "AI Insights", path: "/performance/ai-insights" },
+      { name: "Trends", path: "/trends" },
+      { name: "Defense vs Position", path: "/defense-vs-position" },
+      { name: "AI Insights", path: "/performance-analysis/ai-insights" },
     ],
   },
   {
@@ -42,50 +43,59 @@ const menuItems = [
 
 export default function Home() {
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const dropdownTimeout = useRef(null);
 
-  const particlesInit = async (engine) => { 
-    console.log("Particles engine initialized");  // Check if this logs
+  const particlesInit = async (engine) => {
+    console.log("Particles engine initialized");
     try {
       await loadFull(engine);
+      console.log("Particles loaded successfully");
     } catch (error) {
-      console.error("Error loading particles:", error);  // Catch any error during loadFull
+      console.error("Error loading particles:", error);
     }
   };
-  
 
-  
+  // Function to handle mouse enter and leave with delay to avoid flickering
+  const handleDropdownEnter = (title) => {
+    if (dropdownTimeout.current) clearTimeout(dropdownTimeout.current);
+    setActiveDropdown(title);
+  };
+
+  const handleDropdownLeave = () => {
+    dropdownTimeout.current = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 200); // Add delay of 200ms to prevent flicker
+  };
+
   return (
     <div className="min-h-screen text-white p-8 sm:p-20 flex flex-col justify-between relative overflow-hidden">
       {/* Particle Background */}
       <Particles
-  id="tsparticles"
-  init={particlesInit}
-  options={{
-    background: { color: "#2D6A4F" },
-    particles: {
-      number: { value: 50 },
-      shape: { type: "star" },
-      size: { value: 10 },
-      opacity: { value: 20.0 },
-      move: { speed: 1, direction: "none", outModes: "bounce" },
-    },
-  }}
-  className="absolute inset-0 -z-10"
-/>
-
-
+        id="tsparticles"
+        init={particlesInit}
+        options={{
+          background: { color: "#2D6A4F" },
+          particles: {
+            number: { value: 50 },
+            shape: { type: "star" },
+            size: { value: 10 },
+            opacity: { value: 20.0 },
+            move: { speed: 1, direction: "none", outModes: "bounce" },
+          },
+        }}
+        className="absolute inset-0 -z-10"
+      />
 
       {/* Header */}
-        <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 
-        backdrop-blur-md rounded-lg shadow-lg border border-white/15">
+      <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
         <h1 className="text-2xl font-bold text-green-400 font-mono">Better Picks</h1>
         <nav className="flex space-x-10 relative">
           {menuItems.slice(0, -1).map((item, index) => (
             <div
               key={index}
               className="relative group flex flex-col items-center"
-              onMouseEnter={() => setActiveDropdown(item.title)}
-              onMouseLeave={() => setActiveDropdown(null)}
+              onMouseEnter={() => handleDropdownEnter(item.title)}
+              onMouseLeave={handleDropdownLeave}
             >
               <button className="text-lg font-semibold hover:text-green-400 transition">
                 {item.title}
@@ -99,17 +109,15 @@ export default function Home() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="absolute left-1/8 mt-2 w-40 bg-white/5 
-                    backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-5"
-                    onMouseEnter={() => setActiveDropdown(item.title)}
-                    onMouseLeave={() => setActiveDropdown(null)}
+                    className="absolute left-1/8 mt-2 w-40 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl p-5"
+                    onMouseEnter={() => handleDropdownEnter(item.title)}
+                    onMouseLeave={handleDropdownLeave}
                   >
                     {item.links.map((link, idx) => (
                       <Link
                         key={idx}
                         href={link.path}
-                        className="block px-4 py-2 bg-transparent hover:bg-white/20 
-                        rounded-lg transition-all duration-200 ease-in-out text-center w-full"
+                        className="block px-4 py-2 bg-transparent hover:bg-white/20 rounded-lg transition-all duration-200 ease-in-out text-center w-full"
                       >
                         {link.name}
                       </Link>
@@ -123,8 +131,8 @@ export default function Home() {
           {/* Account Dropdown */}
           <div
             className="relative group ml-auto flex flex-col items-center"
-            onMouseEnter={() => setActiveDropdown("Account")}
-            onMouseLeave={() => setActiveDropdown(null)}
+            onMouseEnter={() => handleDropdownEnter("Account")}
+            onMouseLeave={handleDropdownLeave}
           >
             <button className="text-lg font-semibold hover:text-green-400 transition">
               Account
@@ -137,17 +145,15 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="absolute left-1/8 mt-2 w-40 bg-white/10 backdrop-blur-md 
-                  border border-white/20 rounded-2xl shadow-xl p-5"
-                  onMouseEnter={() => setActiveDropdown("Account")}
-                  onMouseLeave={() => setActiveDropdown(null)}
+                  className="absolute left-1/8 mt-2 w-40 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl p-5"
+                  onMouseEnter={() => handleDropdownEnter("Account")}
+                  onMouseLeave={handleDropdownLeave}
                 >
                   {menuItems.find(item => item.title === "Account").links.map((link, idx) => (
                     <Link
                       key={idx}
                       href={link.path}
-                      className="block px-4 py-2 bg-transparent hover:bg-white/20 
-                      rounded-lg transition-all duration-200 ease-in-out text-center w-full"
+                      className="block px-4 py-2 bg-transparent hover:bg-white/20 rounded-lg transition-all duration-200 ease-in-out text-center w-full"
                     >
                       {link.name}
                     </Link>
@@ -165,26 +171,24 @@ export default function Home() {
           Your Ultimate Sports Betting Analyzer
         </h2>
         <p className="text-lg sm:text-xl text-center sm:text-left opacity-80 mb-8">
-          Gain the edge with AI-driven betting insights, real-time analytics, and expert picks.
+        Gain the edge with AI-driven betting insights, real-time analytics, and expert picks.
         </p>
+        <a
+        className="rounded-full border border-transparent transition-all transform hover:scale-105 
+        flex items-center justify-center bg-gradient-to-r from-green-400 to-green-600 text-black font-semibold 
+        gap-2 text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md hover:shadow-xl"
+        href="/dashboard"
+        >
+        Get Started
+        </a>
+        <a
+        className="rounded-full border border-gray-500 transition-all transform hover:scale-105 flex items-center justify-center hover:bg-gray-600 hover:border-transparent text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md"
+        href="/about"
+        >
+        Learn More
+        </a>
+        </main>
 
-        <div className="flex gap-6 items-center flex-col sm:flex-row">
-          <a
-          className="rounded-full border border-transparent transition-all transform hover:scale-105 
-          flex items-center justify-center bg-gradient-to-r from-green-400 to-green-600 text-black font-semibold 
-          gap-2 text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md hover:shadow-xl"
-          href="/dashboard"
-          >
-          Get Started
-          </a>
-          <a
-            className="rounded-full border border-gray-500 transition-all transform hover:scale-105 flex items-center justify-center hover:bg-gray-600 hover:border-transparent text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md"
-            href="/about"
-          >
-            Learn More
-          </a>
-        </div>
-      </main>
 
       {/* Footer */}
       <footer className="flex gap-8 flex-wrap items-center justify-center text-gray-300 text-base mt-auto py-6">
