@@ -9,18 +9,25 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
+import sklearn.metrics
 
 class ModelClass:
     def __init__(self, feature_set, model_name):
         self.feature_set = feature_set
         self.model_name = model_name
         self.preprocessed_data = pd.DataFrame()
+        self.pred = pd.DataFrame()
+        self.pred_proba = pd.DataFrame()
+        self.y_test = pd.DataFrame()
 
     def get_feature_set(self):
         return self.feature_set
     
     def get_model_name(self):
         return self.model_name
+    
+    def get_y_test(self):
+        return self.y_test
     
     def preprocess_data(self, og_data):
         data = pd.read_csv(og_data)
@@ -52,6 +59,7 @@ class ModelClass:
         data["LAST_3_GAME_AVG_STL"] = ((data.sort_values('GAME_DATE').groupby(['TEAM_ID','SEASON'])['STL'].shift(1)) + (data.sort_values('GAME_DATE').groupby(['TEAM_ID','SEASON'])['STL'].shift(2)) + (data.sort_values('GAME_DATE').groupby(['TEAM_ID','SEASON'])['STL'].shift(3)))/3
         data["LAST_3_GAME_AVG_TOTAL_TURNOVERS"] = ((data.sort_values('GAME_DATE').groupby(['TEAM_ID','SEASON'])['TOTAL_TURNOVERS'].shift(1)) + (data.sort_values('GAME_DATE').groupby(['TEAM_ID','SEASON'])['TOTAL_TURNOVERS'].shift(2)) + (data.sort_values('GAME_DATE').groupby(['TEAM_ID','SEASON'])['TOTAL_TURNOVERS'].shift(3)))/3
         data["LAST_3_GAME_AVG_BLK"] = ((data.sort_values('GAME_DATE').groupby(['TEAM_ID','SEASON'])['BLK'].shift(1)) + (data.sort_values('GAME_DATE').groupby(['TEAM_ID','SEASON'])['BLK'].shift(2)) + (data.sort_values('GAME_DATE').groupby(['TEAM_ID','SEASON'])['BLK'].shift(3)))/3
+        data = data.dropna()
         gameDF = data
         gamedf = data
         homeTeamFrame = gameDF[gameDF['CITY'] != 'OPPONENTS']
@@ -98,7 +106,7 @@ class ModelClass:
         x_train = train.drop(["HOME_W","GAME_DATE"], axis=1)
         y_train = train["HOME_W"]
         x_test = test.drop(["HOME_W","GAME_DATE"], axis=1)
-        y_test = test["HOME_W"]
+        self.y_test = test["HOME_W"]
         if self.model_name == "LR":
             model = LogisticRegression()
         elif self.model_name == "SVM":
@@ -116,5 +124,25 @@ class ModelClass:
         elif self.model_name == "RF":
             model = RandomForestClassifier()
         model.fit(x_train, y_train)
-        pred = model.predict(x_test)
-        pred_proba = model.predict_proba(x_test)
+        self.pred = model.predict(x_test)
+        self.pred_proba = model.predict_proba(x_test)
+
+    def get_metrics(self):
+        confusion_matrix_20 = sklearn.metrics.confusion_matrix(self.y_test, self.pred)
+        print("Confusion Matrix for Model: ")
+        print(confusion_matrix_20)
+        accuracy_20 = sklearn.metrics.accuracy_score(self.y_test, self.pred)
+        print("Accuracy for Model: ", end="")
+        print(accuracy_20)
+        recall_20 = sklearn.metrics.recall_score(self.y_test, self.pred)
+        print("Recall for Model: ", end="")
+        print(recall_20)
+        specificity_20 = sklearn.metrics.recall_score(self.y_test, self.pred, pos_label=0)
+        print("Specificity for Model: ", end="")
+        print(specificity_20)
+        precision_20 = sklearn.metrics.precision_score(self.y_test, self.pred)
+        print("Precision for Model: ", end="")
+        print(precision_20)
+        f1_20 = sklearn.metrics.f1_score(self.y_test, self.pred)
+        print("F1 for Model: ", end="")
+        print(f1_20)

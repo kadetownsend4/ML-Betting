@@ -1,9 +1,9 @@
 from NBAModelClass import ModelClass
 
-svm_og = ModelClass("CF", "SVM")
+lr_og = ModelClass("OG", "LR")
 
-print(svm_og.get_feature_set())
-print(svm_og.get_model_name())
-print(svm_og.preprocess_data("GettingData/gameLogs.csv"))
-print(svm_og.preprocessed_data)
-print(svm_og.run("2021-05-01", "2022-06-03"))
+print(lr_og.get_feature_set())
+print(lr_og.get_model_name())
+lr_og.preprocess_data("GettingData/gameLogs.csv")
+lr_og.run("2021-05-01", "2022-06-03", "2020-05-01", "2021-04-29")
+lr_og.get_metrics()
