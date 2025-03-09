@@ -4,6 +4,17 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Particles } from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import { Engine } from "tsparticles-engine"; // Import Engine type
+
+const particlesInit = async (engine) => { 
+  console.log("Particles engine initialized ✅");
+  try {
+    await loadFull(engine);
+  } catch (error) {
+    console.error("Error loading particles:", error);
+  }
+};
+
 
 const menuItems = [
   {
@@ -43,14 +54,15 @@ const menuItems = [
 export default function Home() {
   const [activeDropdown, setActiveDropdown] = useState(null);
 
-  const particlesInit = async (engine) => { 
-    console.log("Particles engine initialized");  // Check if this logs
-    try {
-      await loadFull(engine);
-    } catch (error) {
-      console.error("Error loading particles:", error);  // Catch any error during loadFull
-    }
-  };
+  const particlesInit = async (engine: Engine) => {
+  console.log("Particles engine initialized ✅"); // This should appear in the console
+  try {
+    await loadFull(engine);
+  } catch (error) {
+    console.error("Error loading particles:", error);
+  }
+};
+
   
 
   
@@ -61,13 +73,13 @@ export default function Home() {
   id="tsparticles"
   init={particlesInit}
   options={{
-    background: { color: "#2D6A4F" },
+    background: { color: "#555555" },
     particles: {
-      number: { value: 50 },
-      shape: { type: "star" },
-      size: { value: 10 },
-      opacity: { value: 20.0 },
-      move: { speed: 1, direction: "none", outModes: "bounce" },
+      number: { value: 100 },
+      shape: { type: "circle" }, // Change from "star" to "circle"
+      size: { value: 3 }, // Reduce size for a more subtle effect
+      opacity: { value: 1.0 }, // Adjust opacity to make them visible
+      move: { speed: 2, direction: "none", outModes: "bounce" }, // Increase speed
     },
   }}
   className="absolute inset-0 -z-10"
@@ -75,10 +87,11 @@ export default function Home() {
 
 
 
+
       {/* Header */}
         <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 
         backdrop-blur-md rounded-lg shadow-lg border border-white/15">
-        <h1 className="text-2xl font-bold text-green-400 font-mono">Better Picks</h1>
+        <h1 className="text-3xl font-extrabold text-purple-500 font-mono">Better Picks</h1>
         <nav className="flex space-x-10 relative">
           {menuItems.slice(0, -1).map((item, index) => (
             <div
@@ -161,10 +174,10 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="flex flex-col gap-8 items-center sm:items-start mt-16 flex-grow">
-        <h2 className="text-3xl font-extrabold text-center sm:text-left text-green-400 mb-4">
+        <h2 className="text-3xl font-extrabold text-center sm:text-left text-purple-500 mb-4">
           Your Ultimate Sports Betting Analyzer
         </h2>
-        <p className="text-lg sm:text-xl text-center sm:text-left opacity-80 mb-8">
+        <p className="text-lg sm:text-xl text-center sm:text-left text-purple-500 opacity-100 mb-4">
           Gain the edge with AI-driven betting insights, real-time analytics, and expert picks.
         </p>
 
