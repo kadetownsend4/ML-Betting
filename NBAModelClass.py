@@ -110,7 +110,7 @@ class ModelClass:
         if self.model_name == "LR":
             model = LogisticRegression()
         elif self.model_name == "SVM":
-            model = svm.SVC(kernel='linear')
+            model = svm.SVC(kernel='linear',probability=True)
         elif self.model_name == "GNB":
             model = GaussianNB()
         elif self.model_name == "GB":
