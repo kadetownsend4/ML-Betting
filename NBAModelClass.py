@@ -16,9 +16,10 @@ class ModelClass:
         self.feature_set = feature_set
         self.model_name = model_name
         self.preprocessed_data = pd.DataFrame()
-        self.pred = pd.DataFrame()
-        self.pred_proba = pd.DataFrame()
+        self.pred = []
+        self.pred_proba = []
         self.y_test = pd.DataFrame()
+        self.test = pd.DataFrame()
 
     def get_feature_set(self):
         return self.feature_set
@@ -89,23 +90,23 @@ class ModelClass:
             if (col != 'GAME_ID') & (col != 'SEASON') & (col != 'GAME_DATE'):
                 colRenameDict[col] = 'AWAY_' + col 
         awayTeamFrame.rename(columns=colRenameDict,inplace=True)
-        data = pd.merge(homeTeamFrame, awayTeamFrame, how="inner", on=["GAME_ID","SEASON"]).drop(['GAME_ID','AWAY_TEAM_ID','HOME_TEAM_ID'],axis=1)
+        data = pd.merge(homeTeamFrame, awayTeamFrame, how="inner", on=["GAME_ID","SEASON"]).drop(['AWAY_TEAM_ID','HOME_TEAM_ID'],axis=1)
         self.preprocessed_data = data
 
     def run(self, start_date_test, end_date_test, start_date_train, end_date_train):
         df = self.preprocessed_data
-        df = df.drop("SEASON", axis = 1)
-        excluded_col = df[['HOME_W','GAME_DATE']]
-        df_to_scale = df.drop(['HOME_W','GAME_DATE'], axis=1)
+        excluded_col = df[['HOME_W','GAME_DATE','GAME_ID','SEASON']]
+        df_to_scale = df.drop(['HOME_W','GAME_DATE','GAME_ID','SEASON'], axis=1)
         scaler = StandardScaler()
         scaled_data = scaler.fit_transform(df_to_scale)
         scaled_df = pd.DataFrame(scaled_data, columns=df_to_scale.columns)
         final_df = pd.concat([scaled_df, excluded_col], axis=1)
         train = final_df[(final_df['GAME_DATE'] >= start_date_train) & (final_df['GAME_DATE'] <= end_date_train)]
         test = final_df[(final_df['GAME_DATE'] >= start_date_test) & (final_df['GAME_DATE'] <= end_date_test)]
-        x_train = train.drop(["HOME_W","GAME_DATE"], axis=1)
+        self.test = test
+        x_train = train.drop(["HOME_W","GAME_DATE","GAME_ID","SEASON"], axis=1)
         y_train = train["HOME_W"]
-        x_test = test.drop(["HOME_W","GAME_DATE"], axis=1)
+        x_test = test.drop(["HOME_W","GAME_DATE","GAME_ID","SEASON"], axis=1)
         self.y_test = test["HOME_W"]
         if self.model_name == "LR":
             model = LogisticRegression()
@@ -128,21 +129,28 @@ class ModelClass:
         self.pred_proba = model.predict_proba(x_test)
 
     def get_metrics(self):
-        confusion_matrix_20 = sklearn.metrics.confusion_matrix(self.y_test, self.pred)
+        confusion_matrix = sklearn.metrics.confusion_matrix(self.y_test, self.pred)
         print("Confusion Matrix for Model: ")
-        print(confusion_matrix_20)
-        accuracy_20 = sklearn.metrics.accuracy_score(self.y_test, self.pred)
+        print(confusion_matrix)
+        accuracy = sklearn.metrics.accuracy_score(self.y_test, self.pred)
         print("Accuracy for Model: ", end="")
-        print(accuracy_20)
-        recall_20 = sklearn.metrics.recall_score(self.y_test, self.pred)
+        print(accuracy)
+        recall = sklearn.metrics.recall_score(self.y_test, self.pred)
         print("Recall for Model: ", end="")
-        print(recall_20)
-        specificity_20 = sklearn.metrics.recall_score(self.y_test, self.pred, pos_label=0)
+        print(recall)
+        specificity = sklearn.metrics.recall_score(self.y_test, self.pred, pos_label=0)
         print("Specificity for Model: ", end="")
-        print(specificity_20)
-        precision_20 = sklearn.metrics.precision_score(self.y_test, self.pred)
+        print(specificity)
+        precision = sklearn.metrics.precision_score(self.y_test, self.pred)
         print("Precision for Model: ", end="")
-        print(precision_20)
-        f1_20 = sklearn.metrics.f1_score(self.y_test, self.pred)
+        print(precision)
+        f1 = sklearn.metrics.f1_score(self.y_test, self.pred)
         print("F1 for Model: ", end="")
-        print(f1_20)
+        print(f1)
+
+    def display_predictions(self):
+        df = self.test[['SEASON','GAME_ID','GAME_DATE','HOME_W']]
+        frames = [df, pd.DataFrame(self.pred, index=df.index), pd.DataFrame(self.pred_proba, index=df.index)]
+        result = pd.concat(frames, axis=1, ignore_index=True)
+        result.rename(columns={0: 'SEASON', 1: 'GAME_ID', 2: 'GAME_DATE', 3: 'HOME_W', 4: 'HOME_W_PRED', 5: 'AWAY_W_PROB', 6: 'HOME_W_PROB'}, inplace=True)
+        print(result)
