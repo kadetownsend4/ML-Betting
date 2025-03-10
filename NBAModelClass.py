@@ -20,6 +20,13 @@ class ModelClass:
         self.pred_proba = []
         self.y_test = pd.DataFrame()
         self.test = pd.DataFrame()
+        self.database_df = pd.DataFrame()
+        self.accuracy = 0.0
+        self.confusion_matrix = []
+        self.recall = 0.0
+        self.specificity = 0.0
+        self.precision = 0.0
+        self.f1 = 0.0
 
     def get_feature_set(self):
         return self.feature_set
@@ -27,8 +34,26 @@ class ModelClass:
     def get_model_name(self):
         return self.model_name
     
-    def get_y_test(self):
-        return self.y_test
+    def get_database_df(self):
+        return self.database_df
+    
+    def get_accuracy(self):
+        return self.accuracy
+    
+    def get_confusion_matrix(self):
+        return self.confusion_matrix
+    
+    def get_recall(self):
+        return self.recall
+    
+    def get_specificity(self):
+        return self.specificity
+    
+    def get_precision(self):
+        return self.precision
+    
+    def get_f1(self):
+        return self.f1
     
     def preprocess_data(self, og_data):
         data = pd.read_csv(og_data)
@@ -128,29 +153,17 @@ class ModelClass:
         self.pred = model.predict(x_test)
         self.pred_proba = model.predict_proba(x_test)
 
-    def get_metrics(self):
-        confusion_matrix = sklearn.metrics.confusion_matrix(self.y_test, self.pred)
-        print("Confusion Matrix for Model: ")
-        print(confusion_matrix)
-        accuracy = sklearn.metrics.accuracy_score(self.y_test, self.pred)
-        print("Accuracy for Model: ", end="")
-        print(accuracy)
-        recall = sklearn.metrics.recall_score(self.y_test, self.pred)
-        print("Recall for Model: ", end="")
-        print(recall)
-        specificity = sklearn.metrics.recall_score(self.y_test, self.pred, pos_label=0)
-        print("Specificity for Model: ", end="")
-        print(specificity)
-        precision = sklearn.metrics.precision_score(self.y_test, self.pred)
-        print("Precision for Model: ", end="")
-        print(precision)
-        f1 = sklearn.metrics.f1_score(self.y_test, self.pred)
-        print("F1 for Model: ", end="")
-        print(f1)
+    def calc_metrics(self):
+        self.confusion_matrix = sklearn.metrics.confusion_matrix(self.y_test, self.pred)
+        self.accuracy = sklearn.metrics.accuracy_score(self.y_test, self.pred)
+        self.recall = sklearn.metrics.recall_score(self.y_test, self.pred)
+        self.specificity = sklearn.metrics.recall_score(self.y_test, self.pred, pos_label=0)
+        self.precision = sklearn.metrics.precision_score(self.y_test, self.pred)
+        self.f1 = sklearn.metrics.f1_score(self.y_test, self.pred)
 
-    def display_predictions(self):
+    def format_predictions(self):
         df = self.test[['SEASON','GAME_ID','GAME_DATE','HOME_W']]
         frames = [df, pd.DataFrame(self.pred, index=df.index), pd.DataFrame(self.pred_proba, index=df.index)]
         result = pd.concat(frames, axis=1, ignore_index=True)
         result.rename(columns={0: 'SEASON', 1: 'GAME_ID', 2: 'GAME_DATE', 3: 'HOME_W', 4: 'HOME_W_PRED', 5: 'AWAY_W_PROB', 6: 'HOME_W_PROB'}, inplace=True)
-        print(result)
+        self.database_df = result
