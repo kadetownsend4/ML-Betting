@@ -105,6 +105,8 @@ class ModelClass:
         elif self.feature_set == "OG3":
             homeTeamFrame = homeTeamFrame[['LAST_3_GAME_AVG_OE','LAST_3_GAME_AVG_HOME_WIN_PCTG','NUM_REST_DAYS','LAST_3_GAME_AVG_AWAY_WIN_PCTG','LAST_3_GAME_AVG_TOTAL_WIN_PCTG','LAST_3_GAME_AVG_ROLLING_SCORING_MARGIN','LAST_3_GAME_AVG_ROLLING_OE','W','TEAM_ID','GAME_ID','GAME_DATE','SEASON']]
             awayTeamFrame = awayTeamFrame[['LAST_3_GAME_AVG_OE','LAST_3_GAME_AVG_HOME_WIN_PCTG','NUM_REST_DAYS','LAST_3_GAME_AVG_AWAY_WIN_PCTG','LAST_3_GAME_AVG_TOTAL_WIN_PCTG','LAST_3_GAME_AVG_ROLLING_SCORING_MARGIN','LAST_3_GAME_AVG_ROLLING_OE','TEAM_ID','GAME_ID','SEASON']]
+        else:
+            raise ValueError
         colRenameDict = {}
         for col in homeTeamFrame.columns:
             if (col != 'GAME_ID') & (col != 'SEASON') & (col != 'GAME_DATE'):
@@ -149,6 +151,8 @@ class ModelClass:
             model = MLPClassifier()
         elif self.model_name == "RF":
             model = RandomForestClassifier()
+        else:
+            raise ValueError
         model.fit(x_train, y_train)
         self.pred = model.predict(x_test)
         self.pred_proba = model.predict_proba(x_test)

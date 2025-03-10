@@ -1,6 +1,6 @@
 from NBAModelClass import ModelClass
 
-lr_og = ModelClass("OG", "GNB")
+lr_og = ModelClass("OG", "G")
 
 print(lr_og.get_feature_set())
 print(lr_og.get_model_name())
