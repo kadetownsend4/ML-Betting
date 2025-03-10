@@ -59,27 +59,71 @@ class ModelClass:
         return self.model_name
     
     def get_database_df(self):
+        """Returns a dataframe that can be transfered to the database. Has necessary predictions from model
+
+           Return:
+           database dataframe
+        """
         return self.database_df
     
     def get_accuracy(self):
+        """Returns an accuracy score gathered from running the model.
+
+           Return:
+           accuracy score for current test frame
+        """
         return self.accuracy
     
     def get_confusion_matrix(self):
+        """Returns a confusion matrix from running model
+
+           Return:
+           confusion matrix for current test frame
+        """
         return self.confusion_matrix
     
     def get_recall(self):
+        """Returns a recall score from running model
+        
+           Return:
+           recall score for current test frame
+        """
         return self.recall
     
     def get_specificity(self):
+        """Returns a specificity score from running model
+        
+           Return:
+           specifiicty score for current test frame
+        """
         return self.specificity
     
     def get_precision(self):
+        """Returns a precision score from running model
+        
+           Return:
+           precision score for current test frame
+        """
         return self.precision
     
     def get_f1(self):
+        """Returns a f1 score from running model
+        
+           Return:
+           f1 score for current test frame
+        """
         return self.f1
     
     def preprocess_data(self, og_data):
+        """Function to preprocess the data that is passed in as a parameter. For preprocessing,
+           the features are all determined and calculated. It's a mixture of past game data and
+           past 3 game data. The features are then divided and dropped based on which set they
+           belong too. These features are then combined based on the away and home team to
+           a dataframe containing both. This dataframe is then passed back to a global variable.
+
+           Parameters:
+           og_data -- original data of gamelogs to look through and determine features
+        """
         data = pd.read_csv(og_data)
         data.dropna()
         data["TS_PCT"] = data["PTS"]/(2*(data["FGA"]+(0.475*data["FTA"])))
@@ -145,6 +189,15 @@ class ModelClass:
         self.preprocessed_data = data
 
     def run(self, start_date_test, end_date_test, start_date_train, end_date_train):
+        """Runs a model on a specific set of data. The start and end dates based on games dates
+           will split the data into train and test dataframes that will be used within the models. 
+           The model names help determine which model to use in the actual training. The dataframes
+           from testing, predicting, and probability predicting are passed to global variables of
+           the class.
+           
+           Parameters:
+           
+        """
         df = self.preprocessed_data
         excluded_col = df[['HOME_W','GAME_DATE','GAME_ID','SEASON']]
         df_to_scale = df.drop(['HOME_W','GAME_DATE','GAME_ID','SEASON'], axis=1)
