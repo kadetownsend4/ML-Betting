@@ -1,3 +1,10 @@
+"""Class file to define machine learning models for NBA data based on certain model names and feature
+   sets.
+
+   author = Kade Townsend
+"""
+
+# import required packages for code
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
@@ -13,6 +20,13 @@ import sklearn.metrics
 
 class ModelClass:
     def __init__(self, feature_set, model_name):
+        """Initialization function to create ML models based on different feature sets and
+           models. Defines multiple variables for use by the class and its functions. 
+
+           Parameters:
+           feature_set -- name of the feature set to use
+           model_name -- name of the model to use
+        """
         self.feature_set = feature_set
         self.model_name = model_name
         self.preprocessed_data = pd.DataFrame()
@@ -29,9 +43,19 @@ class ModelClass:
         self.f1 = 0.0
 
     def get_feature_set(self):
+        """Returns the name of the feature set.
+
+           Return:
+           String name of feature set
+        """
         return self.feature_set
     
     def get_model_name(self):
+        """Returns the name of the model.
+
+           Return:
+           String name of model
+        """
         return self.model_name
     
     def get_database_df(self):
