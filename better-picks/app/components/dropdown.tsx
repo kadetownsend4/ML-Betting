@@ -11,7 +11,7 @@ interface DropdownProps {
 
 export default function Dropdown({ title, options, links, isOpen, setOpenDropdown }: DropdownProps) {
   return (
-    <div className="relative">
+    <div className="relative z-50 overflow-visible">
       <button
         onClick={() => setOpenDropdown(isOpen ? null : title)}
         className="text-white hover:text-green-400 transition"
@@ -19,7 +19,7 @@ export default function Dropdown({ title, options, links, isOpen, setOpenDropdow
         {title}
       </button>
       {isOpen && (
-        <ul className="absolute mt-2 w-48 bg-gray-900 rounded shadow-lg z-10">
+        <ul className="absolute mt-2 w-48 bg-gray-900 rounded shadow-lg z-100">
           {options.map((option, index) => (
             <li key={index}>
               <a href={links[index]} className="block px-4 py-2 hover:bg-gray-700">
