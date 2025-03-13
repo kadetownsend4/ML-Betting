@@ -1,7 +1,7 @@
 "use client";
 import { FaShieldAlt } from "react-icons/fa";
 import Dashboard from "../components/Dashboard";
-import nbaTeams from "../data/nbaTeams"; // Assuming a separate file stores team data
+import nbaTeams from "./data/nbaTeams"; // Assuming a separate file stores team data
 
 const teamStats = [
     { team: "Atlanta Hawks", logo: "/logos/hawks.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
@@ -14,6 +14,27 @@ const teamStats = [
     { team: "Denver Nuggets", logo: "/logos/nuggets.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
     { team: "Detroit Pistons", logo: "/logos/pistons.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
     { team: "Golden State Warriors", logo: "/logos/warriors.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Houston Rockets", logo: "/logos/rockets.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Indiana Pacers", logo: "/logos/pacers.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "LA Clippers", logo: "/logos/clippers.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "LA Lakers", logo: "/logos/lakers.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Memphis Grizzlies", logo: "/logos/grizzlies.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Miami Heat", logo: "/logos/heat.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Milwaukee Bucks", logo: "/logos/bucks.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Minnesota Timberwolves", logo: "/logos/wolves.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "New Orleans Pelicans", logo: "/logos/pelicans.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "New York Knicks", logo: "/logos/knicks.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Oklahoma City Thunder", logo: "/logos/thunder.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Orlando Magic", logo: "/logos/magic.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Philadelphia 76ers", logo: "/logos/76ers.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Phoenix Suns", logo: "/logos/suns.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Portland Trail Blazers", logo: "/logos/trailblazers.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Sacremento Kings", logo: "/logos/kings.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "San Antonio Spurs", logo: "/logos/spurs.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Toronto Raptors", logo: "/logos/raptors.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Utah Jazz", logo: "/logos/jazz.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+    { team: "Washington Wizards", logo: "/logos/wizards.jpg", PTS: 110.5, REBS: 44.2, ASTS: 25.1, "3PM": 12.3, STL: 7.5, BLK: 5.6, TO: 14.0 },
+
 ];
 
 export default function DefenseVsNBA() {
