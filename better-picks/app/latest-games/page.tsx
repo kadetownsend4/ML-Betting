@@ -77,10 +77,10 @@ export default function LatestGames() {
       </header>
 
       {/* Scrollable Scores Section */}
-      <div className="w-full max-w-5xl mt-10 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6">
-        <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-4">Recent NBA Games</h2>
-        <div className="overflow-y-auto max-h-[500px] rounded-lg p-2">
-          <table className="w-full border-collapse border border-gray-700 text-lg">
+      <div className="w-full max-w-5xl mt-10 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6 relative z-50">
+      <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-4">Recent NBA Games</h2>
+      <div className="overflow-y-auto max-h-[500px] rounded-lg p-2 relative z-50">
+      <table className="w-full border-collapse border border-gray-700 text-lg">
             <thead className="bg-gray-800 text-green-400">
               <tr>
                 <th className="border border-gray-700 px-6 py-3 text-left">Date</th>

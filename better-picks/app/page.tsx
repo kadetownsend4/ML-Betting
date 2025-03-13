@@ -36,6 +36,7 @@ const menuItems = [
       { name: "Login", path: "/account/login" },
     ],
   },
+  
 ];
 
 export default function Home() {
@@ -48,7 +49,7 @@ export default function Home() {
           <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
             <h1 className="text-3xl font-extrabold text-purple-500 font-mono">Better Picks</h1>
             <nav className="flex space-x-10 relative">
-              {menuItems.slice(0, -1).map((item, index) => (
+              {menuItems.map((item, index) => (
                 <div
                   key={index}
                   className="relative group flex flex-col items-center"
