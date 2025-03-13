@@ -23,9 +23,9 @@ const menuItems = [
   {
     title: "Performance Analysis",
     links: [
-      { name: "Trends", path: "/performance/trends" },
-      { name: "Success Rate", path: "/performance/success-rate" },
-      { name: "AI Insights", path: "/performance/ai-insights" },
+      { name: "Trending Player Props", path: "/trends" },
+      { name: "NBA Defense vs Position", path: "/defense-vs-position" },
+      { name: "AI Insights", path: "/ai-insights" },
     ],
   },
   {
@@ -48,7 +48,7 @@ export default function Home() {
           <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
             <h1 className="text-3xl font-extrabold text-purple-500 font-mono">Better Picks</h1>
             <nav className="flex space-x-10 relative">
-              {menuItems.slice(0, -1).map((item, index) => (
+              {menuItems.map((item, index) => (
                 <div
                   key={index}
                   className="relative group flex flex-col items-center"
