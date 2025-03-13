@@ -6,7 +6,7 @@ import { ChevronDown } from "lucide-react";
 // Menu items with the "Home" page link added without dropdown
 const menuItems = [
   {
-    title: "Home", path: "/home", noDropdown: true // Add `noDropdown` for the "Home" item
+    title: "Home", path: "/", noDropdown: true // Add `noDropdown` for the "Home" item
   },
   {
     title: "NBA",
