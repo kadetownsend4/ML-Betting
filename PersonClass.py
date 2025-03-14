@@ -3,7 +3,7 @@
    author = Kade Townsend
 """
 
-class UserClass: 
+class PersonClass: 
     def __init__(self, first_name, last_name, age):
         """Initialization function to define a user
            
