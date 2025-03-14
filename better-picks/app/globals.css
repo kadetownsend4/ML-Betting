@@ -1,10 +1,19 @@
+/*
+  Global styles configuration using Tailwind CSS and custom properties
+  - Includes Tailwind base, components, and utilities.
+  - Defines global styles for typography and background animations
+*/
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Define global custom properties for light and dark mode support 
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #ffffff; /* Default light mode background */
+  --foreground: #171717; /* Default text color */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -14,13 +23,22 @@
   }
 }
 
+/*
+  Global body styles:
+  - Sets text and background color dynamically
+  - Uses a modern sans-serif font stack
+*/
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
+/*
+  Gradient animation for background:
+  - Creates a smooth animated gradient transition from 0% to 100%.
+  - Uses a 270-degree linear gradient with 4 color stops.
+*/
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
@@ -33,6 +51,10 @@ body {
   }
 }
 
+/*
+  Custom gradient background effect:
+  - A smooth animated background color transition for visual appeal
+*/
 .bg-gradient {
   background: linear-gradient(270deg, #1a1a2e, #16213e, #0f3460, #e94560);
   background-size: 400% 400%;

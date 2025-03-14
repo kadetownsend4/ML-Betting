@@ -46,7 +46,7 @@ const Dashboard: React.FC = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   return (
-    <header className="flex justify-between items-center w-full py-4 px-8 relative z-50 bg-gray-900 text-green-500">
+    <header className="flex justify-between items-center w-full py-4 px-8 relative z-50 bg-gray-900 text-green-500 overflow-visible">
       <nav className="flex space-x-10 relative">
         {menuItems.map((item, index) => (
           <div
@@ -71,7 +71,7 @@ const Dashboard: React.FC = () => {
                 </button>
 
                 {activeDropdown === item.title && item.links && (
-                  <div className="absolute left-0 mt-2 w-40 bg-gray-800 rounded-md shadow-lg border border-gray-200 z-50">
+                  <div className="absolute left-0 mt-2 w-40 bg-gray-800 rounded-md shadow-lg border border-gray-200 z-[999]">
                     {item.links.map((link, idx) => (
                       <Link
                         key={idx}

@@ -3,6 +3,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
+
+/**
+ * Navigation menu structure containing categorized links.
+ * Each category a title and an array of link objects
+ */
 const menuItems = [
   {
     title: "NBA",
@@ -39,13 +44,17 @@ const menuItems = [
   
 ];
 
+/**
+ * Home component representing the main landing page with navigation,
+ * main content, and a footer.
+ */
 export default function Home() {
     const [activeDropdown, setActiveDropdown] = useState(null);
   
     return (
       <>
         <div className="min-h-screen text-white p-8 sm:p-20 flex flex-col justify-between relative overflow-hidden bg-gradient">
-          {/* Header */}
+          {/* Header Section */}
           <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
             <h1 className="text-3xl font-extrabold text-purple-500 font-mono">Better Picks</h1>
             <nav className="flex space-x-10 relative">
@@ -89,7 +98,7 @@ export default function Home() {
             </nav>
           </header>
   
-          {/* Main Content */}
+          {/* Main Content Section */}
           <main className="flex flex-col gap-8 items-center sm:items-start mt-16 flex-grow">
             <h2 className="text-3xl font-extrabold text-center sm:text-left text-purple-500 mb-4">
               Your Ultimate Sports Betting Analyzer
@@ -114,39 +123,26 @@ export default function Home() {
               </Link>
             </div>
           </main>
+
+       
+
   
-          {/* Footer */}
+          {/* Footer Section */}
           <footer className="flex gap-8 flex-wrap items-center justify-center text-gray-300 text-base mt-auto py-6">
             <a className="hover:text-green-400 transition-colors" href="/features">Features</a>
             <a className="hover:text-green-400 transition-colors" href="/pricing">Pricing</a>
             <a className="hover:text-green-400 transition-colors" href="/contact">Contact Us</a>
+          </footer>
+
+          {/* Footer Section*/}
+          <footer className="mt-10 text-center text-gray-400 text-sm">
+            <p>
+            <strong>Disclaimer:</strong> Please gamble responsibly. If you have a gambling problem, seek help from a professional organization such as 
+            <a href="https://www.ncpgambling.org/" target="_blank" rel="noopener noreferrer" className="text-green-400 underline"> National Council on Problem Gambling</a>.
+            </p>
           </footer>
         </div>
       </>
     );
   }
   
-
-    //   {/* Animated Gradient Background */}
-    //   <style jsx>{
-    //     @keyframes gradient {
-    //       0% {
-    //         background-position: 0% 50%;
-    //       }
-    //       50% {
-    //         background-position: 100% 50%;
-    //       }
-    //       100% {
-    //         background-position: 0% 50%;
-    //       }
-    //     }
-
-    //     .bg-gradient {
-    //       background: linear-gradient(270deg, #1a1a2e, #16213e, #0f3460, #e94560);
-    //       background-size: 400% 400%;
-    //       animation: gradient 10s ease infinite;
-    //     }
-    //   }</style>
-//     </div>
-//   );
-// }

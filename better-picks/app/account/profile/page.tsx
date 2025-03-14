@@ -1,10 +1,19 @@
+/*
+  Profile Page Component 
+  ----------------------
+  This React component represents a profile page with account details, settings, and navigation options. 
+  It includes the users profile picture, name, and email, along with links to manage account settings, update the profile, and navigate to other account-related sections.
+  Tailwind CSS classes are used for styling. 
+*/
+
 "use client"; // Add this line to mark it as a client component
 
 import { useState } from "react";
 import Link from 'next/link';
-
+// Profile component for displaying user information and settings 
 export default function Profile() {
   const [user, setUser] = useState({
+    // State variables to manage user data
     name: "John Doe",
     email: "john.doe@example.com",
     profilePicture: "/path/to/profile-picture.jpg",
@@ -12,7 +21,9 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-gray-800 text-white p-8 sm:p-20">
+      {/* Profile Card */}
       <div className="max-w-4xl mx-auto bg-black/70 p-8 rounded-lg shadow-xl">
+      {/* Profile Header */}
         <header className="flex flex-col sm:flex-row items-center sm:gap-8 mb-8 relative">
           {/* Profile picture container */}
           <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-green-400 relative">
@@ -22,15 +33,18 @@ export default function Profile() {
               Profile Picture
             </div>
           </div>
+          {/* User Info */}
           <div className="text-center sm:text-left mt-4 sm:mt-0">
             <h1 className="text-3xl font-semibold text-green-400">{user.name}</h1>
             <p className="text-sm text-gray-400">{user.email}</p>
           </div>
         </header>
 
+        {/* Account Settings Section */}
         <section>
           <h2 className="text-2xl font-semibold text-green-400 mb-4">Account Settings</h2>
           <div className="space-y-4">
+            {/* Account Settings Options */}
             <div className="flex justify-between items-center">
               <p className="text-sm text-gray-300">Change Password</p>
               <Link href="/account/update-password">
@@ -74,6 +88,7 @@ export default function Profile() {
           </div>
         </section>
 
+        {/* Footer Links */}
         <footer className="mt-8 text-center">
           <Link href="/account/settings">
             <span className="text-green-400 hover:underline">Manage Account Settings</span>
