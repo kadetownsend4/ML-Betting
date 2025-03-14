@@ -1,33 +1,33 @@
-"""Class file to define user within the application.
+"""Class file to define person within the application.
 
    author = Kade Townsend
 """
 
 class PersonClass: 
     def __init__(self, first_name, last_name, age):
-        """Initialization function to define a user
+        """Initialization function to define a person
            
            Parameters:
-           first_name -- first name of user
-           last_name -- last name of user
-           age -- age of user
+           first_name -- first name of person
+           last_name -- last name of person
+           age -- age of person
         """
         self.first_name = first_name
         self.last_name = last_name
         self.age = age
 
     def get_name(self):
-        """Function to get name of the current user
+        """Function to get name of the current person
 
            Return:
-           first and last name of user
+           first and last name of person
         """
         return self.first_name + " " + self.last_name
     
     def get_age(self):
-        """Function to get age of current user
+        """Function to get age of current person
 
            Return:
-           age of user
+           age of person
         """
         return self.age
