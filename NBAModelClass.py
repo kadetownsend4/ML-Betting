@@ -126,8 +126,11 @@ class ModelClass:
         """
         data = pd.read_csv(og_data)
         data.dropna()
+        # true shooting percentage
         data["TS_PCT"] = data["PTS"]/(2*(data["FGA"]+(0.475*data["FTA"])))
+        # steals + blocks
         data["STL+BLK"] = data["STL"] + data["BLK"]
+        # weighted turnover percentage
         data["TOV_PCT"] = data["TOTAL_TURNOVERS"]/(data["FGA"]+(0.475*data["FTA"])+data["AST"]+data["TOTAL_TURNOVERS"])
         data['LAST_GAME_OE'] = data.sort_values('GAME_DATE').groupby(['TEAM_ID','SEASON'])['OFFENSIVE_EFFICIENCY'].shift(1)
         data['LAST_GAME_HOME_WIN_PCTG'] = data.sort_values('GAME_DATE').groupby(['TEAM_ID','SEASON'])['HOME_WIN_PCTG'].shift(1)
@@ -156,8 +159,10 @@ class ModelClass:
         data = data.dropna()
         gameDF = data
         gamedf = data
+        # split data into home and away
         homeTeamFrame = gameDF[gameDF['CITY'] != 'OPPONENTS']
         awayTeamFrame = gamedf[gamedf['CITY'] == 'OPPONENTS']
+        # determine which feature set to use
         if self.feature_set == "REG":
             homeTeamFrame = homeTeamFrame[['LAST_3_GAME_AVG_OE','LAST_3_GAME_AVG_HOME_WIN_PCTG','NUM_REST_DAYS','LAST_3_GAME_AVG_AWAY_WIN_PCTG','LAST_3_GAME_AVG_TOTAL_WIN_PCTG','LAST_3_GAME_AVG_ROLLING_SCORING_MARGIN','LAST_3_GAME_AVG_ROLLING_OE','W','TEAM_ID','GAME_ID','GAME_DATE','SEASON',"LAST_3_GAME_AVG_FG_PCT","LAST_3_GAME_AVG_FG3_PCT","LAST_3_GAME_AVG_FT_PCT","LAST_3_GAME_AVG_ROLLING_OE","LAST_3_GAME_AVG_TOT_REB","LAST_3_GAME_AVG_AST","LAST_3_GAME_AVG_STL","LAST_3_GAME_AVG_TOTAL_TURNOVERS","LAST_3_GAME_AVG_BLK","LAST_3_GAME_AVG_PTS"]]
             awayTeamFrame = awayTeamFrame[['LAST_3_GAME_AVG_OE','LAST_3_GAME_AVG_HOME_WIN_PCTG','NUM_REST_DAYS','LAST_3_GAME_AVG_AWAY_WIN_PCTG','LAST_3_GAME_AVG_TOTAL_WIN_PCTG','LAST_3_GAME_AVG_ROLLING_SCORING_MARGIN','LAST_3_GAME_AVG_ROLLING_OE','TEAM_ID','GAME_ID','SEASON',"LAST_3_GAME_AVG_FG_PCT","LAST_3_GAME_AVG_FG3_PCT","LAST_3_GAME_AVG_FT_PCT","LAST_3_GAME_AVG_ROLLING_OE","LAST_3_GAME_AVG_TOT_REB","LAST_3_GAME_AVG_AST","LAST_3_GAME_AVG_STL","LAST_3_GAME_AVG_TOTAL_TURNOVERS","LAST_3_GAME_AVG_BLK","LAST_3_GAME_AVG_PTS"]]
@@ -174,17 +179,21 @@ class ModelClass:
             homeTeamFrame = homeTeamFrame[['LAST_3_GAME_AVG_OE','LAST_3_GAME_AVG_HOME_WIN_PCTG','NUM_REST_DAYS','LAST_3_GAME_AVG_AWAY_WIN_PCTG','LAST_3_GAME_AVG_TOTAL_WIN_PCTG','LAST_3_GAME_AVG_ROLLING_SCORING_MARGIN','LAST_3_GAME_AVG_ROLLING_OE','W','TEAM_ID','GAME_ID','GAME_DATE','SEASON']]
             awayTeamFrame = awayTeamFrame[['LAST_3_GAME_AVG_OE','LAST_3_GAME_AVG_HOME_WIN_PCTG','NUM_REST_DAYS','LAST_3_GAME_AVG_AWAY_WIN_PCTG','LAST_3_GAME_AVG_TOTAL_WIN_PCTG','LAST_3_GAME_AVG_ROLLING_SCORING_MARGIN','LAST_3_GAME_AVG_ROLLING_OE','TEAM_ID','GAME_ID','SEASON']]
         else:
+            # feature set not found
             raise ValueError
         colRenameDict = {}
+        # add HOME in front of home stats
         for col in homeTeamFrame.columns:
             if (col != 'GAME_ID') & (col != 'SEASON') & (col != 'GAME_DATE'):
                 colRenameDict[col] = 'HOME_' + col 
         homeTeamFrame.rename(columns=colRenameDict,inplace=True)
         colRenameDict = {}
+        # add AWAY in front of away stats
         for col in awayTeamFrame.columns:
             if (col != 'GAME_ID') & (col != 'SEASON') & (col != 'GAME_DATE'):
                 colRenameDict[col] = 'AWAY_' + col 
         awayTeamFrame.rename(columns=colRenameDict,inplace=True)
+        # merge home and away features together
         data = pd.merge(homeTeamFrame, awayTeamFrame, how="inner", on=["GAME_ID","SEASON"]).drop(['AWAY_TEAM_ID','HOME_TEAM_ID'],axis=1)
         self.preprocessed_data = data
 
@@ -196,22 +205,32 @@ class ModelClass:
            the class.
            
            Parameters:
+           start_date_test -- start date for gathering games for test set
+           end_date_test -- end date for gathering games for test set
+           start_date_train -- start date for gathering games for train set
+           end_date_train -- end date for gathering games for train set
            
         """
         df = self.preprocessed_data
+        # columns to not scale because they are identifiers not quantitative
         excluded_col = df[['HOME_W','GAME_DATE','GAME_ID','SEASON']]
         df_to_scale = df.drop(['HOME_W','GAME_DATE','GAME_ID','SEASON'], axis=1)
         scaler = StandardScaler()
+        # scale features for better fitting
         scaled_data = scaler.fit_transform(df_to_scale)
         scaled_df = pd.DataFrame(scaled_data, columns=df_to_scale.columns)
+        # add excluded columns back in
         final_df = pd.concat([scaled_df, excluded_col], axis=1)
+        # split test and train based on dates
         train = final_df[(final_df['GAME_DATE'] >= start_date_train) & (final_df['GAME_DATE'] <= end_date_train)]
         test = final_df[(final_df['GAME_DATE'] >= start_date_test) & (final_df['GAME_DATE'] <= end_date_test)]
         self.test = test
+        # find x and y splits
         x_train = train.drop(["HOME_W","GAME_DATE","GAME_ID","SEASON"], axis=1)
         y_train = train["HOME_W"]
         x_test = test.drop(["HOME_W","GAME_DATE","GAME_ID","SEASON"], axis=1)
         self.y_test = test["HOME_W"]
+        # compare model name to model applied
         if self.model_name == "LR":
             model = LogisticRegression()
         elif self.model_name == "SVM":
@@ -229,12 +248,19 @@ class ModelClass:
         elif self.model_name == "RF":
             model = RandomForestClassifier()
         else:
+            # model not found
             raise ValueError
+        # fit and predict
         model.fit(x_train, y_train)
         self.pred = model.predict(x_test)
         self.pred_proba = model.predict_proba(x_test)
 
     def calc_metrics(self):
+        """Function to calculate the necessary metrics for understanding how well
+           the model performed on the test set. These metrics are then passed back
+           into global variables for use by the class system as a whole.
+
+        """
         self.confusion_matrix = sklearn.metrics.confusion_matrix(self.y_test, self.pred)
         self.accuracy = sklearn.metrics.accuracy_score(self.y_test, self.pred)
         self.recall = sklearn.metrics.recall_score(self.y_test, self.pred)
@@ -243,8 +269,16 @@ class ModelClass:
         self.f1 = sklearn.metrics.f1_score(self.y_test, self.pred)
 
     def format_predictions(self):
+        """Function to format the predictions and actual wins into a dataframe that
+           can identify games and their results / guesses by the ids, seasons, and dates.
+           This dataframe can be passed into the database to be use for relational gathering
+           of information.
+
+        """
+        # concat diff dataframes together in correct order to get organized dataframe with all information
         df = self.test[['SEASON','GAME_ID','GAME_DATE','HOME_W']]
         frames = [df, pd.DataFrame(self.pred, index=df.index), pd.DataFrame(self.pred_proba, index=df.index)]
         result = pd.concat(frames, axis=1, ignore_index=True)
         result.rename(columns={0: 'SEASON', 1: 'GAME_ID', 2: 'GAME_DATE', 3: 'HOME_W', 4: 'HOME_W_PRED', 5: 'AWAY_W_PROB', 6: 'HOME_W_PROB'}, inplace=True)
+        # store databased back into the class
         self.database_df = result
