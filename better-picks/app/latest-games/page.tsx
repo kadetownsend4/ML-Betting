@@ -5,6 +5,7 @@ import { FaBasketballBall } from "react-icons/fa";
 import PostList from "../components/PostList";
 import Dashboard from "../components/Dashboard";
 
+// A mapping of NBA teams to their logo image paths.
 const teamLogos: Record<string, string> = {
   "Boston Celtics": "/logos/celtics.jpg",
   "Miami Heat": "/logos/heat.jpg",
@@ -59,15 +60,18 @@ async function fetchRecentGames() {
   ];
 }
 
+// Main component to render the latest games page
 export default function LatestGames() {
+  // State hook to store the list of games.
   const [games, setGames] = useState<
     { home: string; away: string; homeScore: number; awayScore: number; date: string }[]
   >([]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
-      {/* Header with Dashboard Component */}
+      {/* Header Section */}
       <header className="flex justify-between items-center w-full max-w-5xl py-5 px-10 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg relative z-10">
+        {/* Title Section*/}
         <h1 className="text-4xl tracking-wide uppercase text-green-400 flex items-center gap-2 font-['Rajdhani']">
           <FaBasketballBall className="text-green-400" /> NBA Latest Games
         </h1>
@@ -90,15 +94,18 @@ export default function LatestGames() {
               </tr>
             </thead>
             <tbody>
+              {/* Map over the games array to render each game */}
               {games.map((game, index) => (
                 <tr key={index} className="border border-gray-700">
                   <td className="border border-gray-700 px-6 py-3">{game.date}</td>
                   <td className="border border-gray-700 px-6 py-3 flex items-center gap-3">
+                    {/* Display Home Team Logo and Name */}
                     <Image src={teamLogos[game.home]} alt={game.home} width={35} height={35} className="rounded-full" unoptimized />
                     <span>{game.home}</span>
                   </td>
                   <td className="border border-gray-700 px-6 py-3 text-center">{game.homeScore} - {game.awayScore}</td>
                   <td className="border border-gray-700 px-6 py-3 flex items-center gap-3">
+                    {/* Display Away Team Logo and Name */}
                     <Image src={teamLogos[game.away]} alt={game.away} width={35} height={35} className="rounded-full" unoptimized />
                     <span>{game.away}</span>
                   </td>
@@ -116,7 +123,8 @@ export default function LatestGames() {
           <PostList />
         </div>
       </div>
-
+      
+      {/* Footer Section */}
       <footer className="mt-auto py-6 text-gray-400">
         <p>&copy; 2025 NBA Stats. All rights reserved.</p>
       </footer>
