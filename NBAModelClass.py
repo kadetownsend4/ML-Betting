@@ -209,7 +209,6 @@ class ModelClass:
            end_date_test -- end date for gathering games for test set
            start_date_train -- start date for gathering games for train set
            end_date_train -- end date for gathering games for train set
-           
         """
         df = self.preprocessed_data
         # columns to not scale because they are identifiers not quantitative
@@ -259,7 +258,6 @@ class ModelClass:
         """Function to calculate the necessary metrics for understanding how well
            the model performed on the test set. These metrics are then passed back
            into global variables for use by the class system as a whole.
-
         """
         self.confusion_matrix = sklearn.metrics.confusion_matrix(self.y_test, self.pred)
         self.accuracy = sklearn.metrics.accuracy_score(self.y_test, self.pred)
@@ -273,7 +271,6 @@ class ModelClass:
            can identify games and their results / guesses by the ids, seasons, and dates.
            This dataframe can be passed into the database to be use for relational gathering
            of information.
-
         """
         # concat diff dataframes together in correct order to get organized dataframe with all information
         df = self.test[['SEASON','GAME_ID','GAME_DATE','HOME_W']]
