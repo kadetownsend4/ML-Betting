@@ -18,7 +18,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
 import sklearn.metrics
 
-class ModelClass:
+class NBAModel:
     def __init__(self, feature_set, model_name):
         """Initialization function to create ML models based on different feature sets and
            models. Defines multiple variables for use by the class and its functions. 

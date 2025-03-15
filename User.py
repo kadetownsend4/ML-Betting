@@ -4,10 +4,10 @@
 """
 
 # import packages required for code
-from PersonClass import PersonClass
+from Person import Person
 import pandas as pd
 
-class UserClass(PersonClass):
+class User(Person):
     def __init__(self, first_name, last_name, age, username, password):
         """Initialization function to create a user for the application. 
         

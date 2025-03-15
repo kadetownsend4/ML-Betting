@@ -1,6 +1,6 @@
-from UserClass import UserClass
+from User import User
 
-u1 = UserClass("Kade", "Townsend", 21, "ktown", "chicken")
+u1 = User("Kade", "Townsend", 21, "ktown", "chicken")
 print(u1.get_name())
 print(u1.get_age())
 print(u1.login("ktown", "chicken"))
