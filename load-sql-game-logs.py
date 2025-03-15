@@ -1,1 +1,2 @@
-import mysql.connector
+import sys
+print(sys.version)
