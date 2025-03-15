@@ -64,10 +64,11 @@ class UserClass(PersonClass):
         """
         return self.history
     
-    def add_bet(self, bet):
+    def add_bet(self, bet, val):
         """Function to add a bet to the betting history of a user
 
            Parameters:
-           bet -- bet to be added
+           bet -- bet to reference
+           val -- val to add to a bet
         """
-        self.history = self.history.append(bet)
+        self.history[bet] = val
