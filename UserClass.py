@@ -41,6 +41,15 @@ class UserClass(PersonClass):
         self.password = new_pw
 
     def login(self, un, pw):
+        """Function to tell if user is able able to login
+
+           Parameters:
+           un -- username that user has entered on login portal
+           pw -- password that user has entered on login portal
+
+           Return:
+           True or False based on if user was able to login to account
+        """
         if (self.username == un and self.password == pw):
             print("login successful")
             return True
@@ -48,7 +57,17 @@ class UserClass(PersonClass):
             return False
         
     def get_history(self):
+        """Fuction to return dictionary containing betting history of current user
+
+           Return:
+           dictionary containing betting history of uzer within application
+        """
         return self.history
     
     def add_bet(self, bet):
+        """Function to add a bet to the betting history of a user
+
+           Parameters:
+           bet -- bet to be added
+        """
         self.history = self.history.append(bet)
