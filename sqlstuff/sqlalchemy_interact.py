@@ -6,14 +6,8 @@ def insert_df_to_mysql_sqlalchemy(df, table_name):
     df.to_sql(name=table_name, con=engine, if_exists='replace', index=False)
     print(f"DataFrame successfully inserted into table '{table_name}'")
 
-#df = pd.read_csv("GettingData/gameLogs.csv")
-
-#db_config = {
-    #'user': 'root',
-    #'password': 'Baseball2003!',
-    #'host': 'localhost',
-    #'port': '3306',
-    #'database': 'BetterPicks'
-#}
-
-#insert_df_to_mysql_sqlalchemy(df, 'nbagamelogs', db_config)
+def get_df_from_mysql_sqlalchemy(sql):
+    engine = create_engine(f"mysql+mysqlconnector://{'root'}:{'Baseball2003!'}@{'localhost'}:{'3306'}/{'BetterPicks'}")
+    df = pd.from_sql(sql, engine)
+    print("DataFrame successfully gathered")
+    return df
