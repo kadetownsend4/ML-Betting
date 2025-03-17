@@ -17,21 +17,13 @@ connection = mysql.connector.connect(
 
 cursor = connection.cursor()
 
-cursor.execute("DROP TABLE nbagamelogs")
-
-with open(csv_filepath, 'r') as file:
-    csv_reader = csv.reader(file)
-    header = next(csv_reader)
-
-    create_table_query = f"CREATE TABLE IF NOT EXISTS nbagamelogs ({', '.join([f'{col} VARCHAR(255)' for col in header])})"
-    cursor.execute(create_table_query)
-
-    insert_query = f"INSERT INTO your_table ({', '.join(header)}) VALUES ({', '.join(['%s'] * len(header))})"
-
-    for row in csv_reader:
-        cursor.execute(insert_query, row)
-
-    connection.commit()
+cursor.execute("""CREATE TABLE nbagamelogs (Unnamed int, CITY VARCHAR(255), NICKNAME VARCHAR(255), TEAM_ID int, W int, L int, W_HOME int, 
+               L_HOME int, W_ROAD int, L_ROAD int, TEAM_TURNOVERS int, TEAM_REBOUNDS int, GP int, GS int, ACTUAL_MINUTES int,
+               ACTUAL_SECONDS int, FG int, FGA int, FG_PCT float, FG3 int, FG3A int, FG3_PCT float, FT int, FTA int, FT_PCT float,
+               OFF_REB int, DEF_REB int, TOT_REB int, AST int, PF int, STL int, TOTAL_TURNOVERS int, BLK int, PTS int,
+               AVG_REB float, AVG_PTS float, DQ int, OFFENSIVE_EFFICIENCY float, SCORING_MARGIN float, SEASON VARCHAR(255),
+               GAME_DATE VARCHAR(255), GAME_ID int, HOME_FLAG int, AWAY_FLAG int, HOME_WIN_PCTG float, AWAY_WIN_PCTG float,
+               TOTAL_WIN_PCTG float, ROLLING_SCORING_MARGIN float, ROLLING_OE float, NUM_REST_DAYS float)""")
 
 connection.close()
 cursor.close()
