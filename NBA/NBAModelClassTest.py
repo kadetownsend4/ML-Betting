@@ -1,4 +1,4 @@
-from NBAModelClass import ModelClass
+from NBA.NBAModelClass import ModelClass
 
 svm_og = ModelClass("CF", "SVM")
 
