@@ -123,7 +123,7 @@ class NBAModel:
            a dataframe containing both. This dataframe is then passed back to a global variable.
 
            Parameters:
-           og_data -- original data of gamelogs to look through and determine features
+           sql -- sql query code to get stats from database for model running
         """
         data = sqlalchemy_interact.get_df_from_mysql_sqlalchemy(sql)
         data.dropna()
