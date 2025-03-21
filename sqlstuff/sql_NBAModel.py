@@ -17,6 +17,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
 import sklearn.metrics
+import sqlalchemy_interact
 
 class NBAModel:
     def __init__(self, feature_set, model_name):
@@ -114,7 +115,7 @@ class NBAModel:
         """
         return self.f1
     
-    def preprocess_data(self, og_data):
+    def preprocess_data(self, sql):
         """Function to preprocess the data that is passed in as a parameter. For preprocessing,
            the features are all determined and calculated. It's a mixture of past game data and
            past 3 game data. The features are then divided and dropped based on which set they
@@ -124,7 +125,7 @@ class NBAModel:
            Parameters:
            og_data -- original data of gamelogs to look through and determine features
         """
-        data = pd.read_csv(og_data)
+        data = sqlalchemy_interact.get_df_from_mysql_sqlalchemy(sql)
         data.dropna()
         # true shooting percentage
         data["TS_PCT"] = data["PTS"]/(2*(data["FGA"]+(0.475*data["FTA"])))
