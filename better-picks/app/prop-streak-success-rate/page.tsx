@@ -36,8 +36,8 @@ export default function PropStreaksPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6">
-      <h1 className="text-4xl font-bold text-green-400 mb-6">Player Prop Streaks</h1>
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-start p-6">
+      <h1 className="text-4xl font-bold text-green-400 mb-6 self-center">Player Prop Streaks</h1>
 
       {/* Dropdown for League Selection */}
       <select
@@ -53,7 +53,7 @@ export default function PropStreaksPage() {
       </select>
 
       {/* Table of Player Prop Streaks */}
-      <div className="w-full max-w-5xl bg-gray-800 p-6 rounded-lg shadow-lg">
+      <div className="w-full max-w-9xl bg-gray-800 p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-semibold text-green-400 mb-4">{selectedLeague} Streaks</h2>
         <table className="w-full border-collapse border border-gray-700 text-lg">
           <thead className="bg-gray-700">
