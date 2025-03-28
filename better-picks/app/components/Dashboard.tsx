@@ -13,7 +13,7 @@ const menuItems = [
     links: [
       { name: "Latest Games", path: "/latest-games" },
       { name: "Team Stats", path: "/team-stats" },
-      { name: "Player Analysis", path: "/player-analysis" },
+      { name: "Player Prop Analysis", path: "/nba-player-analysis" },
     ],
   },
   {
@@ -21,15 +21,16 @@ const menuItems = [
     links: [
       { name: "Game Predictions", path: "/nfl/predictions" },
       { name: "Team Performance", path: "/nfl/performance" },
-      { name: "Betting Insights", path: "/nfl/betting-insights" },
+      { name: "Player Prop Analysis", path: "/nfl-player-analysis" },
     ],
   },
   {
     title: "Performance Analysis",
     links: [
       { name: "Trending Player Props", path: "/trends" },
+      { name: "NBA Defense vs Position", path: "/defense-vs-position"},
       { name: "Prop Streak & Success Rate", path: "/prop-streak-success-rate" },
-      { name: "AI Insights", path: "/performance/ai-insights" },
+      { name: "AI Insights", path: "/ai-insights" },
     ],
   },
   {
