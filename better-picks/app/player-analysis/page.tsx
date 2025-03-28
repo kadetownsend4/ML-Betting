@@ -1,6 +1,7 @@
 "use client";
 import { FaBasketballBall } from "react-icons/fa";
 import Dashboard from "../components/Dashboard";
+import Link from "next/link";  // Import Link for navigation
 
 const playerData = [
   { name: "LeBron James", team: "Lakers", points: 27, assists: 8, rebounds: 7 },
@@ -30,9 +31,12 @@ export default function PlayerAnalysis() {
             <div key={index} className="bg-gray-800 p-4 rounded-lg text-center shadow-md flex flex-col items-center min-h-[150px] w-full">
               <h3 className="text-xl font-bold text-green-400 break-words leading-tight text-center">{player.name}</h3>
               <p className="text-gray-300">{player.team}</p>
-              <button className="mt-auto px-4 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600">
-                View Props
-              </button>
+              {/* Use Link to navigate to the player's props page */}
+              <Link href={`/player/${encodeURIComponent(player.name)}`}>
+                <button className="mt-auto px-4 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600">
+                  View Props
+                </button>
+              </Link>
             </div>
           ))}
         </div>
@@ -44,3 +48,4 @@ export default function PlayerAnalysis() {
     </div>
   );
 }
+
