@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
-from .models import User
+from flask import Blueprint, render_template, jsonify, request, redirect, url_for, flash
+from .models import User, NFLTeam
 from .extensions import db 
 
 main = Blueprint('main', __name__)
@@ -10,7 +10,7 @@ def index():
     users_list_html = [f"<li>{user.username}</li>" for user in users]
     return f"<ul>{''.join(users_list_html)}</ul>"
 
-# I referenced chatgpt for help creating methods for adding users and login.
+# I referenced chatgpt for help creating methods for adding users, login, and fetching data.
 # https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48
 @main.route('/add', methods=['GET', 'POST'])
 def add_user():
@@ -48,3 +48,13 @@ def login():
     
     # If GET request, just render the login page
     return render_template('login.html')
+
+@main.route('/fetch_teams', methods=['GET'])
+def fetch_teams():
+    # Fetch all teams from the NFLTeam table
+    teams = NFLTeam.query.all()
+
+    # Create a dictionary mapping team_name (or team_abbr) to team_id
+    team_dict = {team.TEAM_NAME: team.TEAM_ID for team in teams}
+
+    return jsonify(team_dict)
