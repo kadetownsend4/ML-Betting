@@ -32,8 +32,8 @@ export default function PlayerAnalysis() {
               <h3 className="text-xl font-bold text-green-400 break-words leading-tight text-center">{player.name}</h3>
               <p className="text-gray-300">{player.team}</p>
               {/* Use Link to navigate to the player's props page */}
-              <Link href={`/player/${encodeURIComponent(player.name)}`}>
-                <button className="mt-auto px-4 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600">
+              <Link href={`/player/${player.name.toLowerCase().replace(/\s+/g, "-")}`}>
+              <button className="mt-auto px-4 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600">
                   View Props
                 </button>
               </Link>
