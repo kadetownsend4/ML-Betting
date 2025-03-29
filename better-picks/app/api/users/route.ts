@@ -1,19 +1,30 @@
-import db from "@/lib/db";
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
-/**
- * Handles GET request to check the database connection. 
- * Returns a simple query result or an error message. 
- */
-export async function GET() {
+// Define your POST request handler
+export async function POST(request: Request) {
   try {
-    // Perform a simple database query to check the connection. 
-    const [rows] = await db.query("SELECT 1+1 AS result");
-    
-    // Return a success response with the query result. 
-    return NextResponse.json({ success: true, data: rows });
-  } catch (error) {
-    // Return error response in case of failure. 
-    return NextResponse.json({ success: false, error: error.message });
+    // Your logic for handling the POST request
+    const data = await request.json();
+
+    // Example response
+    return NextResponse.json({ success: true, data });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ success: false, error: error.message });
+    }
+    return NextResponse.json({ success: false, error: 'An unknown error occurred' });
+  }
+}
+
+// You can also define other HTTP methods like GET, PUT, DELETE if needed
+export async function GET(request: Request) {
+  try {
+    // Your logic for handling the GET request
+    return NextResponse.json({ success: true, message: 'GET request handled' });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ success: false, error: error.message });
+    }
+    return NextResponse.json({ success: false, error: 'An unknown error occurred' });
   }
 }

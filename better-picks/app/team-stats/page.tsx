@@ -3,10 +3,26 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 // Import the Dashboard component
-import Dashboard from "../components/Dashboard";  // Adjust the path according to your project structure
+import Dashboard from "../components/Dashboard";
+
+// Define the type for the team stats
+type TeamStats = {
+  team: string;
+  points: number;
+  assists: number;
+  blocks: number;
+  steals: number;
+  freeThrows: number;
+  attempts: number;
+  made: number;
+  defEff: number;
+  offEff: number;
+  rebounds: number;
+  record: string;
+};
 
 // Sample team stats data (replace with actual API data)
-async function fetchTeamStats() {
+async function fetchTeamStats(): Promise<TeamStats[]> {
   return [
     { team: "Boston Celtics", points: 115.2, assists: 25.8, blocks: 5.4, steals: 7.2, freeThrows: 78.2, attempts: 88.5, made: 45.9, defEff: 108.5, offEff: 112.4, rebounds: 45.3, record: "45-20" },
     { team: "Miami Heat", points: 110.5, assists: 24.2, blocks: 4.8, steals: 6.9, freeThrows: 80.1, attempts: 85.4, made: 42.7, defEff: 106.2, offEff: 110.1, rebounds: 42.1, record: "40-25" },
@@ -18,7 +34,8 @@ async function fetchTeamStats() {
 }
 
 export default function TeamStats() {
-  const [stats, setStats] = useState([]);
+  // Explicitly define the state type as an array of TeamStats objects
+  const [stats, setStats] = useState<TeamStats[]>([]);
 
   useEffect(() => {
     async function loadStats() {
@@ -44,13 +61,8 @@ export default function TeamStats() {
           </h1>
 
           {/* Dashboard Component with Links */}
-          <Dashboard /> {/* Dashboard component is rendered with links inside */}
+          <Dashboard />
         </div>
-        
-        {/* New Navigation with only relevant links */}
-        <nav className="flex gap-8 text-lg">
-          {/* Navigation links (e.g., Home, Latest Games, etc.) can go here if needed */}
-        </nav>
       </header>
 
       {/* Scrollable Table Section */}
@@ -94,17 +106,6 @@ export default function TeamStats() {
           </table>
         </div>
       </div>
-
-      {/* Optional Home Button */}
-      {/* 
-      <div className="mt-6">
-        <Link href="/">
-          <button className="bg-green-500 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:bg-green-600 transition">
-            Back to Home
-          </button>
-        </Link>
-      </div>
-      */}
     </div>
   );
 }
