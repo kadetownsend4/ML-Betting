@@ -14,7 +14,7 @@ type PlayerProp = {
   prediction: string;
   outcome: number;
   result: string;
-  reason: string;
+  analysis: string;
 };
 
 async function fetchPlayerPropData() {
