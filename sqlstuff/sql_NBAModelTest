@@ -10,4 +10,5 @@ lr_og.run("2021-09-03", "2022-02-03", "2020-05-01", "2021-04-29")
 lr_og.calc_metrics()
 lr_og.format_predictions()
 print(lr_og.get_accuracy())
-sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(lr_og.get_database_df(), "pred")
+sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(
+    lr_og.get_database_df(), "NBApred")

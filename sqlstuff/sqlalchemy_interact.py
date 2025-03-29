@@ -2,10 +2,11 @@ import pandas as pd
 from sqlalchemy import create_engine
 import os
 
+
 user = os.environ.get('DB_USER')
 pw = os.environ.get('DB_PW')
 host = os.environ.get('DB_HOST')
-port = 5432
+port = "5432"
 name = os.environ.get('DB_NAME')
 
 
@@ -20,5 +21,5 @@ def get_df_from_mysql_sqlalchemy(sql):
     engine = create_engine(
         f"postgresql://{user}:{pw}@{host}:{port}/{name}")
     df = pd.read_sql(sql, engine)
-    #print("DataFrame successfully gathered")
+    print("DataFrame successfully gathered")
     return df
