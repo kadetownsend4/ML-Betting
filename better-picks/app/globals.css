@@ -1,19 +1,28 @@
+<<<<<<< HEAD
 /*
   Global styles configuration using Tailwind CSS and custom properties
   - Includes Tailwind base, components, and utilities.
   - Defines global styles for typography and background animations
 */
 
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+<<<<<<< HEAD
 /*
   Define global custom properties for light and dark mode support 
 */
 :root {
   --background: #ffffff; /* Default light mode background */
   --foreground: #171717; /* Default text color */
+=======
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,16 +32,20 @@
   }
 }
 
+<<<<<<< HEAD
 /*
   Global body styles:
   - Sets text and background color dynamically
   - Uses a modern sans-serif font stack
 */
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+<<<<<<< HEAD
 
 /*
   Gradient animation for background:
@@ -61,3 +74,5 @@ body {
   animation: gradient 10s ease infinite;
 }
 
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9

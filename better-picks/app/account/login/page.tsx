@@ -1,5 +1,6 @@
 "use client";  // ✅ Ensures React hooks can be used
 
+<<<<<<< HEAD
 import React, { useState } from "react";
 import Link from "next/link";
 
@@ -19,10 +20,17 @@ import Link from "next/link";
 
 export default function Login() {
   // State hooks for managing input values and error messages. 
+=======
+import { useState } from "react";
+import Link from "next/link";
+
+export default function Login() {
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+<<<<<<< HEAD
   /**
    * Handles form submission.
    * Checks if the entered email and password match preset credentials. 
@@ -30,6 +38,8 @@ export default function Login() {
    * 
    * @param {React.FormEvent} e - Form event to prevent default submission behavior. 
    */
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (email === "test@example.com" && password === "password") {
@@ -41,6 +51,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+<<<<<<< HEAD
       {/* Login Container */}
       <div className="w-full max-w-md bg-black/80 p-8 rounded-lg shadow-lg">
         <h2 className="text-2xl font-semibold text-center text-green-400">Login</h2>
@@ -50,6 +61,14 @@ export default function Login() {
         {/* Login Form */}
         <form onSubmit={handleLogin} className="mt-6 space-y-4">
           {/* Email Input Field */}
+=======
+      <div className="w-full max-w-md bg-black/80 p-8 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-semibold text-center text-green-400">Login</h2>
+
+        {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+
+        <form onSubmit={handleLogin} className="mt-6 space-y-4">
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
           <div>
             <label className="block text-sm mb-2">Email</label>
             <input
@@ -61,7 +80,11 @@ export default function Login() {
               required
             />
           </div>
+<<<<<<< HEAD
           {/* Password Input Field */}
+=======
+
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
           <div>
             <label className="block text-sm mb-2">Password</label>
             <input
@@ -73,7 +96,11 @@ export default function Login() {
               required
             />
           </div>
+<<<<<<< HEAD
           {/* Login Button */}
+=======
+
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
           <button
             type="submit"
             className="w-full bg-green-500 text-black font-semibold py-2 rounded-md hover:bg-green-600 transition-all duration-200"

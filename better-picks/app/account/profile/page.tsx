@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
   Profile Page Component 
   ----------------------
@@ -6,14 +7,22 @@
   Tailwind CSS classes are used for styling. 
 */
 
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
 "use client"; // Add this line to mark it as a client component
 
 import { useState } from "react";
 import Link from 'next/link';
+<<<<<<< HEAD
 // Profile component for displaying user information and settings 
 export default function Profile() {
   const [user, setUser] = useState({
     // State variables to manage user data
+=======
+
+export default function Profile() {
+  const [user, setUser] = useState({
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
     name: "John Doe",
     email: "john.doe@example.com",
     profilePicture: "/path/to/profile-picture.jpg",
@@ -21,9 +30,13 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-gray-800 text-white p-8 sm:p-20">
+<<<<<<< HEAD
       {/* Profile Card */}
       <div className="max-w-4xl mx-auto bg-black/70 p-8 rounded-lg shadow-xl">
       {/* Profile Header */}
+=======
+      <div className="max-w-4xl mx-auto bg-black/70 p-8 rounded-lg shadow-xl">
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
         <header className="flex flex-col sm:flex-row items-center sm:gap-8 mb-8 relative">
           {/* Profile picture container */}
           <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden border-4 border-green-400 relative">
@@ -33,18 +46,27 @@ export default function Profile() {
               Profile Picture
             </div>
           </div>
+<<<<<<< HEAD
           {/* User Info */}
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
           <div className="text-center sm:text-left mt-4 sm:mt-0">
             <h1 className="text-3xl font-semibold text-green-400">{user.name}</h1>
             <p className="text-sm text-gray-400">{user.email}</p>
           </div>
         </header>
 
+<<<<<<< HEAD
         {/* Account Settings Section */}
         <section>
           <h2 className="text-2xl font-semibold text-green-400 mb-4">Account Settings</h2>
           <div className="space-y-4">
             {/* Account Settings Options */}
+=======
+        <section>
+          <h2 className="text-2xl font-semibold text-green-400 mb-4">Account Settings</h2>
+          <div className="space-y-4">
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
             <div className="flex justify-between items-center">
               <p className="text-sm text-gray-300">Change Password</p>
               <Link href="/account/update-password">
@@ -88,7 +110,10 @@ export default function Profile() {
           </div>
         </section>
 
+<<<<<<< HEAD
         {/* Footer Links */}
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
         <footer className="mt-8 text-center">
           <Link href="/account/settings">
             <span className="text-green-400 hover:underline">Manage Account Settings</span>

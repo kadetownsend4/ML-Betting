@@ -4,17 +4,23 @@ import { useState } from "react";
 import Link from 'next/link';
 
 export default function UpdatePassword() {
+<<<<<<< HEAD
   // State variables to handle user input and messages. 
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+<<<<<<< HEAD
   /**
    * Handles form submission to update the users password.
    * Validates if the new password and confirmation match before proceeding. 
    */
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
   const handlePasswordChange = (e: React.FormEvent) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
@@ -41,7 +47,10 @@ export default function UpdatePassword() {
         {error && <div className="text-red-500 mb-4">{error}</div>}
         {success && <div className="text-green-500 mb-4">{success}</div>}
 
+<<<<<<< HEAD
         {/* Password Update Form */}
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
         <form onSubmit={handlePasswordChange} className="space-y-6">
           <div>
             <label className="block text-sm text-gray-300 mb-2" htmlFor="current-password">
@@ -85,7 +94,11 @@ export default function UpdatePassword() {
               className="w-full px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
             />
           </div>
+<<<<<<< HEAD
           {/* Submit button to trigger password update*/}
+=======
+
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
           <button
             type="submit"
             className="w-full py-2 bg-green-500 text-black font-semibold rounded-md hover:bg-green-600 transition-all duration-200"

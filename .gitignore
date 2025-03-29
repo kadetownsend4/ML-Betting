@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .venv/
 __pycache
 migrations
@@ -45,3 +46,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+=======
+# Node.js dependencies
+better-picks/node_modules
+
+# Python virtual environment
+venv/
+
+# Compiled files
+__pycache__/
+*.pyc
+ 
+ 
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9

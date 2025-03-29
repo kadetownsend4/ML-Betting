@@ -3,9 +3,13 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaBasketballBall } from "react-icons/fa";
 import PostList from "../components/PostList";
+<<<<<<< HEAD
 import Dashboard from "../components/Dashboard";
 
 // A mapping of NBA teams to their logo image paths.
+=======
+
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
 const teamLogos: Record<string, string> = {
   "Boston Celtics": "/logos/celtics.jpg",
   "Miami Heat": "/logos/heat.jpg",
@@ -39,7 +43,12 @@ const teamLogos: Record<string, string> = {
   "Portland Trail Blazers": "/logos/trailblazers.jpg",
 };
 
+<<<<<<< HEAD
 // Fetch game data dynamically (replace with actual API)
+=======
+//Fetch game data dynamically (replace with actual API)
+//Fetch game data dynamically (replace with actual API)
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
 async function fetchRecentGames() {
   return [
     { home: "Boston Celtics", away: "Miami Heat", homeScore: 112, awayScore: 107, date: "2024-03-01" },
@@ -60,13 +69,19 @@ async function fetchRecentGames() {
   ];
 }
 
+<<<<<<< HEAD
 // Main component to render the latest games page
 export default function LatestGames() {
   // State hook to store the list of games.
+=======
+
+export default function LatestGames() {
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
   const [games, setGames] = useState<
     { home: string; away: string; homeScore: number; awayScore: number; date: string }[]
   >([]);
 
+<<<<<<< HEAD
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
       {/* Header Section */}
@@ -85,6 +100,37 @@ export default function LatestGames() {
       <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-4">Recent NBA Games</h2>
       <div className="overflow-y-auto max-h-[500px] rounded-lg p-2 relative z-50">
       <table className="w-full border-collapse border border-gray-700 text-lg">
+=======
+  // useEffect(() => {
+  //   async function loadGames() {
+  //     const recentGames = await fetchRecentGames();
+  //     const sortedGames = recentGames.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  //     setGames(sortedGames);
+  //   }
+  //   loadGames();
+  // }, []);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
+      {/* Header with Navigation */}
+      <header className="flex justify-between items-center w-full max-w-5xl py-5 px-10 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg">
+        <h1 className="text-4xl tracking-wide uppercase text-green-400 flex items-center gap-2 font-['Rajdhani']">
+          <FaBasketballBall className="text-green-400" /> NBA Latest Games
+        </h1>
+        <nav className="flex gap-8 text-lg">
+          <a href="/" className="hover:text-green-400 transition-colors">Home</a>
+          <a href="/nba/games" className="hover:text-green-400 transition-colors">Latest Games</a>
+          <a href="/nba/stats" className="hover:text-green-400 transition-colors">Team Stats</a>
+          <a href="/nba/player-analysis" className="hover:text-green-400 transition-colors">Player Analysis</a>
+        </nav>
+      </header>
+
+      {/* Scrollable Scores Section */}
+      <div className="w-full max-w-5xl mt-10 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6">
+        <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-4">Recent NBA Games</h2>
+        <div className="overflow-y-auto max-h-[500px] rounded-lg p-2">
+          <table className="w-full border-collapse border border-gray-700 text-lg">
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
             <thead className="bg-gray-800 text-green-400">
               <tr>
                 <th className="border border-gray-700 px-6 py-3 text-left">Date</th>
@@ -94,18 +140,27 @@ export default function LatestGames() {
               </tr>
             </thead>
             <tbody>
+<<<<<<< HEAD
               {/* Map over the games array to render each game */}
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
               {games.map((game, index) => (
                 <tr key={index} className="border border-gray-700">
                   <td className="border border-gray-700 px-6 py-3">{game.date}</td>
                   <td className="border border-gray-700 px-6 py-3 flex items-center gap-3">
+<<<<<<< HEAD
                     {/* Display Home Team Logo and Name */}
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
                     <Image src={teamLogos[game.home]} alt={game.home} width={35} height={35} className="rounded-full" unoptimized />
                     <span>{game.home}</span>
                   </td>
                   <td className="border border-gray-700 px-6 py-3 text-center">{game.homeScore} - {game.awayScore}</td>
                   <td className="border border-gray-700 px-6 py-3 flex items-center gap-3">
+<<<<<<< HEAD
                     {/* Display Away Team Logo and Name */}
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
                     <Image src={teamLogos[game.away]} alt={game.away} width={35} height={35} className="rounded-full" unoptimized />
                     <span>{game.away}</span>
                   </td>
@@ -115,16 +170,26 @@ export default function LatestGames() {
           </table>
         </div>
 
+<<<<<<< HEAD
         {/* 🏀 Insert PostList component below the games table
+=======
+        {/* 🏀 Insert PostList component below the games table */}
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
         <div className="mt-10">
           <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-4">
             Latest NBA Posts
           </h2>
           <PostList />
+<<<<<<< HEAD
         </div> */}
       </div>
       
       {/* Footer Section */}
+=======
+        </div>
+      </div>
+
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
       <footer className="mt-auto py-6 text-gray-400">
         <p>&copy; 2025 NBA Stats. All rights reserved.</p>
       </footer>
