@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f8f41c148148be63db8269515895cad2be595b51
 // "use client";
 // import React from "react";
 // // Interface defining the expected props for the Dropdown component
@@ -47,6 +50,7 @@
 //     </div>
 //   );
 // }
+<<<<<<< HEAD
 =======
 "use client";
 import React from "react";
@@ -83,5 +87,7 @@ export default function Dropdown({ title, options, links, isOpen, setOpenDropdow
   );
 }
 >>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
+=======
+>>>>>>> f8f41c148148be63db8269515895cad2be595b51
 
 

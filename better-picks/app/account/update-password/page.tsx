@@ -5,9 +5,13 @@ import Link from 'next/link';
 
 export default function UpdatePassword() {
 <<<<<<< HEAD
+<<<<<<< HEAD
   // State variables to handle user input and messages. 
 =======
 >>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
+=======
+  // State variables to handle user input and messages. 
+>>>>>>> f8f41c148148be63db8269515895cad2be595b51
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -15,12 +19,18 @@ export default function UpdatePassword() {
   const [success, setSuccess] = useState("");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f8f41c148148be63db8269515895cad2be595b51
   /**
    * Handles form submission to update the users password.
    * Validates if the new password and confirmation match before proceeding. 
    */
+<<<<<<< HEAD
 =======
 >>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
+=======
+>>>>>>> f8f41c148148be63db8269515895cad2be595b51
   const handlePasswordChange = (e: React.FormEvent) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
@@ -48,9 +58,13 @@ export default function UpdatePassword() {
         {success && <div className="text-green-500 mb-4">{success}</div>}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         {/* Password Update Form */}
 =======
 >>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
+=======
+        {/* Password Update Form */}
+>>>>>>> f8f41c148148be63db8269515895cad2be595b51
         <form onSubmit={handlePasswordChange} className="space-y-6">
           <div>
             <label className="block text-sm text-gray-300 mb-2" htmlFor="current-password">
@@ -95,10 +109,14 @@ export default function UpdatePassword() {
             />
           </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
           {/* Submit button to trigger password update*/}
 =======
 
 >>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
+=======
+          {/* Submit button to trigger password update*/}
+>>>>>>> f8f41c148148be63db8269515895cad2be595b51
           <button
             type="submit"
             className="w-full py-2 bg-green-500 text-black font-semibold rounded-md hover:bg-green-600 transition-all duration-200"
