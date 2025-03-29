@@ -51,10 +51,28 @@ def login():
 
 @main.route('/fetch_teams', methods=['GET'])
 def fetch_teams():
-    # Fetch all teams from the NFLTeam table
-    teams = NFLTeam.query.all()
+    # Fetch all teams from the NFLTeam table with only the required columns
+    teams = NFLTeam.query.with_entities(
+        NFLTeam.TEAM_ID,
+        NFLTeam.TEAM_NAME,
+        NFLTeam.TEAM_CONF,
+        NFLTeam.TEAM_DIVISION,
+        NFLTeam.TEAM_LOGO,
+        NFLTeam.TEAM_WORDMARK
+    ).all()
 
-    # Create a dictionary mapping team_name (or team_abbr) to team_id
-    team_dict = {team.TEAM_NAME: team.TEAM_ID for team in teams}
+    # Convert the result into a list of dictionaries
+    team_data = [
+        {
+            "TEAM_ID": team.TEAM_ID,
+            "TEAM_NAME": team.TEAM_NAME,
+            "TEAM_CONF": team.TEAM_CONF,
+            "TEAM_DIVISION": team.TEAM_DIVISION,
+            "TEAM_LOGO": team.TEAM_LOGO,
+            "TEAM_WORDMARK": team.TEAM_WORDMARK,
+        }
+        for team in teams
+    ]
 
-    return jsonify(team_dict)
+    return jsonify(team_data)
+
