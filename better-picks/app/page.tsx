@@ -3,11 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
-
-/**
- * Navigation menu structure containing categorized links.
- * Each category a title and an array of link objects
- */
+// Navigation menu structure containing categorized links.
 const menuItems = [
   {
     title: "NBA",
@@ -20,7 +16,7 @@ const menuItems = [
   {
     title: "NFL",
     links: [
-      { name: "Game Predictions", path: "/nfl/predictions" },
+      { name: "Game Predictions", path: "/nfl-teams" },
       { name: "Team Performance", path: "/nfl/performance" },
       { name: "Betting Insights", path: "/nfl/betting-insights" },
     ],
@@ -42,7 +38,6 @@ const menuItems = [
       { name: "Login", path: "/account/login" },
     ],
   },
-  
 ];
 
 /**
@@ -50,7 +45,7 @@ const menuItems = [
  * main content, and a footer.
  */
 export default function Home() {
-    const [activeDropdown, setActiveDropdown] = useState(null);
+    const [activeDropdown, setActiveDropdown] = useState<string | null>(null); // Fixed here
   
     return (
       <>
@@ -125,9 +120,6 @@ export default function Home() {
             </div>
           </main>
 
-       
-
-  
           {/* Footer Section */}
           <footer className="flex gap-8 flex-wrap items-center justify-center text-gray-300 text-base mt-auto py-6">
             <a className="hover:text-green-400 transition-colors" href="/features">Features</a>
@@ -146,4 +138,3 @@ export default function Home() {
       </>
     );
   }
-  

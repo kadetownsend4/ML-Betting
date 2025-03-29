@@ -6,6 +6,17 @@ import Link from "next/link";
 import Dashboard from "../components/Dashboard";  // Adjust the path according to your project structure
 
 // Sample player prop bet data (replace with actual API data)
+
+// Define the structure of your prop data
+type PlayerProp = {
+  player: string;
+  betType: string;
+  prediction: string;
+  outcome: number;
+  result: string;
+  reason: string;
+};
+
 async function fetchPlayerPropData() {
   return [
     { player: "LeBron James", betType: "Points Over/Under", prediction: "Over 25.5", outcome: 28, result: "Won", reason: "LeBron had a strong game, scoring above his average." },
@@ -17,8 +28,7 @@ async function fetchPlayerPropData() {
 }
 
 export default function PlayerPropAnalysisPage() {
-  const [props, setProps] = useState([]);
-
+  const [props, setProps] = useState<PlayerProp[]>([]);
   useEffect(() => {
     async function loadProps() {
       const data = await fetchPlayerPropData();
