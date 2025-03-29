@@ -19,11 +19,11 @@ type PlayerProp = {
 
 async function fetchPlayerPropData() {
   return [
-    { player: "LeBron James", betType: "Points Over/Under", prediction: "Over 25.5", outcome: 28, result: "Won", reason: "LeBron had a strong game, scoring above his average." },
-    { player: "Giannis Antetokounmpo", betType: "Rebounds Over/Under", prediction: "Under 12.5", outcome: 15, result: "Lost", reason: "Giannis dominated the boards unexpectedly." },
-    { player: "Stephen Curry", betType: "Assists Over/Under", prediction: "Over 6.5", outcome: 8, result: "Won", reason: "Curry was facilitating well and had a high assist game." },
-    { player: "Kevin Durant", betType: "Points Over/Under", prediction: "Under 27.5", outcome: 24, result: "Won", reason: "Durant struggled with shooting efficiency." },
-    { player: "James Harden", betType: "Assists Over/Under", prediction: "Under 8.5", outcome: 9, result: "Lost", reason: "Harden exceeded his assists due to heavy ball movement." },
+    { player: "LeBron James", betType: "Points Over/Under", prediction: "Over 25.5", outcome: 28, result: "Won", analysis: "LeBron had a strong game, scoring above his average." },
+    { player: "Giannis Antetokounmpo", betType: "Rebounds Over/Under", prediction: "Under 12.5", outcome: 15, result: "Lost", analysis: "Giannis dominated the boards unexpectedly." },
+    { player: "Stephen Curry", betType: "Assists Over/Under", prediction: "Over 6.5", outcome: 8, result: "Won", analysis: "Curry was facilitating well and had a high assist game." },
+    { player: "Kevin Durant", betType: "Points Over/Under", prediction: "Under 27.5", outcome: 24, result: "Won", analysis: "Durant struggled with shooting efficiency." },
+    { player: "James Harden", betType: "Assists Over/Under", prediction: "Under 8.5", outcome: 9, result: "Lost", analysis: "Harden exceeded his assists due to heavy ball movement." },
   ];
 }
 
@@ -68,7 +68,7 @@ export default function PlayerPropAnalysisPage() {
                 <th className="border border-gray-700 px-4 py-3">Prediction</th>
                 <th className="border border-gray-700 px-4 py-3">Outcome</th>
                 <th className="border border-gray-700 px-4 py-3">Result</th>
-                <th className="border border-gray-700 px-4 py-3">Reason</th>
+                <th className="border border-gray-700 px-4 py-3">Analysis</th>
               </tr>
             </thead>
             <tbody>
@@ -85,7 +85,7 @@ export default function PlayerPropAnalysisPage() {
                   >
                     {prop.result}
                   </td>
-                  <td className="border border-gray-700 px-4 py-3">{prop.reason}</td>
+                  <td className="border border-gray-700 px-4 py-3">{prop.analysis}</td>
                 </tr>
               ))}
             </tbody>

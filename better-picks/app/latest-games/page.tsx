@@ -115,13 +115,13 @@ export default function LatestGames() {
           </table>
         </div>
 
-        {/* 🏀 Insert PostList component below the games table */}
+        {/* 🏀 Insert PostList component below the games table
         <div className="mt-10">
           <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-4">
             Latest NBA Posts
           </h2>
           <PostList />
-        </div>
+        </div> */}
       </div>
       
       {/* Footer Section */}

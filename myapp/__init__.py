@@ -14,6 +14,7 @@ def create_app():
     migrate = Migrate(app, db)
 
     CORS(app)
+   
     # Set the SECRET_KEY from environment variable or fallback to a default one if not set
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
