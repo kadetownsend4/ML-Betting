@@ -1,4 +1,3 @@
-import mysql.connector
 import pandas as pd
 import sqlalchemy_interact
 from nba_api.stats.static import teams
@@ -14,4 +13,4 @@ nba_teams_df.at[17, 'TEAM_CITY'] = "Indianapolis"
 nba_teams_df.at[25, 'TEAM_CITY'] = "Salt Lake City"
 # print(nba_teams_df)
 
-sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(nba_teams_df, "NBAteams")
+sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(nba_teams_df, "nbateams")

@@ -17,7 +17,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
 import sklearn.metrics
-from sqlstuff import sqlalchemy_interact
+import sqlalchemy_interact
 
 class NBAModel:
     def __init__(self, feature_set, model_name):
