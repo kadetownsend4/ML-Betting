@@ -1,4 +1,6 @@
 """File that holds two functions for inserting and gathering pandas dataframes to and from the database.
+
+   author = Kade Townsend
 """
 
 
