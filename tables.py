@@ -1,8 +1,23 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, jsonify
+import os
+from sqlalchemy.sql import text
+
 
 db = SQLAlchemy()
 app = Flask(__name__)
+
+user = os.environ.get('DB_USER')
+pw = os.environ.get('DB_PW')
+host = os.environ.get('DB_HOST')
+port = "5432"
+name = os.environ.get('DB_NAME')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{user}:{pw}@{host}:{port}/{name}"
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+db.init_app(app)
 
 
 class NBATeam(db.Model):
@@ -82,9 +97,35 @@ class NBAPred:
     HOME_W_PROB = db.Column(db.Float, nullable=False)
 
 
-@app.route("/", methods=['GET'])
-def home():
-    return "Better Picks"
+@app.route('/')
+def testdb():
+    try:
+        db.session.query(text('1')).from_statement(text('SELECT 1')).all()
+        return '<h1>It works.</h1>'
+    except Exception as e:
+        # e holds description of the error
+        error_text = "<p>The error:<br>" + str(e) + "</p>"
+        hed = '<h1>Something is broken.</h1>'
+        return hed + error_text
+
+
+@app.route('/team')
+def index():
+    try:
+        teams = db.session.execute(db.select(NBATeam)
+                                   .filter_by(TEAM_CITY='Los Angeles')
+                                   .order_by(NBATeam.TEAM_NAME)).scalars()
+
+        team_text = '<ul>'
+        for team in teams:
+            team_text += '<li>' + team.TEAM_ABR + '</li>'
+        team_text += '</ul>'
+        return team_text
+    except Exception as e:
+        # e holds description of the error
+        error_text = "<p>The error:<br>" + str(e) + "</p>"
+        hed = '<h1>Something is broken.</h1>'
+        return hed + error_text
 
 
 if __name__ == '__main__':
