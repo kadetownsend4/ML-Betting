@@ -20,7 +20,7 @@ const menuItems = [
     title: "NFL",
     links: [
       { name: "Game Predictions", path: "/nfl/predictions" },
-      { name: "Team Performance", path: "/nfl/performance" },
+      { name: "Team Based Player Props", path: "/team-player-props" },
       { name: "Player Prop Analysis", path: "/nfl-player-analysis" },
     ],
   },

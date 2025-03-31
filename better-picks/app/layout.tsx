@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+
 /**
  * Load Google Fonts using Next.Js for optimization. 
  * Geist Sans and Geist Mono are used for styling.
  */
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -15,6 +17,11 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+
+/**
+ * Metadata for the application, defining title and description.
+ */
 
 /**
  * Metadata for the application, defining title and description.
@@ -31,6 +38,7 @@ export const metadata: Metadata = {
  * @param {object} props - Component props 
  * @param {React.ReactNode} props.children - Nested components to be rendered inside the layout.  
  */
+
 export default function RootLayout({
   children,
 }: Readonly<{

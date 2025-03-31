@@ -1,7 +1,20 @@
 {
   "dependencies": {
     "framer-motion": "^12.4.10",
+<<<<<<< HEAD
+    "next": "^15.2.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-icons": "^5.5.0",
     "react-tsparticles": "^2.12.2"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+=======
+    "react-icons": "^5.5.0",
+    "react-tsparticles": "^2.12.2"
+>>>>>>> f8f41c148148be63db8269515895cad2be595b51
   }
 }
