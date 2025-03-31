@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, jsonify
 
 db = SQLAlchemy()
+app = Flask(__name__)
 
 
 class NBATeam(db.Model):
@@ -78,3 +80,12 @@ class NBAPred:
     HOME_W_PRED = db.Column(db.Integer, nullable=False)
     AWAY_W_PROB = db.Column(db.Float, nullable=False)
     HOME_W_PROB = db.Column(db.Float, nullable=False)
+
+
+@app.route("/", methods=['GET'])
+def home():
+    return "Better Picks"
+
+
+if __name__ == '__main__':
+    app.run(port=3000, debug=True)
