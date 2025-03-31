@@ -49,10 +49,17 @@ export default function Home() {
   
     return (
       <>
-        <div className="min-h-screen text-white p-8 sm:p-20 flex flex-col justify-between relative overflow-hidden bg-gradient">
+        <div className="min-h-screen text-white p-8 sm:p-20 flex flex-col justify-between relative overflow-hidden bg-cover bg-center"
+          style={{ backgroundImage: "url('/LEBRONN.png')" }}
+        >
+        {/* Overlay */}
+          <div className="absolute inset-0 bg-black/30 z-0"></div>
+
+        {/* content wrapper */}
+          <div className="relative z-10"></div>
           {/* Header Section */}
           <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
-            <h1 className="text-3xl font-extrabold text-purple-500 font-mono">Better Picks</h1>
+            <h1 className="text-4xl font-extrabold text-white drop-shadow-2xl border-b-4 border-green-400">Better Picks</h1>
             <nav className="flex space-x-10 relative">
               {menuItems.map((item, index) => (
                 <div
@@ -61,7 +68,7 @@ export default function Home() {
                   onMouseEnter={() => setActiveDropdown(item.title)}
                   onMouseLeave={() => setActiveDropdown(null)}
                 >
-                  <button className="text-lg font-semibold hover:text-green-400 transition">
+                  <button className="text-xl font-bold hover:text-green-400 transition">
                     {item.title}
                   </button>
   
@@ -70,7 +77,7 @@ export default function Home() {
                     {activeDropdown === item.title && (
                       <motion.div
                         initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        animate={{ opacity: 1, y: 0, scale: 0.80 }}
                         exit={{ opacity: 0, y: 10, scale: 0.95 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="absolute left-1/8 mt-2 w-40 bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl shadow-xl p-3"
@@ -96,44 +103,51 @@ export default function Home() {
   
           {/* Main Content Section */}
           <main className="flex flex-col gap-8 items-center sm:items-start mt-16 flex-grow">
-            <h2 className="text-3xl font-extrabold text-center sm:text-left text-purple-500 mb-4">
+            <h2 className="text-3xl font-extrabold text-white drop-shadow-2xl">
               Your Ultimate Sports Betting Analyzer
             </h2>
-            <p className="text-lg sm:text-xl text-center sm:text-left text-purple-500 opacity-100 mb-4">
+            <p className="text-lg sm:text-xl font-extrabold text-white opacity-95 drop-shadow-2xl">
               Gain the edge with AI-driven betting insights, real-time analytics, and expert picks.
             </p>
   
             <div className="flex gap-6 items-center flex-col sm:flex-row">
               <Link
-                href="/dashboard"
-                className="rounded-full border border-transparent transition-all transform hover:scale-105 flex items-center justify-center bg-gradient-to-r from-green-400 to-green-600 text-black font-semibold gap-2 text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md hover:shadow-xl"
+              href="/dashboard"
+              className="rounded-full transition-all transform hover:scale-105 flex items-center justify-center bg-gradient-to-r from-green-400 to-green-600 text-black font-bold shadow-2xl border-2 border-white text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10"
               >
                 Get Started
               </Link>
   
               <Link
-                className="rounded-full border border-gray-500 transition-all transform hover:scale-105 flex items-center justify-center hover:bg-gray-600 hover:border-transparent text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md"
-                href="/learn-more"
+              href="/learn-more"
+              className="rounded-full transition-all transform hover:scale-105 flex items-center justify-center bg-black/80 text-white font-bold shadow-xl border-2 border-gray-400 hover:bg-gray-700 text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10"
               >
                 Learn More
               </Link>
             </div>
           </main>
 
-          {/* Footer Section */}
-          <footer className="flex gap-8 flex-wrap items-center justify-center text-gray-300 text-base mt-auto py-6">
+          {/* Footer Section
+          <footer className="flex gap-8 flex-wrap font-extrabold items-center justify-center text-white text-base mt-auto py-6">
             <a className="hover:text-green-400 transition-colors" href="/features">Features</a>
             <a className="hover:text-green-400 transition-colors" href="/pricing">Pricing</a>
             <a className="hover:text-green-400 transition-colors" href="/contact">Contact Us</a>
-          </footer>
+          </footer> */}
 
           {/* Footer Section*/}
-          <footer className="mt-10 text-center text-gray-400 text-sm">
-            <p>
-            <strong>Disclaimer:</strong> Please gamble responsibly. If you have a gambling problem, seek help from a professional organization such as 
-            <a href="https://www.ncpgambling.org/" target="_blank" rel="noopener noreferrer" className="text-green-400 underline"> National Council on Problem Gambling</a>.
-            </p>
-          </footer>
+          <footer className="mt-10 text-center text-white text-lg font-black drop-shadow-xl">
+  <p>
+    <span className="text-red-400 uppercase">Disclaimer:</span> Please gamble responsibly. If you have a gambling problem, seek help from a professional organization such as  
+    <a 
+      href="https://www.ncpgambling.org/" 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      className="text-green-400 font-bold underline hover:text-green-300 transition-colors duration-200"
+    >
+      {" "}National Council on Problem Gambling
+    </a>.
+  </p>
+</footer>
         </div>
       </>
     );
