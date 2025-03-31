@@ -21,10 +21,16 @@ export default function NFLTeams() {
     "Arizona Cardinals": [
       { id: "1", title: "Quarterbacks", body: "Kyler Murray" },
       { id: "2", title: "Running Backs", body: "James Connor, Trey Benson" },
+      { id: "3", title: "Wide Receivers", body: "Marvin Harrison Jr, Zay Jones, Michael Wilson" },
+      { id: "4", title: "Tight Ends", body: "Trey McBride" },
+      { id: "5", title: "Kicker", body: "Chad Ryland" },
     ],
     "Atlanta Falcons": [
-      { id: "3", title: "Quarterbacks", body: "Desmond Ridder" },
-      { id: "4", title: "Running Backs", body: "Tyler Allgeier" },
+      { id: "1", title: "Quarterbacks", body: "Michael Penix Jr" },
+      { id: "2", title: "Running Backs", body: "Bijan Robinson, Tyler Allgeier" },
+      { id: "3", title: "Wide Receivers", body: "Drake London, Ray-Ray McCloud III, Darnell Mooney" },
+      { id: "4", title: "Tight Ends", body: "Kyle Pitts" },
+      { id: "5", title: "Kicker", body: "Younghoe Koo" },
     ],
     "Baltimore Ravens": [
       { id: "5", title: "Quarterbacks", body: "Lamar Jackson" },
