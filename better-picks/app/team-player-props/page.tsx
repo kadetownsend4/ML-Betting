@@ -17,7 +17,7 @@ export default function NFLTeams() {
   ];
 
   // Static posts data
-  const postsData = {
+  const postsData: Record<string, { id: string; title: string; body: string }[]> = {
     "Arizona Cardinals": [
       { id: "1", title: "Quarterbacks", body: "Kyler Murray" },
       { id: "2", title: "Running Backs", body: "James Connor, Trey Benson" },
