@@ -133,7 +133,13 @@ def fetch_teams():
 
 @app.route('/NBAGameLogs/<team>')
 def fetch_games(team):
-    games = db.session.execute
+    games = db.session.execute(db.select(NBAGameLogs)
+                               .filter_by(NICKNAME=team)).scalars()
+    sock_text = '<ul>'
+    for sock in games:
+        sock_text += '<li>' + sock.NICKNAME + ', ' + str(sock.W) + '</li>'
+    sock_text += '</ul>'
+    return sock_text
 
 
 # @app.route('/teams/<team>')
