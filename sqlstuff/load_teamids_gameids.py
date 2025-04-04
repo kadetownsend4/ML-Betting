@@ -29,6 +29,6 @@ awayTeamFrame.rename(columns=colRenameDict, inplace=True)
 data = pd.merge(homeTeamFrame, awayTeamFrame,
                 how="inner", on=["GAME_ID", "SEASON"])
 
-data = data.drop(['SEASON', 'GAME_DATE'], axis=1)
+data = data.drop(['SEASON'], axis=1)
 
 sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(data, "nbagameids")

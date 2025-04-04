@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, jsonify, render_template
 import os
 from sqlalchemy.sql import text
+from sqlalchemy import select
 
 
 db = SQLAlchemy()
@@ -85,7 +86,7 @@ class NBAGameLogs(db.Model):
     NUM_REST_DAYS = db.Column(db.Float, nullable=False)
 
 
-class NBAPred:
+class NBAPred(db.Model):
     __tablename__ = 'nbapred'
     SEASON = db.Column(db.String(50), nullable=False)
     GAME_ID = db.Column(db.Integer, db.ForeignKey(
@@ -97,10 +98,19 @@ class NBAPred:
     HOME_W_PROB = db.Column(db.Float, nullable=False)
 
 
+class NBAGameIds(db.Model):
+    __tablename__ = 'nbagameids'
+    GAME_ID = db.Column(db.Integer, db.ForeignKey(
+        'nbagamelogs.GAME_ID'), nullable=False)
+    GAME_DATE = db.Column(db.String(50), primary_key=True)
+    HOME_TEAM_ID = db.Column(db.Integer, db.ForeignKey(
+        'nbateams.TEAM_ID'), nullable=False)
+    AWAY_TEAM_ID = db.Column(db.Integer, db.ForeignKey(
+        'nbateams.TEAM_ID'), nullable=False)
+
+
 @app.route('/')
 def index():
-    # teams = db.session.execute(db.select(NBATeam)
-    # .with_only_columns(NBATeam.TEAM_NAME).distinct())
     return render_template('index.html')
 
 
@@ -133,13 +143,20 @@ def fetch_teams():
 
 @app.route('/NBAGameLogs/<team>')
 def fetch_games(team):
-    games = db.session.execute(db.select(NBAGameLogs)
-                               .filter_by(NICKNAME=team)).scalars()
-    sock_text = '<ul>'
-    for sock in games:
-        sock_text += '<li>' + sock.NICKNAME + ', ' + str(sock.W) + '</li>'
-    sock_text += '</ul>'
-    return sock_text
+    games = db.session.query(NBAGameLogs, NBAGameIds).with_entities(
+        NBAGameLogs.GAME_ID,
+        NBAGameLogs.NICKNAME,
+        NBAGameIds.AWAY_TEAM_ID).join(NBAGameIds).filter(NBAGameLogs.NICKNAME == team).all()
+
+    game_data = [
+        {
+            "GAME_ID": game.GAME_ID,
+            "NICKNAME": game.NICKNAME,
+            "AWAY_ID": game.AWAY_TEAM_ID,
+        }
+        for game in games
+    ]
+    return game_data
 
 
 # @app.route('/teams/<team>')
