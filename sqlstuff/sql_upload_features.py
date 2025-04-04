@@ -1,4 +1,4 @@
-import sqlalchemy_interact
+""" import sqlalchemy_interact
 import pandas as pd
 
 # something wrong with interact engine for reading data, will fix later
@@ -180,3 +180,4 @@ sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(dataCF, "cf")
 sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(dataFE, "fe")
 sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(dataOG, "og")
 sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(dataOG3, "ogthree")
+ """
