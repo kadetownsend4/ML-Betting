@@ -104,6 +104,33 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/NBAteams')
+def fetch_teams():
+    teams = NBATeam.query.with_entities(
+        NBATeam.TEAM_ID,
+        NBATeam.TEAM_NAME,
+        NBATeam.TEAM_ABR,
+        NBATeam.TEAM_NICKNAME,
+        NBATeam.TEAM_CITY,
+        NBATeam.TEAM_STATE,
+        NBATeam.TEAM_YEAR_FOUNDED
+    ).all()
+
+    team_data = [
+        {
+            "TEAM_ID": team.TEAM_ID,
+            "TEAM_NAME": team.TEAM_NAME,
+            "TEAM_ABR": team.TEAM_ABR,
+            "TEAM_NICKNAME": team.TEAM_NICKNAME,
+            "TEAM_CITY": team.TEAM_CITY,
+            "TEAM_STATE": team.TEAM_STATE,
+            "TEAM_YEAR_FOUNDED": team.TEAM_YEAR_FOUNDED,
+        }
+        for team in teams
+    ]
+    return team_data
+
+
 # @app.route('/teams/<team>')
 # def display(name):
     # try:
@@ -116,7 +143,6 @@ def index():
     #error_text = "<p>The error:<br>" + str(e) + "</p>"
     #hed = '<h1>Something is broken.</h1>'
     # return hed + error_text
-
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)
