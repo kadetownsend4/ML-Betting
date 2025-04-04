@@ -36,12 +36,12 @@ def insert_df_to_mysql_sqlalchemy(df, table_name):
     print(f"DataFrame successfully inserted into table '{table_name}'")
 
 
-def get_df_from_mysql_sqlalchemy(sql):
+def get_df_from_mysql_sqlalchemy(table):
     """Function to gather a table from the render database as
        a pandas dataframe
 
        Parameters:
-       sql -- sql query that is used to specificy which table to collect from database
+       table -- tabke name that is used to specificy which table to collect from database
 
        Return:
        table as a pandas dataframe
@@ -50,6 +50,6 @@ def get_df_from_mysql_sqlalchemy(sql):
     engine = create_engine(
         f"postgresql://{user}:{pw}@{host}:{port}/{name}")
     # gets table and transforms into df
-    df = pd.read_sql(sql, engine)
+    df = pd.read_sql_table(table, engine.connect())
     print("DataFrame successfully gathered")
     return df
