@@ -131,6 +131,11 @@ def fetch_teams():
     return team_data
 
 
+@app.route('/NBAGameLogs/<team>')
+def fetch_games(team):
+    games = db.session.execute
+
+
 # @app.route('/teams/<team>')
 # def display(name):
     # try:
