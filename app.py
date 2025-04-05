@@ -3,6 +3,7 @@ from flask import Flask, jsonify, render_template
 import os
 from sqlalchemy.sql import text
 from sqlalchemy import select
+from sqlalchemy.orm import aliased
 
 
 db = SQLAlchemy()
@@ -30,6 +31,11 @@ class NBATeam(db.Model):
     TEAM_CITY = db.Column(db.String(50), nullable=False)
     TEAM_STATE = db.Column(db.String(50), nullable=False)
     TEAM_YEAR_FOUNDED = db.Column(db.Integer, nullable=False)
+
+    HOME_GAMES = db.relationship(
+        'NBAGameIds', foreign_keys='NBAGameIds.HOME_TEAM_ID', backref='HOME_TEAM_REF', lazy='dynamic')
+    AWAY_GAMES = db.relationship(
+        'NBAGameIds', foreign_keys='NBAGameIds.AWAY_TEAM_ID', backref='AWAY_TEAM_REF', lazy='dynamic')
 
 
 class NBAGameLogs(db.Model):
@@ -75,7 +81,8 @@ class NBAGameLogs(db.Model):
     SCORING_MARGIN = db.Column(db.Float, nullable=False)
     SEASON = db.Column(db.String(50), nullable=False)
     GAME_DATE = db.Column(db.String(50), nullable=False)
-    GAME_ID = db.Column(db.Integer, primary_key=True)
+    GAME_ID = db.Column(db.Integer, db.ForeignKey(
+        'nbagameids.GAME_ID'), primary_key=True)
     HOME_FLAG = db.Column(db.Integer, nullable=False)
     AWAY_FLAG = db.Column(db.Integer, nullable=False)
     HOME_WIN_PCTG = db.Column(db.Float, nullable=False)
@@ -84,6 +91,8 @@ class NBAGameLogs(db.Model):
     ROLLING_SCORING_MARGIN = db.Column(db.Float, nullable=False)
     ROLLING_OE = db.Column(db.Float, nullable=False)
     NUM_REST_DAYS = db.Column(db.Float, nullable=False)
+
+    game = db.relationship('NBAGameIds', back_populates='log')
 
 
 class NBAPred(db.Model):
@@ -100,13 +109,14 @@ class NBAPred(db.Model):
 
 class NBAGameIds(db.Model):
     __tablename__ = 'nbagameids'
-    GAME_ID = db.Column(db.Integer, db.ForeignKey(
-        'nbagamelogs.GAME_ID'), nullable=False)
-    GAME_DATE = db.Column(db.String(50), primary_key=True)
+    GAME_ID = db.Column(db.Integer, primary_key=True)
+    GAME_DATE = db.Column(db.String(50), nullable=False)
     HOME_TEAM_ID = db.Column(db.Integer, db.ForeignKey(
         'nbateams.TEAM_ID'), nullable=False)
     AWAY_TEAM_ID = db.Column(db.Integer, db.ForeignKey(
         'nbateams.TEAM_ID'), nullable=False)
+
+    log = db.relationship('NBAGameLogs', back_populates='game')
 
 
 @app.route('/')
@@ -143,26 +153,41 @@ def fetch_teams():
 
 @app.route('/NBAGameLogs/<team>')
 def fetch_games(team):
-    games = db.session.query(NBAGameLogs, NBAGameIds).with_entities(
-        NBAGameLogs.CITY,
+
+    HomeTeam = aliased(NBATeam)
+    AwayTeam = aliased(NBATeam)
+
+    games = db.session.query(
         NBAGameLogs.GAME_ID,
+        NBAGameIds.GAME_ID,
         NBAGameIds.AWAY_TEAM_ID,
         NBAGameIds.HOME_TEAM_ID,
-        NBAGameIds.GAME_DATE).filter(
-            NBAGameLogs.NICKNAME == team).join(
-                NBAGameIds, NBAGameLogs.GAME_ID == NBAGameIds.GAME_ID).all()
+        HomeTeam.TEAM_NAME.label("HOME_TEAM_NAME"),
+        AwayTeam.TEAM_NAME.label("AWAY_TEAM_NAME")
+    ).join(
+        NBAGameIds, NBAGameLogs.GAME_ID == NBAGameIds.GAME_ID
+    ).join(
+        HomeTeam, NBAGameIds.HOME_TEAM_ID == HomeTeam.TEAM_ID
+    ).join(
+        AwayTeam, NBAGameIds.AWAY_TEAM_ID == AwayTeam.TEAM_ID
+    ).filter(
+        NBAGameLogs.NICKNAME == team
+    ).all()
+
+    print(games)
 
     game_data = [
         {
             "CITY": game.CITY,
-            "GAME_ID": game.GAME_ID,
+            "GAME_ID": log.GAME_ID,
             "AWAY_ID": game.AWAY_TEAM_ID,
             "HOME_ID": game.HOME_TEAM_ID,
             "DATE": game.GAME_DATE,
         }
-        for game in games
+        for log, game, AWAY_NAME, HOME_NAME in games
     ]
     return game_data
+    return "TURTLE"
 
 
 if __name__ == '__main__':
