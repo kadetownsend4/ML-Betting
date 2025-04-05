@@ -12,5 +12,7 @@ df = pd.read_csv("GettingData/gameLogs.csv")
 
 df = df.drop("Unnamed: 0", axis=1)
 
+df['NICKNAME'] = df['NICKNAME'].str.lstrip()
+
 # inserts df to database under name "nbagamelogs"
 sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(df, "nbagamelogs")

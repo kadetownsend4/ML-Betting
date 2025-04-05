@@ -144,33 +144,26 @@ def fetch_teams():
 @app.route('/NBAGameLogs/<team>')
 def fetch_games(team):
     games = db.session.query(NBAGameLogs, NBAGameIds).with_entities(
+        NBAGameLogs.CITY,
         NBAGameLogs.GAME_ID,
-        NBAGameLogs.NICKNAME,
-        NBAGameIds.AWAY_TEAM_ID).join(NBAGameIds).filter(NBAGameLogs.NICKNAME == team).all()
+        NBAGameIds.AWAY_TEAM_ID,
+        NBAGameIds.HOME_TEAM_ID,
+        NBAGameIds.GAME_DATE).filter(
+            NBAGameLogs.NICKNAME == team).join(
+                NBAGameIds, NBAGameLogs.GAME_ID == NBAGameIds.GAME_ID).all()
 
     game_data = [
         {
+            "CITY": game.CITY,
             "GAME_ID": game.GAME_ID,
-            "NICKNAME": game.NICKNAME,
             "AWAY_ID": game.AWAY_TEAM_ID,
+            "HOME_ID": game.HOME_TEAM_ID,
+            "DATE": game.GAME_DATE,
         }
         for game in games
     ]
     return game_data
 
-
-# @app.route('/teams/<team>')
-# def display(name):
-    # try:
-    # teams = db.session.execute(db.select(NBATeam)
-    # .filter_by(TEAM_NAME=name)
-    # .order_by(NBATeam.name)).scalars()
-    # return render_template('list.html', teams=teams, TEAM_NAME=name)
-    # except Exception as e:
-    # e holds description of the error
-    #error_text = "<p>The error:<br>" + str(e) + "</p>"
-    #hed = '<h1>Something is broken.</h1>'
-    # return hed + error_text
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)
