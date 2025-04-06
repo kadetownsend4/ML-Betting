@@ -179,7 +179,7 @@ def fetch_matchups(team):
     return matchup_data
 
 
-@app.route('/NBAMatchups/<gameid>')
+@app.route('/NBAMatchups/<awayteam>/<hometeam>/<gameid>')
 def fetch_matchup_stats(gameid):
     return "hello"
 
