@@ -34,14 +34,15 @@ function NBATeams() {
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
       {/* Header Section */}
       <header className="flex justify-between items-center w-full max-w-5xl py-5 px-10 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg relative z-10">
-        <h1 className="text-4xl tracking-wide uppercase text-orange-400 flex items-center gap-2 font-['Rajdhani']">
+        {/* <h1 className="text-4xl tracking-wide uppercase text-orange-400 flex items-center gap-2 font-['Rajdhani']">
           <FaBasketballBall className="text-orange-400" /> NBA Teams
-        </h1>
+        </h1> */}
         <Dashboard />
       </header>
 
       {/* Teams Section */}
-      <div className="w-full max-w-5xl mt-10 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6 relative z-10">
+      <div className="w-full max-w-5xl mt-10 bg-white/10 shadow-lg rounded-xl p-6 relative z-10">
+      <h2 className="text-4xl font-bold text-green-400 text-center mb-4">NBA Latest Games</h2>
         <h2 className="text-4xl font-bold text-orange-400 text-center mb-4">NBA Teams by Division</h2>
         
         {conferences.map((conf) => (

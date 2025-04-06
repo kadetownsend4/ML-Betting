@@ -16,16 +16,16 @@ export default function PlayerAnalysis() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
       <header className="flex justify-between items-center w-full max-w-5xl py-5 px-10 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg">
-        <h1 className="text-4xl tracking-wide uppercase text-green-400 flex items-center gap-2 font-['Rajdhani']">
+        {/* <h1 className="text-4xl tracking-wide uppercase text-green-400 flex items-center gap-2 font-['Rajdhani']">
           <FaBasketballBall className="text-green-400" /> NBA Player Analysis
-        </h1>
+        </h1> */}
         <nav className="flex gap-8 text-lg">
           <Dashboard />
         </nav>
       </header>
 
       <div className="w-full max-w-6xl mt-10 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6">
-        <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-6">Player Performance</h2>
+        <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-6">NBA Player Prop Analysis</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
           {playerData.map((player, index) => (
             <div key={index} className="bg-gray-800 p-4 rounded-lg text-center shadow-md flex flex-col items-center min-h-[150px] w-full">
