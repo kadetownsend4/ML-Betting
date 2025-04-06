@@ -1,11 +1,1 @@
-<<<<<<< HEAD
 # ML-Betting
-=======
-# ML-Betting
-
-## Abstract
-  Navigating the world of sports betting can be overwhelming, with countless stats, unpredictable outcomes, and endless hours of research with no guarantee of success. However our Computer Science Capstone project, Better Picks, simplifies this process by leveraging the power of machine learning to deliver data-driven insights. This application uses Python to interact with APIs to pull NFL and NBA data, which is then analyzed to obtain information regarding the key features impacting player performance and predict player stats for upcoming games using machine-learning models. These predictions are compared against lines from multiple sportsbooks to identify picks with the highest likelihood of success, providing bettors with smarter, faster, and more reliable decisions.
-
-  The application will offer a user-friendly dashboard built with React TypeScript that presents these insights in a clear and digestible format. It utilizes a SQL database to store historical data, player stats, and model predictions allowing for efficient querying and seamless communication with the front end. By streamlining the process of analyzing data and making predictions, Better Picks empowers users to make informed bets with confidence. The application's tailored recommendations simplify the decision-making process, ensuring users can quickly and effectively identify high-value bets for a better chance of winning.
-
->>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
