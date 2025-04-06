@@ -52,9 +52,9 @@ export default function NFLTeams() {
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
       {/* Header Section */}
       <header className="flex justify-between items-center w-full max-w-5xl py-5 px-10 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg relative z-10">
-        <h1 className="text-4xl tracking-wide uppercase text-green-400 flex items-center gap-2 font-['Rajdhani']">
+        {/* <h1 className="text-4xl tracking-wide uppercase text-green-400 flex items-center gap-2 font-['Rajdhani']">
           <FaFootballBall className="text-green-400" /> Team Based Player Props
-        </h1>
+        </h1> */}
         <Dashboard /> {/* Import and display the Dashboard component next to the title */}
       </header>
 

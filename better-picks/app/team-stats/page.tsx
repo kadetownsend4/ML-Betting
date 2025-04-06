@@ -55,11 +55,6 @@ export default function TeamStats() {
       {/* Header with Navigation */}
       <header className="flex justify-between items-center w-full max-w-6xl py-5 px-10 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg">
         <div className="flex items-center gap-10">
-          {/* NBA Team Stats Title */}
-          <h1 className="text-4xl tracking-wide uppercase text-green-400 font-['Rajdhani']">
-            NBA Team Stats
-          </h1>
-
           {/* Dashboard Component with Links */}
           <Dashboard />
         </div>

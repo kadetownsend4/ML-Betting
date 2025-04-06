@@ -41,7 +41,7 @@ function NBATeams() {
       </header>
 
       {/* Teams Section */}
-      <div className="w-full max-w-5xl mt-10 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6 relative z-50">
+      <div className="w-full max-w-5xl mt-10 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6 relative z-10">
         <h2 className="text-4xl font-bold text-orange-400 text-center mb-4">NBA Teams by Division</h2>
         
         {conferences.map((conf) => (
