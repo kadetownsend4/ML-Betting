@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 
+
+
 /**
  * Load Google Fonts using Next.Js for optimization. 
  * Geist Sans and Geist Mono are used for styling.
