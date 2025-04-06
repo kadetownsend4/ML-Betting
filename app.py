@@ -124,17 +124,9 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/NBAteams')
+@app.route('/NBATeams')
 def fetch_teams():
-    teams = NBATeam.query.with_entities(
-        NBATeam.TEAM_ID,
-        NBATeam.TEAM_NAME,
-        NBATeam.TEAM_ABR,
-        NBATeam.TEAM_NICKNAME,
-        NBATeam.TEAM_CITY,
-        NBATeam.TEAM_STATE,
-        NBATeam.TEAM_YEAR_FOUNDED
-    ).all()
+    teams = db.session.query(NBATeam).all()
 
     team_data = [
         {
@@ -151,17 +143,15 @@ def fetch_teams():
     return team_data
 
 
-@app.route('/NBAGameLogs/<team>')
-def fetch_games(team):
+@app.route('/NBAMatchups/<team>')
+def fetch_matchups(team):
 
     HomeTeam = aliased(NBATeam)
     AwayTeam = aliased(NBATeam)
 
-    games = db.session.query(
-        NBAGameLogs.GAME_ID,
-        NBAGameIds.GAME_ID,
-        NBAGameIds.AWAY_TEAM_ID,
-        NBAGameIds.HOME_TEAM_ID,
+    matchups = db.session.query(
+        NBAGameLogs,
+        NBAGameIds,
         HomeTeam.TEAM_NAME.label("HOME_TEAM_NAME"),
         AwayTeam.TEAM_NAME.label("AWAY_TEAM_NAME")
     ).join(
@@ -172,22 +162,21 @@ def fetch_games(team):
         AwayTeam, NBAGameIds.AWAY_TEAM_ID == AwayTeam.TEAM_ID
     ).filter(
         NBAGameLogs.NICKNAME == team
-    ).all()
+    ).order_by(NBAGameLogs.GAME_DATE.desc()).all()
 
-    print(games)
-
-    game_data = [
+    matchup_data = [
         {
-            "CITY": game.CITY,
+            "CITY": log.CITY,
             "GAME_ID": log.GAME_ID,
-            "AWAY_ID": game.AWAY_TEAM_ID,
-            "HOME_ID": game.HOME_TEAM_ID,
+            # "AWAY_ID": game.AWAY_TEAM_ID,
+            # "HOME_ID": game.HOME_TEAM_ID,
             "DATE": game.GAME_DATE,
+            "AWAY_TEAM": AWAY_NAME,
+            "HOME_TEAM": HOME_NAME
         }
-        for log, game, AWAY_NAME, HOME_NAME in games
+        for log, game, HOME_NAME, AWAY_NAME in matchups
     ]
-    return game_data
-    return "TURTLE"
+    return matchup_data
 
 
 if __name__ == '__main__':
