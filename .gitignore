@@ -1,0 +1,11 @@
+# Node.js dependencies
+better-picks/node_modules
+
+# Python virtual environment
+venv/
+
+# Compiled Files
+__pycache__/
+*.pyc
+
+.env
