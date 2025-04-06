@@ -1,10 +1,28 @@
+<<<<<<< HEAD
+/*
+  Global styles configuration using Tailwind CSS and custom properties
+  - Includes Tailwind base, components, and utilities.
+  - Defines global styles for typography and background animations
+*/
+
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+<<<<<<< HEAD
+/*
+  Define global custom properties for light and dark mode support 
+*/
+:root {
+  --background: #ffffff; /* Default light mode background */
+  --foreground: #171717; /* Default text color */
+=======
 :root {
   --background: #ffffff;
   --foreground: #171717;
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
 }
 
 @media (prefers-color-scheme: dark) {
@@ -14,8 +32,47 @@
   }
 }
 
+<<<<<<< HEAD
+/*
+  Global body styles:
+  - Sets text and background color dynamically
+  - Uses a modern sans-serif font stack
+*/
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+<<<<<<< HEAD
+
+/*
+  Gradient animation for background:
+  - Creates a smooth animated gradient transition from 0% to 100%.
+  - Uses a 270-degree linear gradient with 4 color stops.
+*/
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/*
+  Custom gradient background effect:
+  - A smooth animated background color transition for visual appeal
+*/
+.bg-gradient {
+  background: linear-gradient(270deg, #1a1a2e, #16213e, #0f3460, #e94560);
+  background-size: 400% 400%;
+  animation: gradient 10s ease infinite;
+}
+
+=======
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9

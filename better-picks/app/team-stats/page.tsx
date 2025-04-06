@@ -2,8 +2,32 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
+<<<<<<< HEAD
+// Import the Dashboard component
+import Dashboard from "../components/Dashboard";
+
+// Define the type for the team stats
+type TeamStats = {
+  team: string;
+  points: number;
+  assists: number;
+  blocks: number;
+  steals: number;
+  freeThrows: number;
+  attempts: number;
+  made: number;
+  defEff: number;
+  offEff: number;
+  rebounds: number;
+  record: string;
+};
+
+// Sample team stats data (replace with actual API data)
+async function fetchTeamStats(): Promise<TeamStats[]> {
+=======
 // Sample team stats data (replace with actual API data)
 async function fetchTeamStats() {
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
   return [
     { team: "Boston Celtics", points: 115.2, assists: 25.8, blocks: 5.4, steals: 7.2, freeThrows: 78.2, attempts: 88.5, made: 45.9, defEff: 108.5, offEff: 112.4, rebounds: 45.3, record: "45-20" },
     { team: "Miami Heat", points: 110.5, assists: 24.2, blocks: 4.8, steals: 6.9, freeThrows: 80.1, attempts: 85.4, made: 42.7, defEff: 106.2, offEff: 110.1, rebounds: 42.1, record: "40-25" },
@@ -15,7 +39,12 @@ async function fetchTeamStats() {
 }
 
 export default function TeamStats() {
+<<<<<<< HEAD
+  // Explicitly define the state type as an array of TeamStats objects
+  const [stats, setStats] = useState<TeamStats[]>([]);
+=======
   const [stats, setStats] = useState([]);
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
 
   useEffect(() => {
     async function loadStats() {
@@ -34,6 +63,17 @@ export default function TeamStats() {
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
       {/* Header with Navigation */}
       <header className="flex justify-between items-center w-full max-w-6xl py-5 px-10 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg">
+<<<<<<< HEAD
+        <div className="flex items-center gap-10">
+          {/* NBA Team Stats Title */}
+          <h1 className="text-4xl tracking-wide uppercase text-green-400 font-['Rajdhani']">
+            NBA Team Stats
+          </h1>
+
+          {/* Dashboard Component with Links */}
+          <Dashboard />
+        </div>
+=======
         <h1 className="text-4xl tracking-wide uppercase text-green-400 font-['Rajdhani']">
           NBA Team Stats
         </h1>
@@ -43,11 +83,15 @@ export default function TeamStats() {
           <Link href="/nba/stats" className="hover:text-green-400 transition-colors">Team Stats</Link>
           <Link href="/nba/player-analysis" className="hover:text-green-400 transition-colors">Player Analysis</Link>
         </nav>
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
       </header>
 
       {/* Scrollable Table Section */}
       <div className="w-full max-w-6xl mt-10 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6">
+<<<<<<< HEAD
+=======
         <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-4">Team Statistics</h2>
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
         <div className="overflow-y-auto max-h-[500px] rounded-lg p-2">
           <table className="w-full border-collapse border border-gray-700 text-lg">
             <thead className="sticky top-0 bg-gray-800 text-green-400">
@@ -87,6 +131,11 @@ export default function TeamStats() {
           </table>
         </div>
       </div>
+<<<<<<< HEAD
+    </div>
+  );
+}
+=======
 
       {/* Home Button */}
       <div className="mt-6">
@@ -100,3 +149,4 @@ export default function TeamStats() {
   );
 }
 
+>>>>>>> bae9ee246ac9055185ff74bd2a5b692fadc0c7e9
