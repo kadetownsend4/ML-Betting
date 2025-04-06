@@ -179,5 +179,10 @@ def fetch_matchups(team):
     return matchup_data
 
 
+@app.route('/NBAMatchups/<gameid>')
+def fetch_matchup_stats(gameid):
+    return "hello"
+
+
 if __name__ == '__main__':
     app.run(port=3000, debug=True)
