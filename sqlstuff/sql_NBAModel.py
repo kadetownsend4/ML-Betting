@@ -115,7 +115,7 @@ class NBAModel:
         """
         return self.f1
     
-    def preprocess_data(self, sql):
+    def preprocess_data(self, table):
         """Function to preprocess the data that is passed in as a parameter. For preprocessing,
            the features are all determined and calculated. It's a mixture of past game data and
            past 3 game data. The features are then divided and dropped based on which set they
@@ -125,7 +125,7 @@ class NBAModel:
            Parameters:
            sql -- sql query code to get stats from database for model running
         """
-        data = sqlalchemy_interact.get_df_from_mysql_sqlalchemy(sql)
+        data = sqlalchemy_interact.get_df_from_mysql_sqlalchemy(table)
         data.dropna()
         # true shooting percentage
         data["TS_PCT"] = data["PTS"]/(2*(data["FGA"]+(0.475*data["FTA"])))

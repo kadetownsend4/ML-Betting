@@ -17,8 +17,7 @@ print(lr_og.get_feature_set())
 print(lr_og.get_model_name())
 
 # specifies which set of gamelog data to preprocess from the database
-lr_og.preprocess_data(
-    "SELECT * FROM nbagamelogs")
+lr_og.preprocess_data("nbagamelogs")
 
 # runs the model with regards to dates of game for both training and testing
 lr_og.run("2021-09-03", "2022-02-03", "2020-05-01", "2021-04-29")
@@ -27,5 +26,5 @@ lr_og.format_predictions()
 print(lr_og.get_accuracy())
 
 # pushes the prediction dataframe for the current model to the database
-sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(
-    lr_og.get_database_df(), "nbapred")
+# sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(
+# lr_og.get_database_df(), "nbapred")
