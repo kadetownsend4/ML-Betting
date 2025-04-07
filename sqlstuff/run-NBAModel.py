@@ -15,6 +15,3 @@ def run_model(feature, model):
     away = df["AWAY_W_PROB"].tolist()
     name = feature + "_" + model
     return [name, date, home, away]
-
-
-print(run_model("OG", "LR"))
