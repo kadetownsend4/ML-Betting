@@ -180,8 +180,78 @@ def fetch_matchups(team):
 
 
 @app.route('/NBAMatchups/<awayteam>/<hometeam>/<gameid>')
-def fetch_matchup_stats(gameid):
-    return "hello"
+def fetch_matchup_stats(awayteam, hometeam, gameid):
+
+    Home = aliased(NBAGameLogs)
+    Away = aliased(NBAGameLogs)
+
+    stats = db.session.query(
+        Home.GAME_ID,
+        Home.GAME_DATE,
+        Home.W.label("HOME_W"),
+        Home.FG_PCT.label("HOME_FG_PCT"),
+        Home.FG3_PCT.label("HOME_FG3_PCT"),
+        Home.FT_PCT.label("HOME_FT_PCT"),
+        Home.TOT_REB.label("HOME_TOT_REB"),
+        Home.AST.label("HOME_AST"),
+        Home.PF.label("HOME_PF"),
+        Home.STL.label("HOME_STL"),
+        Home.TOTAL_TURNOVERS.label("HOME_TOTAL_TURNOVERS"),
+        Home.BLK.label("HOME_BLK"),
+        Home.PTS.label("HOME_PTS"),
+
+        Away.W.label("AWAY_W"),
+        Away.FG_PCT.label("AWAY_FG_PCT"),
+        Away.FG3_PCT.label("AWAY_FG3_PCT"),
+        Away.FT_PCT.label("AWAY_FT_PCT"),
+        Away.TOT_REB.label("AWAY_TOT_REB"),
+        Away.AST.label("AWAY_AST"),
+        Away.PF.label("AWAY_PF"),
+        Away.STL.label("AWAY_STL"),
+        Away.TOTAL_TURNOVERS.label("AWAY_TOTAL_TURNOVERS"),
+        Away.BLK.label("AWAY_BLK"),
+        Away.PTS.label("AWAY_PTS"),
+    ).join(
+        Away, Home.GAME_ID == Away.GAME_ID
+    ).filter(
+        Home.CITY != "OPPONENTS",
+        Away.CITY == "OPPONENTS",
+        Home.GAME_ID == gameid
+    ).first()
+
+    stats_data = {
+        'GAME_ID': stats.GAME_ID,
+        'GAME_DATE': stats.GAME_DATE,
+        'HOME_TEAM': {
+            'NAME': hometeam,
+            'W': stats.HOME_W,
+            'FG_PCT': stats.HOME_FG_PCT,
+            'FG3_PCT': stats.HOME_FG3_PCT,
+            'FT_PCT': stats.HOME_FT_PCT,
+            'TOT_REB': stats.HOME_TOT_REB,
+            'AST': stats.HOME_AST,
+            'PF': stats.HOME_PF,
+            'STL': stats.HOME_STL,
+            'TOTAL_TURNOVERS': stats.HOME_TOTAL_TURNOVERS,
+            'BLK': stats.HOME_BLK,
+            'PTS': stats.HOME_PTS,
+        },
+        'AWAY_TEAM': {
+            'NAME': awayteam,
+            'W': stats.AWAY_W,
+            'FG_PCT': stats.AWAY_FG_PCT,
+            'FG3_PCT': stats.AWAY_FG3_PCT,
+            'FT_PCT': stats.AWAY_FT_PCT,
+            'TOT_REB': stats.AWAY_TOT_REB,
+            'AST': stats.AWAY_AST,
+            'PF': stats.AWAY_PF,
+            'STL': stats.AWAY_STL,
+            'TOTAL_TURNOVERS': stats.AWAY_TOTAL_TURNOVERS,
+            'BLK': stats.AWAY_BLK,
+            'PTS': stats.AWAY_PTS,
+        }
+    }
+    return stats_data
 
 
 if __name__ == '__main__':
