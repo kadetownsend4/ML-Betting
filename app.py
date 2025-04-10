@@ -92,7 +92,10 @@ class NBAGameLogs(db.Model):
     ROLLING_OE = db.Column(db.Float, nullable=False)
     NUM_REST_DAYS = db.Column(db.Float, nullable=False)
 
-    game = db.relationship('NBAGameIds', back_populates='log')
+    #game = db.relationship('NBAGameIds', back_populates='log')
+
+    Predictions = db.relationship(
+        'NBAGameIds', foreign_keys='NBAGameIds.GAME_ID', backref='GAME_REF', lazy='dynamic')
 
 
 class NBAPredictions(db.Model):
@@ -185,14 +188,18 @@ class NBAPredictions(db.Model):
 
 class NBAGameIds(db.Model):
     __tablename__ = 'nbagameids'
-    GAME_ID = db.Column(db.Integer, primary_key=True)
+    GAME_ID = db.Column(db.Integer, db.ForeignKey(
+        'nbagamelogs.GAME_ID'), primary_key=True)
     GAME_DATE = db.Column(db.String(50), nullable=False)
     HOME_TEAM_ID = db.Column(db.Integer, db.ForeignKey(
         'nbateams.TEAM_ID'), nullable=False)
     AWAY_TEAM_ID = db.Column(db.Integer, db.ForeignKey(
         'nbateams.TEAM_ID'), nullable=False)
 
-    log = db.relationship('NBAGameLogs', back_populates='game')
+    Matchups = db.relationship(
+        'NBAGameLogs', foreign_keys='NBAGameLogs.GAME_ID', backref='LOG_REF', lazy='dynamic')
+
+    #log = db.relationship('NBAGameLogs', back_populates='game')
 
     pred = db.relationship('NBAPredictions', back_populates='gameteams')
 
@@ -371,6 +378,53 @@ def fetch_predictions_by_date(date, feature, model):
             "AWAY_TEAM": AWAY_NAME
         }
         for ID, HOME_PROB, AWAY_PROB, game, HOME_NAME, AWAY_NAME in predictions
+    ]
+    return predictions_data
+
+
+@app.route('/NBAPredictions/<team>/<feature>/<model>')
+def fetch_predictions_by_team(team, feature, model):
+
+    HomeTeam = aliased(NBATeam)
+    AwayTeam = aliased(NBATeam)
+
+    name_h = feature + "_" + model + "_HOME_W_PROB"
+    name_a = feature + "_" + model + "_AWAY_W_PROB"
+
+    home_probs = getattr(NBAPredictions, name_h)
+    away_probs = getattr(NBAPredictions, name_a)
+
+    predictions = db.session.query(
+        NBAPredictions.GAME_ID,
+        home_probs.label("home_probs"),
+        away_probs.label("away_probs"),
+        NBAGameIds,
+        NBAGameLogs,
+        HomeTeam.TEAM_NAME.label("HOME_TEAM_NAME"),
+        AwayTeam.TEAM_NAME.label("AWAY_TEAM_NAME")
+    ).join(
+        NBAGameIds, NBAPredictions.GAME_ID == NBAGameIds.GAME_ID
+    ).join(
+        HomeTeam, NBAGameIds.HOME_TEAM_ID == HomeTeam.TEAM_ID
+    ).join(
+        AwayTeam, NBAGameIds.AWAY_TEAM_ID == AwayTeam.TEAM_ID
+    ).join(
+        NBAGameLogs, NBAGameIds.GAME_ID == NBAGameLogs.GAME_ID
+    ).filter(
+        NBAGameLogs.NICKNAME == team
+    ).all()
+
+    predictions_data = [
+        {
+            "GAME_ID": ID,
+            "HOME_W_PROB": HOME_PROB,
+            "AWAY_W_PROB": AWAY_PROB,
+            "GAME_DATE": game.GAME_DATE,
+            "HOME_TEAM": HOME_NAME,
+            "AWAY_TEAM": AWAY_NAME,
+            "TEAM_W": log.W
+        }
+        for ID, HOME_PROB, AWAY_PROB, game, log, HOME_NAME, AWAY_NAME in predictions
     ]
     return predictions_data
 
