@@ -4,6 +4,7 @@ import os
 from sqlalchemy.sql import text
 from sqlalchemy import select
 from sqlalchemy.orm import aliased
+from slugify import slugify
 
 
 db = SQLAlchemy()
@@ -231,6 +232,8 @@ def fetch_teams():
 @app.route('/NBAMatchups/<team>')
 def fetch_matchups(team):
 
+    team_norm = team.replace('-', ' ')
+
     HomeTeam = aliased(NBATeam)
     AwayTeam = aliased(NBATeam)
 
@@ -246,7 +249,7 @@ def fetch_matchups(team):
     ).join(
         AwayTeam, NBAGameIds.AWAY_TEAM_ID == AwayTeam.TEAM_ID
     ).filter(
-        NBAGameLogs.NICKNAME == team
+        NBAGameLogs.NICKNAME == team_norm
     ).order_by(NBAGameLogs.GAME_DATE.desc()).all()
 
     matchup_data = [
@@ -266,6 +269,9 @@ def fetch_matchups(team):
 
 @app.route('/NBAMatchups/<awayteam>/<hometeam>/<gameid>')
 def fetch_matchup_stats(awayteam, hometeam, gameid):
+
+    away_team_norm = awayteam.replace('-', ' ')
+    home_team_norm = hometeam.replace('-', ' ')
 
     Home = aliased(NBAGameLogs)
     Away = aliased(NBAGameLogs)
@@ -308,7 +314,7 @@ def fetch_matchup_stats(awayteam, hometeam, gameid):
         'GAME_ID': stats.GAME_ID,
         'GAME_DATE': stats.GAME_DATE,
         'HOME_TEAM': {
-            'NAME': hometeam,
+            'NAME': home_team_norm,
             'W': stats.HOME_W,
             'FG_PCT': stats.HOME_FG_PCT,
             'FG3_PCT': stats.HOME_FG3_PCT,
@@ -322,7 +328,7 @@ def fetch_matchup_stats(awayteam, hometeam, gameid):
             'PTS': stats.HOME_PTS,
         },
         'AWAY_TEAM': {
-            'NAME': awayteam,
+            'NAME': away_team_norm,
             'W': stats.AWAY_W,
             'FG_PCT': stats.AWAY_FG_PCT,
             'FG3_PCT': stats.AWAY_FG3_PCT,
@@ -339,7 +345,7 @@ def fetch_matchup_stats(awayteam, hometeam, gameid):
     return stats_data
 
 
-@app.route('/NBAPredictions/<date>/<feature>/<model>')
+@app.route('/NBAPredictions/date/<date>/<feature>/<model>')
 def fetch_predictions_by_date(date, feature, model):
 
     HomeTeam = aliased(NBATeam)
@@ -382,8 +388,10 @@ def fetch_predictions_by_date(date, feature, model):
     return predictions_data
 
 
-@app.route('/NBAPredictions/<team>/<feature>/<model>')
+@app.route('/NBAPredictions/team/<team>/<feature>/<model>')
 def fetch_predictions_by_team(team, feature, model):
+
+    team_norm = team.replace('-', ' ')
 
     HomeTeam = aliased(NBATeam)
     AwayTeam = aliased(NBATeam)
@@ -411,8 +419,8 @@ def fetch_predictions_by_team(team, feature, model):
     ).join(
         NBAGameLogs, NBAGameIds.GAME_ID == NBAGameLogs.GAME_ID
     ).filter(
-        NBAGameLogs.NICKNAME == team
-    ).all()
+        NBAGameLogs.NICKNAME == team_norm
+    ).order_by(NBAGameIds.GAME_DATE.desc()).all()
 
     predictions_data = [
         {
