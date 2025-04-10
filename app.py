@@ -98,7 +98,7 @@ class NBAGameLogs(db.Model):
 class NBAPredictions(db.Model):
     __tablename__ = 'nbapredictions'
     GAME_ID = db.Column(db.Integer, db.ForeignKey(
-        'nbagamelogs.GAME_ID'), nullable=False)
+        'nbagamelogs.GAME_ID'), primary_key=True)
     OG_LR_HOME_W_PROB = db.Column(db.Float, nullable=False)
     OG_LR_AWAY_W_PROB = db.Column(db.Float, nullable=False)
     OG_SVM_HOME_W_PROB = db.Column(db.Float, nullable=False)
@@ -326,6 +326,25 @@ def fetch_matchup_stats(awayteam, hometeam, gameid):
         }
     }
     return stats_data
+
+
+@app.route('/NBAPredictions/<date>/<feature>/<model>')
+def fetch_predictions_by_date(date, feature, model):
+    name_h = feature + "_" + model + "HOME_W_PROB"
+    name_a = feature + "_" + model + "AWAY_W_PROB"
+
+    home_probs = getattr(NBAPredictions, name_h, None)
+    away_probs = getattr(NBAPredictions, name_a, None)
+
+    predictions = db.session.query(
+        NBAPredictions.GAME_ID,
+        home_probs.label("home_probs"),
+        away_probs.label("away_probs")
+    ).all()
+
+    predictions_data = {
+
+    }
 
 
 if __name__ == '__main__':
