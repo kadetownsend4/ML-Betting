@@ -49,7 +49,7 @@ const Dashboard: React.FC<DashboardProps> = ({ children }) => {
   return (
     <div className="relative z-50">
       <header className="z-50 flex justify-center w-full py-2 px-4">
-        <div className="flex justify-between items-center w-full max-w-8xl px-8 bg-gray-800 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
+        <div className="flex items-center w-full max-w-8xl px-8 bg-gray-800 backdrop-blur-md rounded-lg shadow-lg border border-white/15 gap-x-16 justify-between">
           <Link
             href="/"
             className="text-4xl font-extrabold text-green shadow-none border-b-4 border-green-400 hover:text-green-300 transition"
