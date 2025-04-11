@@ -226,7 +226,7 @@ def fetch_teams():
         }
         for team in teams
     ]
-    return team_data
+    return jsonify(team_data)
 
 
 @app.route('/NBAMatchups/<team>')
@@ -264,7 +264,7 @@ def fetch_matchups(team):
         }
         for log, game, HOME_NAME, AWAY_NAME in matchups
     ]
-    return matchup_data
+    return jsonify(matchup_data)
 
 
 @app.route('/NBAMatchups/<awayteam>/<hometeam>/<gameid>')
@@ -342,7 +342,7 @@ def fetch_matchup_stats(awayteam, hometeam, gameid):
             'PTS': stats.AWAY_PTS,
         }
     }
-    return stats_data
+    return jsonify(stats_data)
 
 
 @app.route('/NBAPredictions/date/<date>/<feature>/<model>')
@@ -385,7 +385,7 @@ def fetch_predictions_by_date(date, feature, model):
         }
         for ID, HOME_PROB, AWAY_PROB, game, HOME_NAME, AWAY_NAME in predictions
     ]
-    return predictions_data
+    return jsonify(predictions_data)
 
 
 @app.route('/NBAPredictions/team/<team>/<feature>/<model>')
@@ -434,7 +434,7 @@ def fetch_predictions_by_team(team, feature, model):
         }
         for ID, HOME_PROB, AWAY_PROB, game, log, HOME_NAME, AWAY_NAME in predictions
     ]
-    return predictions_data
+    return jsonify(predictions_data)
 
 
 if __name__ == '__main__':
