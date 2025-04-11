@@ -7,7 +7,14 @@ type DashboardProps = {
   children: ReactNode;
 };
 
-const menuItems = [
+type MenuItem = {
+  title: string;
+  links?: { name: string; path: string }[]; // optional because items with no dropdown won't have links
+  noDropdown?: boolean; // optional flag to suppress dropdown
+};
+
+
+const menuItems: MenuItem[] = [
   {
     title: "NBA",
     links: [
@@ -41,7 +48,12 @@ const menuItems = [
       { name: "Login", path: "/account/login" },
     ],
   },
+  {
+    title: "Home",
+    noDropdown: true,
+  },
 ];
+
 
 const Dashboard: React.FC<DashboardProps> = ({ children }) => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -72,25 +84,27 @@ const Dashboard: React.FC<DashboardProps> = ({ children }) => {
                   {!item.noDropdown && (
                     <AnimatePresence>
                       {isActive && (
-                        <motion.div
-                          key="dropdown"
-                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                          transition={{ duration: 0.3, ease: "easeInOut" }}
-                          className="absolute top-full mt-2 w-56 bg-gray-800/95 backdrop-blur-md border border-white/20 rounded-3xl shadow-xl p-3 z-50"
-                        >
-                          {item.links?.map((link, idx) => (
-                            <Link
-                              key={idx}
-                              href={link.path}
-                              className="block px-4 py-2 hover:bg-white/20 rounded-lg transition duration-200 text-white text-sm text-center"
-                            >
-                              {link.name}
-                            </Link>
-                          ))}
-                        </motion.div>
-                      )}
+  <motion.div
+    key="dropdown"
+    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+    animate={{ opacity: 1, y: 0, scale: 1 }}
+    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+    transition={{ duration: 0.3, ease: "easeInOut" }}
+    className="absolute top-full mt-2 w-56 bg-gray-800/95 backdrop-blur-md border border-white/20 rounded-3xl shadow-xl p-3 z-50"
+  >
+    {item.links?.map((link, idx) => (
+      <Link
+        key={idx}
+        href={link.path}
+        className="block px-4 py-2 hover:bg-white/20 rounded-lg transition duration-200 text-white text-sm text-center"
+      >
+        {link.name}
+      </Link>
+    ))}
+  </motion.div>
+)}
+
+                      )
                     </AnimatePresence>
                   )}
                 </div>
