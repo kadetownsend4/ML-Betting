@@ -92,7 +92,7 @@ class NBAGameLogs(db.Model):
     SEASON = db.Column(db.String(50), nullable=False)
     GAME_DATE = db.Column(db.String(50), nullable=False)
     GAME_ID = db.Column(db.Integer, db.ForeignKey(
-        'nbagameids.GAME_ID'), primary_key=True)
+        'nbagameids.GAME_ID'), primary_key=True) 
     HOME_FLAG = db.Column(db.Integer, nullable=False)
     AWAY_FLAG = db.Column(db.Integer, nullable=False)
     HOME_WIN_PCTG = db.Column(db.Float, nullable=False)
@@ -198,13 +198,16 @@ class NBAPredictions(db.Model):
 
 class NBAGameIds(db.Model):
     __tablename__ = 'nbagameids'
-    GAME_ID = db.Column(db.Integer, db.ForeignKey(
-        'nbagamelogs.GAME_ID'), primary_key=True)
+    GAME_ID = db.Column(db.Integer, primary_key=True)
     GAME_DATE = db.Column(db.String(50), nullable=False)
     HOME_TEAM_ID = db.Column(db.Integer, db.ForeignKey(
         'nbateams.TEAM_ID'), nullable=False)
     AWAY_TEAM_ID = db.Column(db.Integer, db.ForeignKey(
         'nbateams.TEAM_ID'), nullable=False)
+
+    # Relationship to home team and away team
+    home_team = db.relationship('NBATeam', foreign_keys=[HOME_TEAM_ID], backref='home_games', lazy='joined')
+    away_team = db.relationship('NBATeam', foreign_keys=[AWAY_TEAM_ID], backref='away_games', lazy='joined')
 
     Matchups = db.relationship(
         'NBAGameLogs', foreign_keys='NBAGameLogs.GAME_ID', backref='LOG_REF', lazy='dynamic')
