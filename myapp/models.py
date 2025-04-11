@@ -32,6 +32,188 @@ class User(db.Model):
         self.username = username
         self.email = email
 
+class NBATeam(db.Model):
+    __tablename__ = 'nbateams'
+    TEAM_ID = db.Column(db.Integer, primary_key=True)
+    TEAM_NAME = db.Column(db.String(50), nullable=False)
+    TEAM_ABR = db.Column(db.String(50), nullable=False)
+    TEAM_NICKNAME = db.Column(db.String(50), nullable=False)
+    TEAM_CITY = db.Column(db.String(50), nullable=False)
+    TEAM_STATE = db.Column(db.String(50), nullable=False)
+    TEAM_YEAR_FOUNDED = db.Column(db.Integer, nullable=False)
+
+    HOME_GAMES = db.relationship(
+        'NBAGameIds', foreign_keys='NBAGameIds.HOME_TEAM_ID', backref='HOME_TEAM_REF', lazy='dynamic')
+    AWAY_GAMES = db.relationship(
+        'NBAGameIds', foreign_keys='NBAGameIds.AWAY_TEAM_ID', backref='AWAY_TEAM_REF', lazy='dynamic')
+
+
+class NBAGameLogs(db.Model):
+    __tablename__ = 'nbagamelogs'
+    CITY = db.Column(db.String(50), nullable=False)
+    NICKNAME = db.Column(db.String(50), nullable=False)
+    TEAM_ID = db.Column(db.Integer, db.ForeignKey(
+        'nbateams.TEAM_ID'), nullable=False)
+    W = db.Column(db.Integer, nullable=False)
+    L = db.Column(db.Integer, nullable=False)
+    W_HOME = db.Column(db.Integer, nullable=False)
+    L_HOME = db.Column(db.Integer, nullable=False)
+    W_ROAD = db.Column(db.Integer, nullable=False)
+    L_ROAD = db.Column(db.Integer, nullable=False)
+    TEAM_TURNOVERS = db.Column(db.Integer, nullable=False)
+    TEAM_REBOUNDS = db.Column(db.Integer, nullable=False)
+    GP = db.Column(db.Integer, nullable=False)
+    GS = db.Column(db.Integer, nullable=False)
+    ACTUAL_MINUTES = db.Column(db.Integer, nullable=False)
+    ACTUAL_SECONDS = db.Column(db.Integer, nullable=False)
+    FG = db.Column(db.Integer, nullable=False)
+    FGA = db.Column(db.Integer, nullable=False)
+    FG_PCT = db.Column(db.Float, nullable=False)
+    FG3 = db.Column(db.Integer, nullable=False)
+    FG3A = db.Column(db.Integer, nullable=False)
+    FG3_PCT = db.Column(db.Float, nullable=False)
+    FT = db.Column(db.Integer, nullable=False)
+    FTA = db.Column(db.Integer, nullable=False)
+    FT_PCT = db.Column(db.Float, nullable=False)
+    OFF_REB = db.Column(db.Integer, nullable=False)
+    DEF_REB = db.Column(db.Integer, nullable=False)
+    TOT_REB = db.Column(db.Integer, nullable=False)
+    AST = db.Column(db.Integer, nullable=False)
+    PF = db.Column(db.Integer, nullable=False)
+    STL = db.Column(db.Integer, nullable=False)
+    TOTAL_TURNOVERS = db.Column(db.Integer, nullable=False)
+    BLK = db.Column(db.Integer, nullable=False)
+    PTS = db.Column(db.Integer, nullable=False)
+    AVG_REB = db.Column(db.Float, nullable=False)
+    AVG_PTS = db.Column(db.Float, nullable=False)
+    DQ = db.Column(db.Integer, nullable=False)
+    OFFENSIVE_EFFICIENCY = db.Column(db.Float, nullable=False)
+    SCORING_MARGIN = db.Column(db.Float, nullable=False)
+    SEASON = db.Column(db.String(50), nullable=False)
+    GAME_DATE = db.Column(db.String(50), nullable=False)
+    GAME_ID = db.Column(db.Integer, db.ForeignKey(
+        'nbagameids.GAME_ID'), primary_key=True)
+    HOME_FLAG = db.Column(db.Integer, nullable=False)
+    AWAY_FLAG = db.Column(db.Integer, nullable=False)
+    HOME_WIN_PCTG = db.Column(db.Float, nullable=False)
+    AWAY_WIN_PCTG = db.Column(db.Float, nullable=False)
+    TOTAL_WIN_PCTG = db.Column(db.Float, nullable=False)
+    ROLLING_SCORING_MARGIN = db.Column(db.Float, nullable=False)
+    ROLLING_OE = db.Column(db.Float, nullable=False)
+    NUM_REST_DAYS = db.Column(db.Float, nullable=False)
+
+    #game = db.relationship('NBAGameIds', back_populates='log')
+
+    Predictions = db.relationship(
+        'NBAGameIds', foreign_keys='NBAGameIds.GAME_ID', backref='GAME_REF', lazy='dynamic')
+
+
+class NBAPredictions(db.Model):
+    __tablename__ = 'nbapredictions'
+    GAME_ID = db.Column(db.Integer, db.ForeignKey(
+        'nbagameids.GAME_ID'), primary_key=True)
+    OG_LR_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG_LR_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG_SVM_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG_SVM_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG_GNB_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG_GNB_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG_GB_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG_GB_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG_DT_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG_DT_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG_KNN_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG_KNN_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG_MLP_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG_MLP_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG_RF_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG_RF_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_LR_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_LR_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_SVM_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_SVM_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_GNB_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_GNB_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_GB_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_GB_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_DT_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_DT_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_KNN_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_KNN_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_MLP_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_MLP_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_RF_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    OG3_RF_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    REG_LR_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    REG_LR_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    REG_SVM_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    REG_SVM_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    REG_GNB_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    REG_GNB_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    REG_GB_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    REG_GB_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    REG_DT_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    REG_DT_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    REG_KNN_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    REG_KNN_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    REG_MLP_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    REG_MLP_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    REG_RF_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    REG_RF_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    CF_LR_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    CF_LR_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    CF_SVM_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    CF_SVM_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    CF_GNB_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    CF_GNB_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    CF_GB_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    CF_GB_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    CF_DT_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    CF_DT_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    CF_KNN_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    CF_KNN_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    CF_MLP_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    CF_MLP_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    CF_RF_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    CF_RF_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    FE_LR_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    FE_LR_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    FE_SVM_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    FE_SVM_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    FE_GNB_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    FE_GNB_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    FE_GB_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    FE_GB_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    FE_DT_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    FE_DT_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    FE_KNN_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    FE_KNN_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    FE_MLP_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    FE_MLP_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+    FE_RF_HOME_W_PROB = db.Column(db.Float, nullable=False)
+    FE_RF_AWAY_W_PROB = db.Column(db.Float, nullable=False)
+
+    gameteams = db.relationship('NBAGameIds', back_populates='pred')
+
+
+class NBAGameIds(db.Model):
+    __tablename__ = 'nbagameids'
+    GAME_ID = db.Column(db.Integer, db.ForeignKey(
+        'nbagamelogs.GAME_ID'), primary_key=True)
+    GAME_DATE = db.Column(db.String(50), nullable=False)
+    HOME_TEAM_ID = db.Column(db.Integer, db.ForeignKey(
+        'nbateams.TEAM_ID'), nullable=False)
+    AWAY_TEAM_ID = db.Column(db.Integer, db.ForeignKey(
+        'nbateams.TEAM_ID'), nullable=False)
+
+    Matchups = db.relationship(
+        'NBAGameLogs', foreign_keys='NBAGameLogs.GAME_ID', backref='LOG_REF', lazy='dynamic')
+
+    #log = db.relationship('NBAGameLogs', back_populates='game')
+
+    pred = db.relationship('NBAPredictions', back_populates='gameteams')
+
+
 
 class NFLTeam(db.Model):
     TEAM_ID = db.Column(db.Integer, primary_key=True)
@@ -64,10 +246,10 @@ class NFLPlayer(db.Model):
     # Relationships
     TEAM = db.relationship('NFLTeam', backref=db.backref('players', lazy=True)) 
 
-    # 🔗 One-to-many relationship to quarterback weekly stats
+    # One-to-many relationship to quarterback weekly stats
     weekly_stats = db.relationship(
         'NFLQuarterbackWeeklyStats',
-        back_populates='player',
+        back_populates='PLAYER',
         cascade='all, delete-orphan'
     )
 
@@ -81,7 +263,7 @@ class NFLQuarterbackWeeklyStats(db.Model):
 
     # Foreign key relationship to NFLPlayer
     PLAYER_ID = db.Column(db.String(25), db.ForeignKey('nfl_player.PLAYER_ID'), nullable=False)
-    PLAYER = db.relationship('NFLPlayer', backref=db.backref('qb_weekly_stats', lazy=True))
+    PLAYER =  db.relationship('NFLPlayer', back_populates='weekly_stats')
 
     # General Info
     PLAYER_NAME = db.Column(db.String(100), nullable=False)
