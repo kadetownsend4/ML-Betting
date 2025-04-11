@@ -51,17 +51,11 @@ export default function TeamStats() {
   ]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
-      {/* Header with Navigation */}
-      <header className="flex justify-between items-center w-full max-w-6xl py-5 px-10 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg">
-        <div className="flex items-center gap-10">
-          {/* Dashboard Component with Links */}
-          <Dashboard />
-        </div>
-      </header>
+    <Dashboard>
+    
+      
 
-      {/* Scrollable Table Section */}
-      <div className="w-full max-w-6xl mt-10 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6">
+       <div className="w-full max-w-6xl mt-10 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6">
         <div className="overflow-y-auto max-h-[500px] rounded-lg p-2">
           <table className="w-full border-collapse border border-gray-700 text-lg">
             <thead className="sticky top-0 bg-gray-800 text-green-400">
@@ -101,6 +95,6 @@ export default function TeamStats() {
           </table>
         </div>
       </div>
-    </div>
+      </Dashboard>
   );
 }

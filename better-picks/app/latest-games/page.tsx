@@ -31,14 +31,10 @@ function NBATeams() {
   }, []);
 
   return (
+    <Dashboard>
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
       {/* Header Section */}
-      <header className="flex justify-between items-center w-full max-w-5xl py-5 px-10 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg relative z-10">
-        {/* <h1 className="text-4xl tracking-wide uppercase text-orange-400 flex items-center gap-2 font-['Rajdhani']">
-          <FaBasketballBall className="text-orange-400" /> NBA Teams
-        </h1> */}
-        <Dashboard />
-      </header>
+      
 
       {/* Teams Section */}
       <div className="w-full max-w-5xl mt-10 bg-white/10 shadow-lg rounded-xl p-6 relative z-10">
@@ -83,6 +79,7 @@ function NBATeams() {
         <p>&copy; 2025 NBA Stats. All rights reserved.</p>
       </footer>
     </div>
+    </Dashboard>
   );
 }
 

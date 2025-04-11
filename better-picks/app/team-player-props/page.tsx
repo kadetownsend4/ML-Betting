@@ -51,7 +51,7 @@ export default function NFLTeams() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
       {/* Header Section */}
-      <header className="flex justify-between items-center w-full max-w-5xl py-5 px-10 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg relative z-10">
+      <header className="flex justify-between items-center w-full max-w-5xl py-5 px-10 bg-white/10 rounded-xl shadow-lg relative z-10">
         {/* <h1 className="text-4xl tracking-wide uppercase text-green-400 flex items-center gap-2 font-['Rajdhani']">
           <FaFootballBall className="text-green-400" /> Team Based Player Props
         </h1> */}
@@ -59,7 +59,7 @@ export default function NFLTeams() {
       </header>
 
       {/* Custom Dropdown for Selecting Team */}
-      <div className="w-full max-w-5xl mt-10 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6 relative z-50">
+      <div className="w-full max-w-5xl mt-10 bg-white/10 shadow-lg rounded-xl p-6 relative z-50">
         <h2 className="text-4xl font-bold text-green-400 text-center mb-4">NFL Player Prop Positions</h2>
 
         <div className="mb-4">
