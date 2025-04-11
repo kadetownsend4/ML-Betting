@@ -1,0 +1,30 @@
+"""File to test the NBAModel class in regards to its ability to get data from the database, run a model with a specific feature set
+   and model name, and return results into the database.
+
+   author = Kade Townsend
+"""
+
+# import the sqlalchemy_interact.py file in order to use its functions
+import sqlalchemy_interact
+# import the NBAModel class
+from sql_NBAModel import NBAModel
+
+# create a specific model with a feature set and model name
+lr_og = NBAModel("OG", "LR")
+
+
+print(lr_og.get_feature_set())
+print(lr_og.get_model_name())
+
+# specifies which set of gamelog data to preprocess from the database
+lr_og.preprocess_data("nbagamelogs")
+
+# runs the model with regards to dates of game for both training and testing
+lr_og.run("2021-09-03", "2022-02-03", "2020-05-01", "2021-04-29")
+lr_og.calc_metrics()
+lr_og.format_predictions()
+print(lr_og.get_accuracy())
+
+# pushes the prediction dataframe for the current model to the database
+# sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(
+# lr_og.get_database_df(), "nbapred")
