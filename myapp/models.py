@@ -32,8 +32,6 @@ class User(db.Model):
         self.username = username
         self.email = email
 
-<<<<<<< HEAD
-=======
 class NBATeam(db.Model):
     __tablename__ = 'nbateams'
     TEAM_ID = db.Column(db.Integer, primary_key=True)
@@ -216,7 +214,6 @@ class NBAGameIds(db.Model):
     pred = db.relationship('NBAPredictions', back_populates='gameteams')
 
 
->>>>>>> origin/nba-data-import
 
 class NFLTeam(db.Model):
     TEAM_ID = db.Column(db.Integer, primary_key=True)
@@ -249,17 +246,10 @@ class NFLPlayer(db.Model):
     # Relationships
     TEAM = db.relationship('NFLTeam', backref=db.backref('players', lazy=True)) 
 
-<<<<<<< HEAD
-    # 🔗 One-to-many relationship to quarterback weekly stats
-    weekly_stats = db.relationship(
-        'NFLQuarterbackWeeklyStats',
-        back_populates='player',
-=======
     # One-to-many relationship to quarterback weekly stats
     weekly_stats = db.relationship(
         'NFLQuarterbackWeeklyStats',
         back_populates='PLAYER',
->>>>>>> origin/nba-data-import
         cascade='all, delete-orphan'
     )
 
@@ -273,11 +263,7 @@ class NFLQuarterbackWeeklyStats(db.Model):
 
     # Foreign key relationship to NFLPlayer
     PLAYER_ID = db.Column(db.String(25), db.ForeignKey('nfl_player.PLAYER_ID'), nullable=False)
-<<<<<<< HEAD
-    PLAYER = db.relationship('NFLPlayer', backref=db.backref('qb_weekly_stats', lazy=True))
-=======
     PLAYER =  db.relationship('NFLPlayer', back_populates='weekly_stats')
->>>>>>> origin/nba-data-import
 
     # General Info
     PLAYER_NAME = db.Column(db.String(100), nullable=False)

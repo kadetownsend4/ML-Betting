@@ -1,12 +1,7 @@
 from flask import Blueprint, render_template, jsonify, request, redirect, url_for, flash
-<<<<<<< HEAD
-from .models import User, NFLTeam
-from .extensions import db 
-=======
 from .models import User, NFLTeam, NFLQuarterbackWeeklyStats, NBATeam, NBAGameIds, NBAGameLogs, NBAPredictions
 from .extensions import db 
 from sqlalchemy.orm import aliased
->>>>>>> origin/nba-data-import
 
 main = Blueprint('main', __name__)
 
@@ -16,8 +11,6 @@ def index():
     users_list_html = [f"<li>{user.username}</li>" for user in users]
     return f"<ul>{''.join(users_list_html)}</ul>"
 
-<<<<<<< HEAD
-=======
 # @main.route('/')
 # def index():
 #     return render_template('index.html')
@@ -249,7 +242,6 @@ def fetch_predictions_by_team(team, feature, model):
     ]
     return jsonify(predictions_data)
 
->>>>>>> origin/nba-data-import
 # I referenced chatgpt for help creating methods for adding users, login, and fetching data.
 # https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48
 @main.route('/add', methods=['GET', 'POST'])
