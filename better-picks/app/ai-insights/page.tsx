@@ -33,64 +33,58 @@ export default function PlayerPropAnalysisPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white px-6 py-10 flex flex-col items-center font-['Orbitron']">
-      {/* Header */}
-      <header className="flex justify-between items-center w-full max-w-6xl py-5 px-8 bg-white/10 backdrop-blur-lg rounded-xl shadow-xl">
-        <Dashboard />
-        <nav className="flex gap-8 text-lg">
-          {/* Additional nav links can be added here */}
-        </nav>
-      </header>
+    <Dashboard>
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white px-6 py-10 flex flex-col items-center font-['Orbitron']">
+        {/* Title */}
+        <h1 className="text-4xl font-bold text-green-400 mt-10 mb-6 tracking-wide uppercase font-['Rajdhani']">
+          AI Insights : Player Prop Analysis
+        </h1>
 
-      {/* Title */}
-      <h1 className="text-4xl font-bold text-green-400 mt-10 mb-6 tracking-wide uppercase font-['Rajdhani']">
-        AI Insights : Player Prop Analysis
-      </h1>
-
-      {/* Table Section */}
-      <div className="w-full max-w-6xl bg-white/10 backdrop-blur-lg shadow-xl rounded-xl p-6">
-        <div className="overflow-y-auto max-h-[500px] rounded-lg">
-          <table className="w-full border-collapse border border-gray-700 text-lg">
-            <thead className="bg-gray-800 text-green-400">
-              <tr>
-                <th className="border border-gray-700 px-4 py-3 text-left">Player</th>
-                <th className="border border-gray-700 px-4 py-3">Bet Type</th>
-                <th className="border border-gray-700 px-4 py-3">Prediction</th>
-                <th className="border border-gray-700 px-4 py-3">Outcome</th>
-                <th className="border border-gray-700 px-4 py-3">Result</th>
-                <th className="border border-gray-700 px-4 py-3">Analysis</th>
-              </tr>
-            </thead>
-            <tbody>
-              {props.map((prop, index) => (
-                <tr key={index} className="border border-gray-700 hover:bg-gray-800 transition">
-                  <td className="border border-gray-700 px-4 py-3">{prop.player}</td>
-                  <td className="border border-gray-700 px-4 py-3 text-center">{prop.betType}</td>
-                  <td className="border border-gray-700 px-4 py-3 text-center">{prop.prediction}</td>
-                  <td className="border border-gray-700 px-4 py-3 text-center">{prop.outcome}</td>
-                  <td
-                    className={`border border-gray-700 px-4 py-3 text-center font-bold ${
-                      prop.result === "Won" ? "text-green-400" : "text-red-400"
-                    }`}
-                  >
-                    {prop.result}
-                  </td>
-                  <td className="border border-gray-700 px-4 py-3">{prop.analysis}</td>
+        {/* Table Section */}
+        <div className="w-full max-w-6xl bg-white/10 backdrop-blur-lg shadow-xl rounded-xl p-6">
+          <div className="overflow-y-auto max-h-[500px] rounded-lg">
+            <table className="w-full border-collapse border border-gray-700 text-lg">
+              <thead className="bg-gray-800 text-green-400">
+                <tr>
+                  <th className="border border-gray-700 px-4 py-3 text-left">Player</th>
+                  <th className="border border-gray-700 px-4 py-3">Bet Type</th>
+                  <th className="border border-gray-700 px-4 py-3">Prediction</th>
+                  <th className="border border-gray-700 px-4 py-3">Outcome</th>
+                  <th className="border border-gray-700 px-4 py-3">Result</th>
+                  <th className="border border-gray-700 px-4 py-3">Analysis</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {props.map((prop, index) => (
+                  <tr key={index} className="border border-gray-700 hover:bg-gray-800 transition">
+                    <td className="border border-gray-700 px-4 py-3">{prop.player}</td>
+                    <td className="border border-gray-700 px-4 py-3 text-center">{prop.betType}</td>
+                    <td className="border border-gray-700 px-4 py-3 text-center">{prop.prediction}</td>
+                    <td className="border border-gray-700 px-4 py-3 text-center">{prop.outcome}</td>
+                    <td
+                      className={`border border-gray-700 px-4 py-3 text-center font-bold ${
+                        prop.result === "Won" ? "text-green-400" : "text-red-400"
+                      }`}
+                    >
+                      {prop.result}
+                    </td>
+                    <td className="border border-gray-700 px-4 py-3">{prop.analysis}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
 
-      {/* Optional Navigation Button */}
-      {/* <div className="mt-8">
-        <Link href="/">
-          <button className="bg-green-500 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:bg-green-600 transition">
-            Back to Home
-          </button>
-        </Link>
-      </div> */}
-    </div>
+        {/* Optional Back Button */}
+        {/* <div className="mt-8">
+          <Link href="/">
+            <button className="bg-green-500 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:bg-green-600 transition">
+              Back to Home
+            </button>
+          </Link>
+        </div> */}
+      </div>
+    </Dashboard>
   );
 }
