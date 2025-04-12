@@ -15,7 +15,6 @@ team_id,team_name,team_abbr,team_nick,team_conf,team_division,team_wordmark,team
 2200,Indianapolis Colts,IND,Colts,AFC,AFC South,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/IND.png,https://a.espncdn.com/i/teamlogos/nfl/500/ind.png
 2250,Jacksonville Jaguars,JAX,Jaguars,AFC,AFC South,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/JAX.png,https://a.espncdn.com/i/teamlogos/nfl/500/jax.png
 2310,Kansas City Chiefs,KC,Chiefs,AFC,AFC West,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/KC.png,https://a.espncdn.com/i/teamlogos/nfl/500/kc.png
-2510,Los Angeles Rams,LA,Rams,NFC,NFC West,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/LA.png,https://a.espncdn.com/i/teamlogos/nfl/500/lar.png
 4400,Los Angeles Chargers,LAC,Chargers,AFC,AFC West,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/LAC.png,https://a.espncdn.com/i/teamlogos/nfl/500/lac.png
 2510,Los Angeles Rams,LAR,Rams,NFC,NFC West,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/LAR.png,https://a.espncdn.com/i/teamlogos/nfl/500/lar.png
 2520,Las Vegas Raiders,LV,Raiders,AFC,AFC West,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/LV.png,https://a.espncdn.com/i/teamlogos/nfl/500/lv.png
@@ -25,13 +24,10 @@ team_id,team_name,team_abbr,team_nick,team_conf,team_division,team_wordmark,team
 3300,New Orleans Saints,NO,Saints,NFC,NFC South,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/NO.png,https://a.espncdn.com/i/teamlogos/nfl/500/no.png
 3410,New York Giants,NYG,Giants,NFC,NFC East,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/NYG.png,https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png
 3430,New York Jets,NYJ,Jets,AFC,AFC East,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/NYJ.png,https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png
-2520,Oakland Raiders,OAK,Raiders,AFC,AFC West,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/OAK.png,https://a.espncdn.com/i/teamlogos/nfl/500/lv.png
 3700,Philadelphia Eagles,PHI,Eagles,NFC,NFC East,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/PHI.png,https://a.espncdn.com/i/teamlogos/nfl/500/phi.png
 3900,Pittsburgh Steelers,PIT,Steelers,AFC,AFC North,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/PIT.png,https://a.espncdn.com/i/teamlogos/nfl/500/pit.png
-4400,San Diego Chargers,SD,Chargers,AFC,AFC West,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/SD.png,https://a.espncdn.com/i/teamlogos/nfl/500/lac.png
 4600,Seattle Seahawks,SEA,Seahawks,NFC,NFC West,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/SEA.png,https://a.espncdn.com/i/teamlogos/nfl/500/sea.png
 4500,San Francisco 49ers,SF,49ers,NFC,NFC West,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/SF.png,https://a.espncdn.com/i/teamlogos/nfl/500/sf.png
-2510,St. Louis Rams,STL,Rams,NFC,NFC West,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/STL.png,https://a.espncdn.com/i/teamlogos/nfl/500/lar.png
 4900,Tampa Bay Buccaneers,TB,Buccaneers,NFC,NFC South,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/TB.png,https://a.espncdn.com/i/teamlogos/nfl/500/tb.png
 2100,Tennessee Titans,TEN,Titans,AFC,AFC South,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/TEN.png,https://a.espncdn.com/i/teamlogos/nfl/500/ten.png
 5110,Washington Commanders,WAS,Commanders,NFC,NFC East,https://github.com/nflverse/nflverse-pbp/raw/master/wordmarks/WAS.png,https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png

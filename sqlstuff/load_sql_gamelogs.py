@@ -8,7 +8,7 @@ import pandas as pd
 import sqlalchemy_interact
 
 # puts csv file of game logs into df
-df = pd.read_csv("GettingData/gameLogs.csv")
+df = pd.read_csv("NBA/GettingData/gameLogs.csv")
 
 df = df.drop("Unnamed: 0", axis=1)
 

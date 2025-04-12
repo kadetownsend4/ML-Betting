@@ -1,5 +1,6 @@
 from datetime import datetime
 from .extensions import db 
+from sqlalchemy import PrimaryKeyConstraint
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -41,6 +42,7 @@ class NBATeam(db.Model):
     TEAM_CITY = db.Column(db.String(50), nullable=False)
     TEAM_STATE = db.Column(db.String(50), nullable=False)
     TEAM_YEAR_FOUNDED = db.Column(db.Integer, nullable=False)
+    TEAM_LOGO = db.Column(db.String(75), nullable=False)
 
     HOME_GAMES = db.relationship(
         'NBAGameIds', foreign_keys='NBAGameIds.HOME_TEAM_ID', backref='HOME_TEAM_REF', lazy='dynamic')
@@ -50,10 +52,11 @@ class NBATeam(db.Model):
 
 class NBAGameLogs(db.Model):
     __tablename__ = 'nbagamelogs'
+    
+
     CITY = db.Column(db.String(50), nullable=False)
     NICKNAME = db.Column(db.String(50), nullable=False)
-    TEAM_ID = db.Column(db.Integer, db.ForeignKey(
-        'nbateams.TEAM_ID'), nullable=False)
+    TEAM_ID = db.Column(db.Integer, db.ForeignKey('nbateams.TEAM_ID'), nullable=False) 
     W = db.Column(db.Integer, nullable=False)
     L = db.Column(db.Integer, nullable=False)
     W_HOME = db.Column(db.Integer, nullable=False)
@@ -92,20 +95,24 @@ class NBAGameLogs(db.Model):
     SEASON = db.Column(db.String(50), nullable=False)
     GAME_DATE = db.Column(db.String(50), nullable=False)
     GAME_ID = db.Column(db.Integer, db.ForeignKey(
-        'nbagameids.GAME_ID'), primary_key=True) 
+        'nbagameids.GAME_ID'), nullable=False) 
     HOME_FLAG = db.Column(db.Integer, nullable=False)
     AWAY_FLAG = db.Column(db.Integer, nullable=False)
-    HOME_WIN_PCTG = db.Column(db.Float, nullable=False)
-    AWAY_WIN_PCTG = db.Column(db.Float, nullable=False)
+    HOME_WIN_PCTG = db.Column(db.Float, nullable=True)
+    AWAY_WIN_PCTG = db.Column(db.Float, nullable=True)
     TOTAL_WIN_PCTG = db.Column(db.Float, nullable=False)
     ROLLING_SCORING_MARGIN = db.Column(db.Float, nullable=False)
     ROLLING_OE = db.Column(db.Float, nullable=False)
-    NUM_REST_DAYS = db.Column(db.Float, nullable=False)
+    NUM_REST_DAYS = db.Column(db.Float, nullable=True)
 
     #game = db.relationship('NBAGameIds', back_populates='log')
 
-    Predictions = db.relationship(
-        'NBAGameIds', foreign_keys='NBAGameIds.GAME_ID', backref='GAME_REF', lazy='dynamic')
+    __table_args__ = (
+        PrimaryKeyConstraint('GAME_ID', 'TEAM_ID', name='pk_game_team'),
+    )
+
+    # Predictions = db.relationship(
+    #     'NBAGameIds', foreign_keys='NBAGameIds.GAME_ID', backref='GAME_REF', lazy='dynamic')
 
 
 class NBAPredictions(db.Model):
@@ -219,6 +226,7 @@ class NBAGameIds(db.Model):
 
 
 class NFLTeam(db.Model):
+    __tablename__ = 'nfl_teams'
     TEAM_ID = db.Column(db.Integer, primary_key=True)
     TEAM_NAME = db.Column(db.String(50), unique=True, nullable=False)
     TEAM_ABR = db.Column(db.String(10), unique=True, nullable=False)
@@ -232,10 +240,11 @@ class NFLTeam(db.Model):
         return f"<NFLTeam {self.TEAM_NAME} ({self.TEAM_ABR})>"
 
 class NFLPlayer(db.Model):
+    __tablename__ = 'nfl_players'
     # Primary key and foreign key
     PLAYER_ID = db.Column(db.String(25), primary_key=True) 
     # Team reference
-    TEAM_ID = db.Column(db.Integer, db.ForeignKey('nfl_team.TEAM_ID'), nullable=False) 
+    TEAM_ID = db.Column(db.Integer, db.ForeignKey('nfl_teams.TEAM_ID'), nullable=False) 
     # Other fields
     SEASON = db.Column(db.Integer, nullable=False)
     TEAM = db.relationship('NFLTeam', backref=db.backref('players', lazy=True))  # Link to Team table
@@ -265,7 +274,7 @@ class NFLQuarterbackWeeklyStats(db.Model):
     STAT_ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     # Foreign key relationship to NFLPlayer
-    PLAYER_ID = db.Column(db.String(25), db.ForeignKey('nfl_player.PLAYER_ID'), nullable=False)
+    PLAYER_ID = db.Column(db.String(25), db.ForeignKey('nfl_players.PLAYER_ID'), nullable=False)
     PLAYER =  db.relationship('NFLPlayer', back_populates='weekly_stats')
 
     # General Info

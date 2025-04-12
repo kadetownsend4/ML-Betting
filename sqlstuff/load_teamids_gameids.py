@@ -7,42 +7,39 @@
 import sqlalchemy_interact
 import pandas as pd
 
-# gets the nba game logs from the database as a pandas dataframe
-data = sqlalchemy_interact.get_df_from_mysql_sqlalchemy(
-    'nbagamelogs')
-data = data.dropna()
-gameDF = data
-gamedf = data
+# Read the game logs CSV directly
+df = pd.read_csv("NBA/GettingData/gameLogs.csv")
 
-# creates two frames, one for home team and one for away teams
-# allows for the combination process to begin
-homeTeamFrame = gameDF[gameDF['CITY'] != 'OPPONENTS']
-awayTeamFrame = gamedf[gamedf['CITY'] == 'OPPONENTS']
+# Clean up unnecessary columns and strip the 'NICKNAME' string
+df = df.drop("Unnamed: 0", axis=1)
+df['NICKNAME'] = df['NICKNAME'].str.lstrip()
 
-# dwindles columns down to only what is needed for this table
-# game_date is only needed once
+# Create separate frames for home and away teams
+homeTeamFrame = df[df['CITY'] != 'OPPONENTS']
+awayTeamFrame = df[df['CITY'] == 'OPPONENTS']
+
+# Reduce columns to the necessary ones for merging (game_date only needed once)
 homeTeamFrame = homeTeamFrame[['GAME_ID', 'GAME_DATE', 'SEASON', 'TEAM_ID']]
 awayTeamFrame = awayTeamFrame[['GAME_ID', 'SEASON', 'TEAM_ID']]
 
-# merges the two frames together, so game_id will be in correspondance with both home and away ids
+# Rename columns to differentiate home and away stats
 colRenameDict = {}
-# add HOME in front of home stats
 for col in homeTeamFrame.columns:
     if (col != 'GAME_ID') & (col != 'SEASON') & (col != 'GAME_DATE'):
         colRenameDict[col] = 'HOME_' + col
 homeTeamFrame.rename(columns=colRenameDict, inplace=True)
+
 colRenameDict = {}
-# add AWAY in front of away stats
 for col in awayTeamFrame.columns:
     if (col != 'GAME_ID') & (col != 'SEASON') & (col != 'GAME_DATE'):
         colRenameDict[col] = 'AWAY_' + col
 awayTeamFrame.rename(columns=colRenameDict, inplace=True)
-# merge home and away features together
-data = pd.merge(homeTeamFrame, awayTeamFrame,
-                how="inner", on=["GAME_ID", "SEASON"])
 
-# don't need season if have date
-data = data.drop(['SEASON'], axis=1)
+# Merge home and away team data on GAME_ID and SEASON
+merged_data = pd.merge(homeTeamFrame, awayTeamFrame, how="inner", on=["GAME_ID", "SEASON"])
 
-# uploads df to the database
-sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(data, "nbagameids")
+# Drop the SEASON column since GAME_DATE should be sufficient
+merged_data = merged_data.drop(['SEASON'], axis=1)
+
+# Insert the merged data into the "nbagameids" table
+sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(merged_data, "nbagameids")
