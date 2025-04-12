@@ -247,7 +247,7 @@ class NFLPlayer(db.Model):
     TEAM_ID = db.Column(db.Integer, db.ForeignKey('nfl_teams.TEAM_ID'), nullable=False) 
     # Other fields
     SEASON = db.Column(db.Integer, nullable=False)
-    TEAM = db.relationship('NFLTeam', backref=db.backref('players', lazy=True))  # Link to Team table
+    TEAM = db.Column(db.String(20), nullable=False)
     PLAYER_NAME = db.Column(db.String(100), nullable=False)
     FIRST_NAME = db.Column(db.String(50), nullable=False)
     LAST_NAME = db.Column(db.String(50), nullable=False)
@@ -256,7 +256,7 @@ class NFLPlayer(db.Model):
     GAME_TYPE = db.Column(db.String(20), nullable=True)
 
     # Relationships
-    TEAM = db.relationship('NFLTeam', backref=db.backref('players', lazy=True)) 
+    team_ref = db.relationship('NFLTeam', backref=db.backref('players', lazy=True)) 
 
     # One-to-many relationship to quarterback weekly stats
     weekly_stats = db.relationship(
