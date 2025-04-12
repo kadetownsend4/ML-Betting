@@ -2,6 +2,9 @@
 Script to load NFL player data from CSV into MySQL database using SQLAlchemy.
 
 Author: Timothy Berlanga
+
+I used ChatGPT for help generating the script to upload my data based on the csv file
+https://chatgpt.com/share/67fae08f-148c-800f-bbeb-79064e423c39
 """
 
 import pandas as pd

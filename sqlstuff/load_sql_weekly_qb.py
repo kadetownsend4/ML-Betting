@@ -3,6 +3,9 @@ Static file that loads NFL quarterback weekly stats data to the database for use
 This file only needs to run once.
 
 author = Timothy Berlanga
+
+I used ChatGPT for help generating the script to upload my data based on the csv file
+https://chatgpt.com/share/67fae08f-148c-800f-bbeb-79064e423c39
 """
 
 import pandas as pd
