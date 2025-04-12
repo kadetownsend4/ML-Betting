@@ -9,11 +9,15 @@ import pandas as pd
 from sqlalchemy import create_engine
 # import for getting data from .env
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 # connection credentials are held in the gitignore file for security reasons. This
 # set of code gathers connection credentials from a .env file for access.
 user = os.environ.get('DB_USER')
+print(user)
 pw = os.environ.get('DB_PW')
 host = os.environ.get('DB_HOST')
 port = "5432"
@@ -32,7 +36,7 @@ def insert_df_to_mysql_sqlalchemy(df, table_name):
     engine = create_engine(
         f"postgresql://{user}:{pw}@{host}:{port}/{name}")
     # inserts df, this code replaces a table if it has the same name already in database
-    df.to_sql(name=table_name, con=engine, if_exists='replace', index=False)
+    df.to_sql(name=table_name, con=engine, if_exists='append', index=False)
     print(f"DataFrame successfully inserted into table '{table_name}'")
 
 
