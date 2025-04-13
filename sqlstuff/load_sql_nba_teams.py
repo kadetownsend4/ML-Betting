@@ -1,7 +1,10 @@
 """Static file that intialiy loads team information to the database for use within the application.
    This file only needs to run once.
 
-   author = Kade Townsend
+   author = Kade Townsend and Timothy Berlanga 
+
+   I used ChatGPT for help generating the script to find out how to easily add the Logos to the df
+https://chatgpt.com/share/67fae08f-148c-800f-bbeb-79064e423c39
 """
 
 import pandas as pd
