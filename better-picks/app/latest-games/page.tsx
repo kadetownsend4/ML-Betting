@@ -122,20 +122,22 @@ function NBATeams() {
     NBA Teams
   </h2>
 
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-    {teams.map((team, index) => (
-      <div
-        key={index}
-        className="bg-gray-900 p-5 rounded-2xl shadow-xl border border-white/10 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-gray-800"
-      >
-        <h2 className="text-xl font-bold text-white text-center tracking-wide mb-2">
-          {team.TEAM_NAME}
-        </h2>
-        <p className="text-sm text-gray-300">{team.TEAM_CITY}, {team.TEAM_STATE}</p>
-        <p className="text-sm text-gray-400 italic">Nickname: {team.TEAM_NICKNAME}</p>
-        <p className="text-sm text-gray-500">Founded: {team.TEAM_YEAR_FOUNDED}</p>
-      </div>
-    ))}
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+  {teams.map((team) => (
+  <Link
+    key={team.TEAM_ID} // use a unique and stable ID
+    href={`/team-history/${team.TEAM_NICKNAME.toLowerCase().replace(/\s+/g, "-")}`}
+  >
+    <div className="bg-gray-900 p-5 rounded-2xl shadow-xl border border-white/10 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-gray-800 cursor-pointer">
+      <h2 className="text-xl font-bold text-white text-center tracking-wide mb-2">
+        {team.TEAM_NAME}
+      </h2>
+      <p className="text-sm text-gray-300">{team.TEAM_CITY}, {team.TEAM_STATE}</p>
+      <p className="text-sm text-gray-400 italic">Nickname: {team.TEAM_NICKNAME}</p>
+      <p className="text-sm text-gray-500">Founded: {team.TEAM_YEAR_FOUNDED}</p>
+    </div>
+  </Link>
+))}
   </div>
 </div>
 
