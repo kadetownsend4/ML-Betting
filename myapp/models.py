@@ -366,6 +366,70 @@ class NFLQuarterbackWeeklyStats(db.Model):
     def __repr__(self):
         return f"<QBStats {self.PLAYER_NAME} - Week {self.WEEK}, Season {self.SEASON}>"
 
+class NFLReceivingWeeklyStats(db.Model):
+    __tablename__ = 'nfl_receiving_weekly_stats'
+
+    STAT_ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    # Foreign key relationship to NFLPlayer
+    PLAYER_ID = db.Column(db.String(25), db.ForeignKey('nfl_players.PLAYER_ID'), nullable=False)
+    PLAYER = db.relationship('NFLPlayer', back_populates='receiving_stats')
+
+    # General Info
+    PLAYER_NAME = db.Column(db.String(100), nullable=False)
+    PLAYER_ABBR = db.Column(db.String(50), nullable=True)
+    GAME_ID = db.Column(db.String(50), nullable=True)
+    WEEK = db.Column(db.Integer, nullable=False)
+    RECENT_TEAM = db.Column(db.String(10), nullable=True)
+    OPPONENT_TEAM = db.Column(db.String(10), nullable=True)
+    SEASON = db.Column(db.Integer, nullable=False)
+    SEASON_TYPE = db.Column(db.String(20), nullable=True)
+    POSITION = db.Column(db.String(10), nullable=True)
+    HEADSHOT_URL = db.Column(db.String(255), nullable=True)
+
+    # Receiving Stats
+    RECEPTIONS = db.Column(db.Integer, nullable=True)
+    TARGETS = db.Column(db.Integer, nullable=True)
+    RECEIVING_YARDS = db.Column(db.Integer, nullable=True)
+    RECEIVING_TDS = db.Column(db.Integer, nullable=True)
+    RECEIVING_FUMBLES = db.Column(db.Integer, nullable=True)
+    RECEIVING_FUMBLES_LOST = db.Column(db.Integer, nullable=True)
+    RECEIVING_AIR_YARDS = db.Column(db.Float, nullable=True)
+    RECEIVING_YARDS_AFTER_CATCH = db.Column(db.Float, nullable=True)
+    RECEIVING_FIRST_DOWNS = db.Column(db.Integer, nullable=True)
+    RECEIVING_EPA = db.Column(db.Float, nullable=True)
+    RECEIVING_2PT_CONVERSIONS = db.Column(db.Integer, nullable=True)
+
+    # Advanced Receiving Metrics
+    RACR = db.Column(db.Float, nullable=True)
+    TARGET_SHARE = db.Column(db.Float, nullable=True)
+    AIR_YARDS_SHARE = db.Column(db.Float, nullable=True)
+    WOPR = db.Column(db.Float, nullable=True)
+
+    # Special Teams & Fantasy
+    SPECIAL_TEAMS_TDS = db.Column(db.Integer, nullable=True)
+    FANTASY_POINTS = db.Column(db.Float, nullable=True)
+    FANTASY_POINTS_PPR = db.Column(db.Float, nullable=True)
+
+    # Extra Advanced Receiving Metrics
+    RECEIVING_BROKEN_TACKLES = db.Column(db.Integer, nullable=True)
+    RECEIVING_DROP = db.Column(db.Integer, nullable=True)
+    RECEIVING_DROP_PCT = db.Column(db.Float, nullable=True)
+    RECEIVING_INT = db.Column(db.Integer, nullable=True)
+    RECEIVING_RAT = db.Column(db.Float, nullable=True)
+
+    # Tracking Metrics
+    AVG_CUSHION = db.Column(db.Float, nullable=True)
+    AVG_SEPARATION = db.Column(db.Float, nullable=True)
+    AVG_INTENDED_AIR_YARDS = db.Column(db.Float, nullable=True)
+    PERCENT_SHARE_OF_INTENDED_AIR_YARDS = db.Column(db.Float, nullable=True)
+    AVG_YAC = db.Column(db.Float, nullable=True)
+    AVG_EXPECTED_YAC = db.Column(db.Float, nullable=True)
+    AVG_YAC_ABOVE_EXPECTATION = db.Column(db.Float, nullable=True)
+
+    def __repr__(self):
+        return f"<ReceivingStats {self.PLAYER_NAME} - Week {self.WEEK}, Season {self.SEASON}>"
+
 
 
     
