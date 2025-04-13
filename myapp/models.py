@@ -45,9 +45,22 @@ class NBATeam(db.Model):
     TEAM_LOGO = db.Column(db.String(75), nullable=False)
 
     HOME_GAMES = db.relationship(
-        'NBAGameIds', foreign_keys='NBAGameIds.HOME_TEAM_ID', backref='HOME_TEAM_REF', lazy='dynamic')
+    'NBAGameIds',
+    foreign_keys='NBAGameIds.HOME_TEAM_ID',
+    back_populates='home_team',
+    lazy='dynamic',
+    overlaps="home_team,HOME_TEAM_REF"
+    )
+
     AWAY_GAMES = db.relationship(
-        'NBAGameIds', foreign_keys='NBAGameIds.AWAY_TEAM_ID', backref='AWAY_TEAM_REF', lazy='dynamic')
+        'NBAGameIds',
+        foreign_keys='NBAGameIds.AWAY_TEAM_ID',
+        back_populates='away_team',
+        lazy='dynamic',
+        overlaps="away_team,AWAY_TEAM_REF"
+    )
+
+
 
 
 class NBAGameLogs(db.Model):
@@ -212,9 +225,22 @@ class NBAGameIds(db.Model):
     AWAY_TEAM_ID = db.Column(db.Integer, db.ForeignKey(
         'nbateams.TEAM_ID'), nullable=False)
 
-    # Relationship to home team and away team
-    home_team = db.relationship('NBATeam', foreign_keys=[HOME_TEAM_ID], backref='home_games', lazy='joined')
-    away_team = db.relationship('NBATeam', foreign_keys=[AWAY_TEAM_ID], backref='away_games', lazy='joined')
+    home_team = db.relationship(
+    'NBATeam',
+    foreign_keys=[HOME_TEAM_ID],
+    back_populates='HOME_GAMES',
+    lazy='joined',
+    overlaps="HOME_GAMES,HOME_TEAM_REF"
+    )
+
+    away_team = db.relationship(
+        'NBATeam',
+        foreign_keys=[AWAY_TEAM_ID],
+        back_populates='AWAY_GAMES',
+        lazy='joined',
+        overlaps="AWAY_GAMES,AWAY_TEAM_REF"
+    )
+
 
     Matchups = db.relationship(
         'NBAGameLogs', foreign_keys='NBAGameLogs.GAME_ID', backref='LOG_REF', lazy='dynamic')
