@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, jsonify, request, redirect, url_for, flash
 from .models import User, NFLTeam, NFLQuarterbackWeeklyStats, NBATeam, NBAGameIds, NBAGameLogs, NBAPredictions
-from .extensions import db 
+from .extensions import db
 from sqlalchemy.orm import aliased
 
 main = Blueprint('main', __name__)
+
 
 @main.route('/')
 def index():
@@ -29,6 +30,7 @@ def fetch_nba_teams():
             "TEAM_CITY": team.TEAM_CITY,
             "TEAM_STATE": team.TEAM_STATE,
             "TEAM_YEAR_FOUNDED": team.TEAM_YEAR_FOUNDED,
+            "TEAM_LOGO": team.TEAM_LOGO
         }
         for team in teams
     ]
@@ -47,7 +49,9 @@ def fetch_matchups(team):
         NBAGameLogs,
         NBAGameIds,
         HomeTeam.TEAM_NAME.label("HOME_TEAM_NAME"),
-        AwayTeam.TEAM_NAME.label("AWAY_TEAM_NAME")
+        AwayTeam.TEAM_NAME.label("AWAY_TEAM_NAME"),
+        HomeTeam.TEAM_LOGO.label("HOME_TEAM_LOGO"),
+        AwayTeam.TEAM_LOGO.label("AWAY_TEAM_LOGO")
     ).join(
         NBAGameIds, NBAGameLogs.GAME_ID == NBAGameIds.GAME_ID
     ).join(
@@ -66,9 +70,11 @@ def fetch_matchups(team):
             # "HOME_ID": game.HOME_TEAM_ID,
             "DATE": game.GAME_DATE,
             "AWAY_TEAM": AWAY_NAME,
-            "HOME_TEAM": HOME_NAME
+            "HOME_TEAM": HOME_NAME,
+            "AWAY_LOGO": AWAY_LOGO,
+            "HOME_LOGO": HOME_LOGO
         }
-        for log, game, HOME_NAME, AWAY_NAME in matchups
+        for log, game, HOME_NAME, AWAY_NAME, HOME_LOGO, AWAY_LOGO in matchups
     ]
     return jsonify(matchup_data)
 
@@ -169,7 +175,9 @@ def fetch_predictions_by_date(date, feature, model):
         away_probs.label("away_probs"),
         NBAGameIds,
         HomeTeam.TEAM_NAME.label("HOME_TEAM_NAME"),
-        AwayTeam.TEAM_NAME.label("AWAY_TEAM_NAME")
+        AwayTeam.TEAM_NAME.label("AWAY_TEAM_NAME"),
+        HomeTeam.TEAM_LOGO.label("HOME_TEAM_LOGO"),
+        AwayTeam.TEAM_LOGO.label("AWAY_TEAM_LOGO")
     ).join(
         NBAGameIds, NBAPredictions.GAME_ID == NBAGameIds.GAME_ID
     ).join(
@@ -187,9 +195,11 @@ def fetch_predictions_by_date(date, feature, model):
             "AWAY_W_PROB": AWAY_PROB,
             "GAME_DATE": game.GAME_DATE,
             "HOME_TEAM": HOME_NAME,
-            "AWAY_TEAM": AWAY_NAME
+            "AWAY_TEAM": AWAY_NAME,
+            "HOME_LOGO": HOME_LOGO,
+            "AWAY_LOGO": AWAY_LOGO
         }
-        for ID, HOME_PROB, AWAY_PROB, game, HOME_NAME, AWAY_NAME in predictions
+        for ID, HOME_PROB, AWAY_PROB, game, HOME_NAME, AWAY_NAME, HOME_LOGO, AWAY_LOGO in predictions
     ]
     return jsonify(predictions_data)
 
@@ -215,7 +225,9 @@ def fetch_predictions_by_team(team, feature, model):
         NBAGameIds,
         NBAGameLogs,
         HomeTeam.TEAM_NAME.label("HOME_TEAM_NAME"),
-        AwayTeam.TEAM_NAME.label("AWAY_TEAM_NAME")
+        AwayTeam.TEAM_NAME.label("AWAY_TEAM_NAME"),
+        HomeTeam.TEAM_LOGO.label("HOME_TEAM_LOGO"),
+        AwayTeam.TEAM_LOGO.label("AWAY_TEAM_LOGO")
     ).join(
         NBAGameIds, NBAPredictions.GAME_ID == NBAGameIds.GAME_ID
     ).join(
@@ -236,30 +248,35 @@ def fetch_predictions_by_team(team, feature, model):
             "GAME_DATE": game.GAME_DATE,
             "HOME_TEAM": HOME_NAME,
             "AWAY_TEAM": AWAY_NAME,
-            "TEAM_W": log.W
+            "TEAM_W": log.W,
+            "HOME_LOGO": HOME_LOGO,
+            "AWAY_LOGO": AWAY_LOGO
         }
-        for ID, HOME_PROB, AWAY_PROB, game, log, HOME_NAME, AWAY_NAME in predictions
+        for ID, HOME_PROB, AWAY_PROB, game, log, HOME_NAME, AWAY_NAME, HOME_LOGO, AWAY_LOGO in predictions
     ]
     return jsonify(predictions_data)
 
 # I referenced chatgpt for help creating methods for adding users, login, and fetching data.
 # https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48
+
+
 @main.route('/add', methods=['GET', 'POST'])
 def add_user():
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
-        
+
         # Create new user with the provided info
         new_user = User(username=username, email=email)
         new_user.set_password(password)  # Hash the password
         db.session.add(new_user)
         db.session.commit()
-        
+
         return redirect(url_for('main.index'))
 
     return render_template('register.html')
+
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
@@ -267,19 +284,22 @@ def login():
         # Retrieve form data
         username = request.form['username']
         password = request.form['password']
-        
+
         # Find the user by username
         user = User.query.filter_by(username=username).first()
-        
-        if user and user.check_password(password):  # Check if the password matches
+
+        # Check if the password matches
+        if user and user.check_password(password):
             # User is authenticated, redirect to a protected page
             flash("Login successful!", category="success")
-            return redirect(url_for('main.index'))  # Or any other page you want to redirect to
+            # Or any other page you want to redirect to
+            return redirect(url_for('main.index'))
         else:
             flash("Invalid username or password", category="error")
-    
+
     # If GET request, just render the login page
     return render_template('login.html')
+
 
 @main.route('/fetch_teams', methods=['GET'])
 def fetch_teams():
@@ -307,4 +327,3 @@ def fetch_teams():
     ]
 
     return jsonify(team_data)
-
