@@ -259,8 +259,15 @@ class NFLPlayer(db.Model):
     team_ref = db.relationship('NFLTeam', backref=db.backref('players', lazy=True)) 
 
     # One-to-many relationship to quarterback weekly stats
-    weekly_stats = db.relationship(
+    passing_stats = db.relationship(
         'NFLQuarterbackWeeklyStats',
+        back_populates='PLAYER',
+        cascade='all, delete-orphan'
+    )
+
+    # One-to-many relationship to receiving weekly stats
+    receiving_stats = db.relationship(
+        'NFLReceivingWeeklyStats',
         back_populates='PLAYER',
         cascade='all, delete-orphan'
     )
@@ -275,7 +282,7 @@ class NFLQuarterbackWeeklyStats(db.Model):
 
     # Foreign key relationship to NFLPlayer
     PLAYER_ID = db.Column(db.String(25), db.ForeignKey('nfl_players.PLAYER_ID'), nullable=False)
-    PLAYER =  db.relationship('NFLPlayer', back_populates='weekly_stats')
+    PLAYER =  db.relationship('NFLPlayer', back_populates='passing_stats')
 
     # General Info
     PLAYER_NAME = db.Column(db.String(100), nullable=False)
