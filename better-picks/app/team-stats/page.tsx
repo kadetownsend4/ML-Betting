@@ -1,11 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import Link from "next/link";
-
-// Import the Dashboard component
 import Dashboard from "../components/Dashboard";
 
-// Define the type for the team stats
+// Define the type for team stats
 type TeamStats = {
   team: string;
   points: number;
@@ -21,7 +18,7 @@ type TeamStats = {
   record: string;
 };
 
-// Sample team stats data (replace with actual API data)
+// Dummy data - replace with API
 async function fetchTeamStats(): Promise<TeamStats[]> {
   return [
     { team: "Boston Celtics", points: 115.2, assists: 25.8, blocks: 5.4, steals: 7.2, freeThrows: 78.2, attempts: 88.5, made: 45.9, defEff: 108.5, offEff: 112.4, rebounds: 45.3, record: "45-20" },
@@ -29,12 +26,10 @@ async function fetchTeamStats(): Promise<TeamStats[]> {
     { team: "Los Angeles Lakers", points: 113.7, assists: 26.5, blocks: 5.1, steals: 7.0, freeThrows: 79.3, attempts: 90.2, made: 46.2, defEff: 109.8, offEff: 111.5, rebounds: 44.5, record: "38-27" },
     { team: "Golden State Warriors", points: 117.1, assists: 28.3, blocks: 4.9, steals: 7.8, freeThrows: 81.0, attempts: 92.1, made: 47.3, defEff: 107.5, offEff: 113.2, rebounds: 46.1, record: "42-23" },
     { team: "Milwaukee Bucks", points: 118.5, assists: 25.0, blocks: 5.6, steals: 6.5, freeThrows: 76.4, attempts: 89.8, made: 46.8, defEff: 110.0, offEff: 114.0, rebounds: 47.2, record: "48-17" },
-    // Add more teams...
   ];
 }
 
 export default function TeamStats() {
-  // Explicitly define the state type as an array of TeamStats objects
   const [stats, setStats] = useState<TeamStats[]>([]);
 
   useEffect(() => {
@@ -45,56 +40,47 @@ export default function TeamStats() {
     loadStats();
   }, []);
 
-  const [westernTeams] = useState([
-    { name: "Los Angeles Lakers", wins: 35, losses: 22, ppg: 113.5 },
-    { name: "Golden State Warriors", wins: 30, losses: 27, ppg: 114.8 },
-  ]);
-
   return (
     <Dashboard>
-    
-      
-
-       <div className="w-full max-w-6xl mt-10 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6">
-        <div className="overflow-y-auto max-h-[500px] rounded-lg p-2">
-          <table className="w-full border-collapse border border-gray-700 text-lg">
-            <thead className="sticky top-0 bg-gray-800 text-green-400">
-              <tr>
-                <th className="border border-gray-700 px-4 py-3 text-left">Team</th>
-                <th className="border border-gray-700 px-4 py-3">PTS</th>
-                <th className="border border-gray-700 px-4 py-3">AST</th>
-                <th className="border border-gray-700 px-4 py-3">BLK</th>
-                <th className="border border-gray-700 px-4 py-3">STL</th>
-                <th className="border border-gray-700 px-4 py-3">FT%</th>
-                <th className="border border-gray-700 px-4 py-3">FGA</th>
-                <th className="border border-gray-700 px-4 py-3">FGM</th>
-                <th className="border border-gray-700 px-4 py-3">Def Eff</th>
-                <th className="border border-gray-700 px-4 py-3">Off Eff</th>
-                <th className="border border-gray-700 px-4 py-3">REB</th>
-                <th className="border border-gray-700 px-4 py-3">Record</th>
-              </tr>
-            </thead>
-            <tbody>
-              {stats.map((team, index) => (
-                <tr key={index} className="border border-gray-700">
-                  <td className="border border-gray-700 px-4 py-3">{team.team}</td>
-                  <td className="border border-gray-700 px-4 py-3 text-center">{team.points}</td>
-                  <td className="border border-gray-700 px-4 py-3 text-center">{team.assists}</td>
-                  <td className="border border-gray-700 px-4 py-3 text-center">{team.blocks}</td>
-                  <td className="border border-gray-700 px-4 py-3 text-center">{team.steals}</td>
-                  <td className="border border-gray-700 px-4 py-3 text-center">{team.freeThrows}%</td>
-                  <td className="border border-gray-700 px-4 py-3 text-center">{team.attempts}</td>
-                  <td className="border border-gray-700 px-4 py-3 text-center">{team.made}</td>
-                  <td className="border border-gray-700 px-4 py-3 text-center">{team.defEff}</td>
-                  <td className="border border-gray-700 px-4 py-3 text-center">{team.offEff}</td>
-                  <td className="border border-gray-700 px-4 py-3 text-center">{team.rebounds}</td>
-                  <td className="border border-gray-700 px-4 py-3 text-center">{team.record}</td>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white py-12 px-4 flex justify-center">
+        <div className="w-full max-w-7xl bg-white/10 shadow-xl rounded-2xl p-6 border border-white/20">
+          <h2 className="text-2xl sm:text-3xl font-bold text-green-400 mb-6 text-center">Team Statistics</h2>
+          <div className="overflow-x-auto">
+            <table className="min-w-full border border-gray-700 text-sm sm:text-base">
+              <thead className="bg-gray-900 text-green-300 sticky top-0 z-10">
+                <tr>
+                  {[
+                    "Team", "PTS", "AST", "BLK", "STL", "FT%", "FGA", "FGM", "Def Eff", "Off Eff", "REB", "Record",
+                  ].map((heading, idx) => (
+                    <th key={idx} className="px-4 py-3 border border-gray-700 text-left whitespace-nowrap">{heading}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {stats.map((team, index) => (
+                  <tr
+                    key={index}
+                    className={`border border-gray-700 ${index % 2 === 0 ? "bg-gray-800/50" : "bg-gray-800/30"} hover:bg-gray-700/60 transition`}
+                  >
+                    <td className="px-4 py-3">{team.team}</td>
+                    <td className="px-4 py-3 text-center">{team.points}</td>
+                    <td className="px-4 py-3 text-center">{team.assists}</td>
+                    <td className="px-4 py-3 text-center">{team.blocks}</td>
+                    <td className="px-4 py-3 text-center">{team.steals}</td>
+                    <td className="px-4 py-3 text-center">{team.freeThrows}%</td>
+                    <td className="px-4 py-3 text-center">{team.attempts}</td>
+                    <td className="px-4 py-3 text-center">{team.made}</td>
+                    <td className="px-4 py-3 text-center">{team.defEff}</td>
+                    <td className="px-4 py-3 text-center">{team.offEff}</td>
+                    <td className="px-4 py-3 text-center">{team.rebounds}</td>
+                    <td className="px-4 py-3 text-center">{team.record}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-      </Dashboard>
+    </Dashboard>
   );
 }

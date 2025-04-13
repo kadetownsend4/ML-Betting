@@ -18,7 +18,7 @@ const menuItems: MenuItem[] = [
   {
     title: "NBA",
     links: [
-      { name: "Latest Games", path: "/latest-games" },
+      { name: "NBA Latest Games", path: "/latest-games" },
       { name: "Team Stats", path: "/team-stats" },
       { name: "Player Prop Analysis", path: "/nba-player-analysis" },
     ],
@@ -26,7 +26,7 @@ const menuItems: MenuItem[] = [
   {
     title: "NFL",
     links: [
-      { name: "Game Predictions", path: "/nfl/predictions" },
+      { name: "NFL Latest Games", path: "/nfl-latest-games" },
       { name: "Team Based Player Props", path: "/team-player-props" },
       { name: "Player Prop Analysis", path: "/nfl-player-analysis" },
     ],
