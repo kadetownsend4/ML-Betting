@@ -50,8 +50,8 @@ def fetch_matchups(team):
         NBAGameIds,
         HomeTeam.TEAM_NAME.label("HOME_TEAM_NAME"),
         AwayTeam.TEAM_NAME.label("AWAY_TEAM_NAME"),
-        HomeTeam.TEAM_LOGO.label("HOME_TEAM_LOGO"),
-        AwayTeam.TEAM_LOGO.label("AWAY_TEAM_LOGO")
+        HomeTeam.TEAM_LOGO.label("HOME_LOGO"),
+        AwayTeam.TEAM_LOGO.label("AWAY_LOGO")
     ).join(
         NBAGameIds, NBAGameLogs.GAME_ID == NBAGameIds.GAME_ID
     ).join(
@@ -176,8 +176,8 @@ def fetch_predictions_by_date(date, feature, model):
         NBAGameIds,
         HomeTeam.TEAM_NAME.label("HOME_TEAM_NAME"),
         AwayTeam.TEAM_NAME.label("AWAY_TEAM_NAME"),
-        HomeTeam.TEAM_LOGO.label("HOME_TEAM_LOGO"),
-        AwayTeam.TEAM_LOGO.label("AWAY_TEAM_LOGO")
+        HomeTeam.TEAM_LOGO.label("HOME_LOGO"),
+        AwayTeam.TEAM_LOGO.label("AWAY_LOGO")
     ).join(
         NBAGameIds, NBAPredictions.GAME_ID == NBAGameIds.GAME_ID
     ).join(
@@ -226,8 +226,8 @@ def fetch_predictions_by_team(team, feature, model):
         NBAGameLogs,
         HomeTeam.TEAM_NAME.label("HOME_TEAM_NAME"),
         AwayTeam.TEAM_NAME.label("AWAY_TEAM_NAME"),
-        HomeTeam.TEAM_LOGO.label("HOME_TEAM_LOGO"),
-        AwayTeam.TEAM_LOGO.label("AWAY_TEAM_LOGO")
+        HomeTeam.TEAM_LOGO.label("HOME_LOGO"),
+        AwayTeam.TEAM_LOGO.label("AWAY_LOGO")
     ).join(
         NBAGameIds, NBAPredictions.GAME_ID == NBAGameIds.GAME_ID
     ).join(
