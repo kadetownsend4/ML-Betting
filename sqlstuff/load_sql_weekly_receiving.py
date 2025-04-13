@@ -11,7 +11,7 @@ import pandas as pd
 import sqlalchemy_interact  # Assuming this handles database interactions
 
 # Load WR/TE/RB weekly receiving stats data from CSV
-df = pd.read_csv("NFL/weekly_nfl_stats_season/receiving_weekly_stats.csv")
+df = pd.read_csv("NFL/weekly_nfl_stats_season/complete_wr_df.csv")
 
 # Optional: Clean/strip string fields
 string_cols = df.select_dtypes(include='object').columns
