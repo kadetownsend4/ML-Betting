@@ -42,12 +42,12 @@ export default function TeamStats() {
 
   return (
     <Dashboard>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white py-12 px-4 flex justify-center">
-        <div className="w-full max-w-7xl bg-white/10 shadow-xl rounded-2xl p-6 border border-white/20">
-          <h2 className="text-2xl sm:text-3xl font-bold text-green-400 mb-6 text-center">Team Statistics</h2>
+      {/* <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white py-12 px-4 flex justify-center">
+        <div className="w-full max-w-7xl bg-white/10 shadow-xl rounded-2xl p-6 border border-white/20"> */}
+          <h2 className="text-2xl sm:text-3xl font-bold text-purple-400 mb-6 text-center">Team Statistics</h2>
           <div className="overflow-x-auto">
             <table className="min-w-full border border-gray-700 text-sm sm:text-base">
-              <thead className="bg-gray-900 text-green-300 sticky top-0 z-10">
+              <thead className="bg-gray-900 text-purple-300 sticky top-0 z-10">
                 <tr>
                   {[
                     "Team", "PTS", "AST", "BLK", "STL", "FT%", "FGA", "FGM", "Def Eff", "Off Eff", "REB", "Record",
@@ -79,8 +79,8 @@ export default function TeamStats() {
               </tbody>
             </table>
           </div>
-        </div>
-      </div>
+        {/* </div>
+      </div> */}
     </Dashboard>
   );
 }
