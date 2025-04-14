@@ -1,3 +1,6 @@
+# I asked chatgpt for help creating routes for our data based on the nfl models and how to set up a file for it 
+# https://chatgpt.com/c/67fae20b-2284-800f-8915-68b334caed9f
+
 from flask import Blueprint, jsonify, request
 from .extensions import db
 from .models import NFLQuarterbackWeeklyStats, NFLReceivingWeeklyStats, NFLTeam, NFLPlayer

@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 def create_app():
     from .extensions import db
     from .routes import main
-    from .qb_routes import nfl_stats_bp 
+    from .nfl_routes import nfl_stats_bp 
 
     app = Flask(__name__)
     
