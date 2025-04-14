@@ -67,7 +67,7 @@ function NFLTeams() {
 
   useEffect(() => {
     axios
-      .get("https://betterpicks-demo.onrender.com/fetch_teams")
+      .get("https://betterpicks-demo.onrender.com/nfl_teams")
       .then((response) => {
         console.log("Fetched Teams Data:", response.data); // Debugging log
         setTeams(response.data);
