@@ -1,3 +1,8 @@
+"""File that holds all the routes for acessing data from the database. 
+
+   authors = Timothy Berlanga, Kade Townsend
+"""
+
 from flask import Blueprint, render_template, jsonify, request, redirect, url_for, flash
 from .models import User, NFLTeam, NFLQuarterbackWeeklyStats, NBATeam, NBAGameIds, NBAGameLogs, NBAPredictions
 from .extensions import db
@@ -12,15 +17,19 @@ def index():
     users_list_html = [f"<li>{user.username}</li>" for user in users]
     return f"<ul>{''.join(users_list_html)}</ul>"
 
-# @main.route('/')
-# def index():
-#     return render_template('index.html')
-
 
 @main.route('/NBATeams')
 def fetch_nba_teams():
+    """Function for featching all the information for each NBA team from the database.
+       It then turns this data into JSON format for use by the frontend.
+
+       Return:
+       List of NBA team information in JSON format
+    """
+    # cals the nbateams table from the db
     teams = db.session.query(NBATeam).all()
 
+    # turns the table into JSON
     team_data = [
         {
             "TEAM_ID": team.TEAM_ID,
@@ -33,18 +42,34 @@ def fetch_nba_teams():
             "TEAM_LOGO": team.TEAM_LOGO
         }
         for team in teams
+        # loops through teams
     ]
     return jsonify(team_data)
 
 
 @main.route('/NBAMatchups/<team>')
 def fetch_matchups(team):
+    """Function to fetch matchups for each NBA team from the database.
 
+       Parameters:
+       team -- team to pull matchups for
+
+       Return:
+       List of matchups for a specific NBA team in JSON format
+    """
+
+    # normalizes teams with spaces in their nicknames, so they can be parameterized correctly
     team_norm = team.replace('-', ' ')
 
+    # calls an alias of the nbateams table as the home team
     HomeTeam = aliased(NBATeam)
+    # calls an alias of the nbateams table as the away team
     AwayTeam = aliased(NBATeam)
 
+    # queries nbagamelogs, nbagameids, and nbateams table,
+    # joining the GAME_ID of nbagamelogs and nbagameids for the getting TEAM_IDs,
+    # joining the TEAM_IDs of nbagameids and nbateams for getting TEAM_NAMEs,
+    # ordering the games in descending order by GAME_DATE
     matchups = db.session.query(
         NBAGameLogs,
         NBAGameIds,
@@ -62,6 +87,7 @@ def fetch_matchups(team):
         NBAGameLogs.NICKNAME == team_norm
     ).order_by(NBAGameLogs.GAME_DATE.desc()).all()
 
+    # takes the queried data and turns it into JSON format
     matchup_data = [
         {
             "CITY": log.CITY,
@@ -75,19 +101,37 @@ def fetch_matchups(team):
             "HOME_LOGO": HOME_LOGO
         }
         for log, game, HOME_NAME, AWAY_NAME, HOME_LOGO, AWAY_LOGO in matchups
+        # loops through sections in matchups
     ]
     return jsonify(matchup_data)
 
 
 @main.route('/NBAMatchups/<awayteam>/<hometeam>/<gameid>')
 def fetch_matchup_stats(awayteam, hometeam, gameid):
+    """Function for featching stats for specific nba matchups.
 
+       Parameters:
+       awayteam -- away team nickname in the specific matchup
+       hometeam -- home team nickname in the specific matchup
+       gameid -- specific game id of matchup
+
+       Return:
+       Matchup stats for each team in JSON format
+    """
+    # normalizes teams with spaces in their nicknames, so they can be parameterized correctly
     away_team_norm = awayteam.replace('-', ' ')
     home_team_norm = hometeam.replace('-', ' ')
 
+    # calls an alias of the nbagamelogs table as the home team
     Home = aliased(NBAGameLogs)
+    # calls an alias of the nbagamelogs table as the away team
     Away = aliased(NBAGameLogs)
 
+    # queries the stats from the db based on aliases of nbagamelogs table,
+    # joining GAME_ID of the aliased tables to get stats,
+    # filtering for only one copy of the stats from each alias,
+    # and by GAME_ID,
+    # getting the first result for security purposes
     stats = db.session.query(
         Home.GAME_ID,
         Home.GAME_DATE,
@@ -98,7 +142,7 @@ def fetch_matchup_stats(awayteam, hometeam, gameid):
         Home.TOT_REB.label("HOME_TOT_REB"),
         Home.AST.label("HOME_AST"),
         Home.PF.label("HOME_PF"),
-        Home.STL.label("HOME_STL"),
+        Home.STL.label("HOME_ST L"),
         Home.TOTAL_TURNOVERS.label("HOME_TOTAL_TURNOVERS"),
         Home.BLK.label("HOME_BLK"),
         Home.PTS.label("HOME_PTS"),
@@ -122,6 +166,7 @@ def fetch_matchup_stats(awayteam, hometeam, gameid):
         Home.GAME_ID == gameid
     ).first()
 
+    # turn queried data into JSON
     stats_data = {
         'GAME_ID': stats.GAME_ID,
         'GAME_DATE': stats.GAME_DATE,
@@ -159,16 +204,37 @@ def fetch_matchup_stats(awayteam, hometeam, gameid):
 
 @main.route('/NBAPredictions/date/<date>/<feature>/<model>')
 def fetch_predictions_by_date(date, feature, model):
+    """Function for getting JSON-formatted predictions for a
+       specific date of game and a specific set of features and
+       ML model
 
+       Parameters:
+       date -- specific date to pull game predictions for
+       feature -- specific feature set to get predictions for
+       model -- specific model name to get predictions for
+
+       Return:
+       List of predictions in JSON format
+    """
+
+    # calls an alias of the nbateams table as the home team
     HomeTeam = aliased(NBATeam)
+    # calls an alias of the nbateams table as the away team
     AwayTeam = aliased(NBATeam)
 
+    # combines names for feature and model
     name_h = feature + "_" + model + "_HOME_W_PROB"
     name_a = feature + "_" + model + "_AWAY_W_PROB"
 
+    # calls the specific column from nbapredictions table in database
+    # based on combined name
     home_probs = getattr(NBAPredictions, name_h)
     away_probs = getattr(NBAPredictions, name_a)
 
+    # queries nbapredictions, nbagameids, and nbateams,
+    # joining GAME_ID of nbapredictions and nbagameids for TEAM_IDs,
+    # joining TEAM_ID of nbagameids and aliased nbateams for TEAM_NAMEs,
+    # filtering by a specific GAME_DATE, and grabbing all results
     predictions = db.session.query(
         NBAPredictions.GAME_ID,
         home_probs.label("home_probs"),
@@ -188,6 +254,7 @@ def fetch_predictions_by_date(date, feature, model):
         NBAGameIds.GAME_DATE == date
     ).all()
 
+    # turns queried data into JSON format
     predictions_data = [
         {
             "GAME_ID": ID,
@@ -200,24 +267,44 @@ def fetch_predictions_by_date(date, feature, model):
             "AWAY_LOGO": AWAY_LOGO
         }
         for ID, HOME_PROB, AWAY_PROB, game, HOME_NAME, AWAY_NAME, HOME_LOGO, AWAY_LOGO in predictions
+        # loops through each section in predictions
     ]
     return jsonify(predictions_data)
 
 
 @main.route('/NBAPredictions/team/<team>/<feature>/<model>')
 def fetch_predictions_by_team(team, feature, model):
+    """Function to grab predictions from db based on team and set of features and ML model
 
+       Parameters:
+       team -- team name to pull for
+       feature -- feature set to pull for
+       model -- ML model to pull for
+    """
+
+    # normalizes teams with spaces in their nicknames, so they can be parameterized correctly
     team_norm = team.replace('-', ' ')
 
+    # calls an alias of the nbateams table as the home team
     HomeTeam = aliased(NBATeam)
+    # calls an alias of the nbateams table as the away team
     AwayTeam = aliased(NBATeam)
 
+    # combines names for feature and model
     name_h = feature + "_" + model + "_HOME_W_PROB"
     name_a = feature + "_" + model + "_AWAY_W_PROB"
 
+    # calls the specific column from nbapredictions table in database
+    # based on combined name
     home_probs = getattr(NBAPredictions, name_h)
     away_probs = getattr(NBAPredictions, name_a)
 
+    # queries nbapredictions, nbagameids, nbagamelogs, and nbateams,
+    # joining GAME_ID of nbapredictions and nbagameids for TEAM_IDs,
+    # joining TEAM_ID of nbagameids and aliased nbateams for TEAM_NAMEs,
+    # joining GAME_ID of nbagameids and nbagamelogs for TEAM_NICKNAME
+    # filtering by a specific TEAM_NICKNAME,
+    # ordering by descending GAME_DATE and grabbing all results
     predictions = db.session.query(
         NBAPredictions.GAME_ID,
         home_probs.label("home_probs"),
@@ -240,6 +327,7 @@ def fetch_predictions_by_team(team, feature, model):
         NBAGameLogs.NICKNAME == team_norm
     ).order_by(NBAGameIds.GAME_DATE.desc()).all()
 
+    # turn queried data into JSON format
     predictions_data = [
         {
             "GAME_ID": ID,
@@ -253,6 +341,7 @@ def fetch_predictions_by_team(team, feature, model):
             "AWAY_LOGO": AWAY_LOGO
         }
         for ID, HOME_PROB, AWAY_PROB, game, log, HOME_NAME, AWAY_NAME, HOME_LOGO, AWAY_LOGO in predictions
+        # looping through sections in predictions
     ]
     return jsonify(predictions_data)
 
@@ -299,5 +388,3 @@ def login():
 
     # If GET request, just render the login page
     return render_template('login.html')
-
-
