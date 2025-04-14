@@ -19,13 +19,16 @@ export default function TeamHistoryPage() {
 
   useEffect(() => {
     if (team) {
+      // Format URL param back into proper nickname (e.g., "celtics" -> "Celtics")
+      const formattedNickname = team.toString().replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
+  
       axios
-      
-        .get(`https://betterpicks-demo.onrender.com/NBAMatchups/Celtics`)
+        .get(`https://betterpicks-demo.onrender.com/NBAMatchups/${formattedNickname}`)
         .then((response) => setGames(response.data))
         .catch((error) => console.error("Error fetching team matchup history:", error));
     }
   }, [team]);
+  
   
 
   return (
