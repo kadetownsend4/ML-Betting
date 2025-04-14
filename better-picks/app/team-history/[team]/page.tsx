@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
+import Image from "next/image";
+
 
 
 type Game = {
@@ -16,31 +18,67 @@ type Game = {
 export default function TeamHistoryPage() {
   const { team } = useParams();
   const [games, setGames] = useState<Game[]>([]);
+  const [teamInfo, setTeamInfo] = useState<any | null>(null);
+
 
   useEffect(() => {
     if (team) {
-      // Format URL param back into proper nickname (e.g., "celtics" -> "Celtics")
       const formattedNickname = team.toString().replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
   
+      // Fetch team info + game data
       axios
-        .get(`https://betterpicks-demo.onrender.com/NBAMatchups/${formattedNickname}`)
-        .then((response) => setGames(response.data))
-        .catch((error) => console.error("Error fetching team matchup history:", error));
+        .get("https://betterpicks-demo.onrender.com/NBATeams")
+        .then((res) => {
+          const match = res.data.find(
+            (t: any) => t.TEAM_NICKNAME.toLowerCase() === formattedNickname.toLowerCase()
+          );
+          setTeamInfo(match);
+  
+          return axios.get(`https://betterpicks-demo.onrender.com/NBAMatchups/${formattedNickname}`);
+        })
+        .then((res) => setGames(res.data))
+        .catch((err) => console.error("Error loading team data:", err));
     }
   }, [team]);
   
   
+  
+  const formattedTitle = team?.toString().replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 
   return (
 <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-900 text-white p-8 font-sans">
-<h1 className="text-4xl font-extrabold tracking-wide mb-6">
-  {team?.toString().replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())} Match History
-</h1>      <ul className="space-y-4">
+{teamInfo && (
+  <div className="flex items-center gap-4 mb-10 border-b-2 border-purple-500 pb-4">
+    <Image
+      src={teamInfo.TEAM_LOGO}
+      alt={`${teamInfo.TEAM_NAME} logo`}
+      width={60}
+      height={60}
+      className="drop-shadow-lg"
+    />
+    <h1 className="text-4xl sm:text-5xl font-extrabold text-purple-300 tracking-wide uppercase">
+      {formattedTitle} Match History
+    </h1>
+  </div>
+)}
+    
+
+<ul className="space-y-4">
+
+<div className="sticky top-0 z-50 bg-gradient-to-r from-black/80 via-purple-900/80 to-black/80 backdrop-blur-md py-3 px-4 rounded-b-lg shadow-lg border-b border-white/10 mb-8">
+<div className="text-sm text-gray-400 mb-6">
+  <Link href="/" className="hover:text-purple-300 transition">Home</Link>
+  <span className="mx-2 text-white">›</span>
+  <Link href="/latest-games" className="hover:text-purple-300 transition">NBA Teams</Link>
+  <span className="mx-2 text-white">›</span>
+  <span className="text-purple-300 font-semibold">{formattedTitle}</span>
+</div>
+</div>
         {games.map((game) => (
           <li
-  key={game.GAME_ID}
-  className="bg-gray-800 p-4 rounded-xl shadow-md border border-white/10 hover:shadow-purple-500/20 transition-all duration-300"
->
+            key={game.GAME_ID}
+            className="bg-gradient-to-br from-gray-800 to-gray-500 p-5 rounded-xl border border-white/10 shadow-lg hover:shadow-purple-500/30 transition-transform duration-300 hover:scale-[1.02]"
+            >
             <p className="text-lg font-bold">{game.AWAY_TEAM} @ {game.HOME_TEAM}</p>
             <p className="text-sm text-gray-400">Date: {game.DATE} | Location: {game.CITY}</p>
           </li>
