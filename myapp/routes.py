@@ -182,18 +182,18 @@ def fetch_matchup_stats(awayteam, hometeam, gameid):
         'HOME_TOTAL_TURNOVERS': stats.HOME_TOTAL_TURNOVERS,
         'HOME_BLK': stats.HOME_BLK,
         'HOME_PTS': stats.HOME_PTS,
-        'AWAY_NAME': home_team_norm,
-        'AWAY_W': stats.HOME_W,
-        'AWAY_FG_PCT': stats.HOME_FG_PCT,
-        'AWAY_FG3_PCT': stats.HOME_FG3_PCT,
-        'AWAY_FT_PCT': stats.HOME_FT_PCT,
-        'AWAY_TOT_REB': stats.HOME_TOT_REB,
-        'AWAY_AST': stats.HOME_AST,
-        'AWAY_PF': stats.HOME_PF,
-        'AWAY_STL': stats.HOME_STL,
-        'AWAY_TOTAL_TURNOVERS': stats.HOME_TOTAL_TURNOVERS,
-        'AWAY_BLK': stats.HOME_BLK,
-        'AWAY_PTS': stats.HOME_PTS
+        'AWAY_NAME': away_team_norm,
+        'AWAY_W': stats.AWAY_W,
+        'AWAY_FG_PCT': stats.AWAY_FG_PCT,
+        'AWAY_FG3_PCT': stats.AWAY_FG3_PCT,
+        'AWAY_FT_PCT': stats.AWAY_FT_PCT,
+        'AWAY_TOT_REB': stats.AWAY_TOT_REB,
+        'AWAY_AST': stats.AWAY_AST,
+        'AWAY_PF': stats.AWAY_PF,
+        'AWAY_STL': stats.AWAY_STL,
+        'AWAY_TOTAL_TURNOVERS': stats.AWAY_TOTAL_TURNOVERS,
+        'AWAY_BLK': stats.AWAY_BLK,
+        'AWAY_PTS': stats.AWAY_PTS
     }
     return jsonify(stats_data)
 
