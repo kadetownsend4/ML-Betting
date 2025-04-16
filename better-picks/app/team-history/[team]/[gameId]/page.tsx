@@ -128,7 +128,8 @@ export default function MatchupDetailPage() {
 
       <div className="text-xl font-semibold text-white mb-8">
         Final Score:{" "}
-        <span className="text-green-400">{game.AWAY_NAME} {awayStats.PTS}</span> 
+        <span className="text-green-400">{game.AWAY_NAME} {awayStats.PTS}</span>
+        <span className="mx-2"></span>
         <span className="text-green-300">{game.HOME_NAME} {homeStats.PTS}</span>
       </div>
 
@@ -141,26 +142,26 @@ export default function MatchupDetailPage() {
                 {teamStat.NAME}
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-300">
-              {Object.entries(teamStat).map(([key, value]) => {
-  if (key === "NAME") return null;
+                {Object.entries(teamStat).map(([key, value]) => {
+                  if (key === "NAME") return null;
 
-  // ⛑️ Skip if value is not a primitive
-  if (value === null || typeof value === "object") return null;
+                  // ⛑️ Skip if value is not a primitive
+                  if (value === null || typeof value === "object") return null;
 
-  return (
-    <div
-      key={key}
-      className="flex justify-between border-b border-gray-700 py-1"
-    >
-      <span className="font-medium text-white">
-        {key.replace(/_/g, " ")}:
-      </span>
-      <span className="text-right text-purple-300">
-        {String(value)}
-      </span>
-    </div>
-  );
-})}
+                  return (
+                    <div
+                      key={key}
+                      className="flex justify-between border-b border-gray-700 py-1"
+                    >
+                      <span className="font-medium text-white">
+                        {key.replace(/_/g, " ")}:
+                      </span>
+                      <span className="text-right text-purple-300">
+                        {String(value)}
+                      </span>
+                    </div>
+                  );
+                })}
 
               </div>
             </div>
