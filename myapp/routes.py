@@ -142,7 +142,7 @@ def fetch_matchup_stats(awayteam, hometeam, gameid):
         Home.TOT_REB.label("HOME_TOT_REB"),
         Home.AST.label("HOME_AST"),
         Home.PF.label("HOME_PF"),
-        Home.STL.label("HOME_ST L"),
+        Home.STL.label("HOME_STL"),
         Home.TOTAL_TURNOVERS.label("HOME_TOTAL_TURNOVERS"),
         Home.BLK.label("HOME_BLK"),
         Home.PTS.label("HOME_PTS"),
