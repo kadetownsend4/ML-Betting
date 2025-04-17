@@ -1,12 +1,14 @@
 # I asked chatgpt for help creating routes for our data based on the nfl models and how to set up a file for it 
-# https://chatgpt.com/c/67fae20b-2284-800f-8915-68b334caed9f
+# https://chatgpt.com/share/68000cf1-1714-800f-a0b5-4afc3d924474 
 
 from flask import Blueprint, jsonify, request
 from .extensions import db
-from .models import NFLQuarterbackWeeklyStats, NFLReceivingWeeklyStats, NFLTeam, NFLPlayer
+from .models import NFLQuarterbackWeeklyStats, NFLReceivingWeeklyStats, NFLRBWeeklyStats, NFLTeam, NFLPlayer, NFLGames, NFLTeamGameStats
 
 nfl_stats_bp = Blueprint('nfl_stats', __name__)
 
+
+# --- TEAM ROUTES ---
 @nfl_stats_bp.route('/nfl_teams', methods=['GET'])
 def fetch_teams():
     # Fetch all teams from the NFLTeam table with only the required columns
@@ -34,13 +36,13 @@ def fetch_teams():
 
     return jsonify(team_data)
 
-@nfl_stats_bp.route('/nfl_teams/<int:team_id>/players', methods=['GET'])
-def get_players_for_team(team_id):
-    team = NFLTeam.query.get(team_id)
+@nfl_stats_bp.route('/nfl_teams/<string:team_abr>/players', methods=['GET'])
+def get_players_for_team(team_abr):
+    team = NFLTeam.query.filter_by(TEAM_ABR=team_abr.upper()).first()
     if not team:
         return jsonify({'error': 'Team not found'}), 404
 
-    players = NFLPlayer.query.filter_by(TEAM_ID=team_id).all()
+    players = NFLPlayer.query.filter_by(TEAM_ID=team.TEAM_ID).all()
 
     players_data = [
         {
@@ -64,8 +66,150 @@ def get_players_for_team(team_id):
         'players': players_data
     })
 
+def _get_result(game, is_home):
+    if game.HOME_SCORE is None or game.AWAY_SCORE is None:
+        return "Scheduled"
+    
+    team_score = game.HOME_SCORE if is_home else game.AWAY_SCORE
+    opponent_score = game.AWAY_SCORE if is_home else game.HOME_SCORE
 
-# --- MERGED QB STATS ROUTE ---
+    if team_score > opponent_score:
+        return "W"
+    elif team_score < opponent_score:
+        return "L"
+    else:
+        return "T"
+
+@nfl_stats_bp.route('/nfl_teams/<string:team_abbr>/schedule', methods=['GET'])
+def get_team_schedule(team_abbr):
+    team = NFLTeam.query.filter_by(TEAM_ABR=team_abbr.upper()).first()
+    if not team:
+        return jsonify({'error': 'Team not found'}), 404
+
+    games = NFLGames.query.filter(
+        (NFLGames.HOME_TEAM == team_abbr.upper()) | 
+        (NFLGames.AWAY_TEAM == team_abbr.upper())
+    ).order_by(NFLGames.WEEK).all()
+
+    schedule = []
+    for game in games:
+        is_home = game.HOME_TEAM == team_abbr.upper()
+        opponent = game.away_team_ref if is_home else game.home_team_ref
+        opponent_abbr = game.AWAY_TEAM if is_home else game.HOME_TEAM
+
+        schedule.append({
+            'GAME_ID': game.GAME_ID,
+            'WEEK': game.WEEK,
+            'IS_HOME': is_home,
+            'OPPONENT_ABR': opponent_abbr,
+            'OPPONENT_NAME': opponent.TEAM_NAME if opponent else None,
+            'OPPONENT_LOGO': opponent.TEAM_LOGO if opponent else None,
+            'TEAM_SCORE': game.HOME_SCORE if is_home else game.AWAY_SCORE,
+            'OPPONENT_SCORE': game.AWAY_SCORE if is_home else game.HOME_SCORE,
+            'RESULT': _get_result(game, is_home)
+        })
+
+    return jsonify({
+        'TEAM_ABR': team.TEAM_ABR,
+        'TEAM_NAME': team.TEAM_NAME,
+        'TEAM_LOGO': team.TEAM_LOGO,
+        'schedule': schedule
+    })
+
+
+@nfl_stats_bp.route('/nfl_teams/<string:team_abr>/game_stats', methods=['GET'])
+def get_team_game_stats(team_abr):
+    # Check if team exists
+    team = NFLTeam.query.filter_by(TEAM_ABR=team_abr.upper()).first()
+    if not team:
+        return jsonify({'error': 'Team not found'}), 404
+
+    # Fetch all game stats for this team
+    stats = NFLTeamGameStats.query \
+        .filter_by(TEAM=team_abr.upper()) \
+        .join(NFLGames, NFLTeamGameStats.GAME_ID == NFLGames.GAME_ID) \
+        .add_entity(NFLGames) \
+        .all()
+
+    results = []
+    for stat, game in stats:
+        results.append({
+            'GAME_ID': stat.GAME_ID,
+            'WEEK': stat.WEEK,
+            'TEAM': stat.TEAM,
+            'OPPONENT': game.AWAY_TEAM if stat.TEAM == game.HOME_TEAM else game.HOME_TEAM,
+            'IS_HOME': stat.TEAM == game.HOME_TEAM,
+            'SCORE_FOR': game.HOME_SCORE if stat.TEAM == game.HOME_TEAM else game.AWAY_SCORE,
+            'SCORE_AGAINST': game.AWAY_SCORE if stat.TEAM == game.HOME_TEAM else game.HOME_SCORE,
+            'TOTAL_YARDS': stat.TOTAL_YARDS,
+            'TOTAL_TDS': stat.TOTAL_TDS,
+            'PASSING_TDS': stat.PASSING_TDS,
+            'RUSHING_TDS': stat.RUSHING_TDS,
+            'NUM_PLAYS': stat.NUM_PLAYS,
+            'AVG_EPA': stat.AVG_EPA,
+            'SUCCESS_RATE': stat.SUCCESS_RATE,
+            'TOTAL_RUSH_YARDS': stat.TOTAL_RUSH_YARDS,
+            'TOTAL_PASS_YARDS': stat.TOTAL_PASS_YARDS,
+            'PASS_ATTEMPTS': stat.PASS_ATTEMPTS,
+            'RUSH_ATTEMPTS': stat.RUSH_ATTEMPTS,
+            'COMPLETE_PASSES': stat.COMPLETE_PASSES,
+            'INCOMPLETE_PASSES': stat.INCOMPLETE_PASSES,
+            'SACKS': stat.SACKS,
+            'TOTAL_PENALTY_YARDS': stat.TOTAL_PENALTY_YARDS,
+            'FUMBLES_LOST': stat.FUMBLES_LOST,
+            'INTERCEPTIONS': stat.INTERCEPTIONS,
+            'THIRD_DOWN_CONVERTED': stat.THIRD_DOWN_CONVERTED,
+            'FOURTH_DOWN_CONVERTED': stat.FOURTH_DOWN_CONVERTED,
+            'WP': stat.WP,
+            'HOME_WP': stat.HOME_WP,
+            'AWAY_WP': stat.AWAY_WP
+        })
+
+    return jsonify({
+        'team': {
+            'TEAM_ID': team.TEAM_ID,
+            'TEAM_NAME': team.TEAM_NAME,
+            'TEAM_ABR': team.TEAM_ABR,
+            'TEAM_LOGO': team.TEAM_LOGO,
+            'TEAM_WORDMARK': team.TEAM_WORDMARK
+        },
+        'game_stats': results
+    })
+
+
+@nfl_stats_bp.route('/nfl_games', methods=['GET'])
+def get_all_games():
+    week = request.args.get('week', type=int)  # optional query param ?week=1
+
+    query = NFLGames.query
+
+    if week:
+        query = query.filter_by(WEEK=week)
+
+    games = query.all()
+
+    game_data = [
+        {
+            'GAME_ID': game.GAME_ID,
+            'WEEK': game.WEEK,
+            'HOME_TEAM': game.HOME_TEAM,
+            'AWAY_TEAM': game.AWAY_TEAM,
+            'HOME_SCORE': game.HOME_SCORE,
+            'AWAY_SCORE': game.AWAY_SCORE,
+            'HOME_TEAM_NAME': game.home_team_ref.TEAM_NAME if game.home_team_ref else None,
+            'AWAY_TEAM_NAME': game.away_team_ref.TEAM_NAME if game.away_team_ref else None,
+            'HOME_TEAM_LOGO': game.home_team_ref.TEAM_LOGO if game.home_team_ref else None,
+            'AWAY_TEAM_LOGO': game.away_team_ref.TEAM_LOGO if game.away_team_ref else None,
+        }
+        for game in games
+    ]
+
+    return jsonify(game_data)
+
+
+
+
+# --- WEEKLY PLAYER POSITION ROUTES ---
 @nfl_stats_bp.route('/qb/stats/<player_id>', methods=['GET'])
 def get_full_qb_stats(player_id):
     stats = NFLQuarterbackWeeklyStats.query.filter_by(PLAYER_ID=player_id).all()
@@ -208,4 +352,69 @@ def get_receiving_stats_for_player(player_id):
         }
         data.append(game_data)
     
+    return jsonify(data)
+
+
+# --- MERGED RB STATS ROUTE ---
+@nfl_stats_bp.route('/rb/stats/<player_id>', methods=['GET'])
+def get_full_rb_stats(player_id):
+    stats = NFLRBWeeklyStats.query.filter_by(PLAYER_ID=player_id).all()
+    
+    data = []
+    for s in stats:
+        game_data = {
+            # Core player/game info
+            "PLAYER_NAME": s.PLAYER_NAME,
+            "PLAYER_ABBR": s.PLAYER_ABBR,
+            "GAME_ID": s.GAME_ID,
+            "WEEK": s.WEEK,
+            "RECENT_TEAM": s.RECENT_TEAM,
+            "OPPONENT_TEAM": s.OPPONENT_TEAM,
+            "SEASON": s.SEASON,
+            "SEASON_TYPE": s.SEASON_TYPE,
+            "POSITION": s.POSITION,
+            "HEADSHOT_URL": s.HEADSHOT_URL,
+
+            # Rushing stats
+            "CARRIES": s.CARRIES,
+            "RUSHING_YARDS": s.RUSHING_YARDS,
+            "RUSHING_TDS": s.RUSHING_TDS,
+            "RUSHING_FUMBLES": s.RUSHING_FUMBLES,
+            "RUSHING_FUMBLES_LOST": s.RUSHING_FUMBLES_LOST,
+            "RUSHING_FIRST_DOWNS": s.RUSHING_FIRST_DOWNS,
+            "RUSHING_EPA": s.RUSHING_EPA,
+            "RUSHING_2PT_CONVERSIONS": s.RUSHING_2PT_CONVERSIONS,
+
+            # Receiving stats
+            "RECEPTIONS": s.RECEPTIONS,
+            "TARGETS": s.TARGETS,
+            "RECEIVING_YARDS": s.RECEIVING_YARDS,
+            "RECEIVING_TDS": s.RECEIVING_TDS,
+            "RECEIVING_FUMBLES": s.RECEIVING_FUMBLES,
+            "RECEIVING_FUMBLES_LOST": s.RECEIVING_FUMBLES_LOST,
+            "RECEIVING_AIR_YARDS": s.RECEIVING_AIR_YARDS,
+            "RECEIVING_YARDS_AFTER_CATCH": s.RECEIVING_YARDS_AFTER_CATCH,
+            "RECEIVING_FIRST_DOWNS": s.RECEIVING_FIRST_DOWNS,
+            "RECEIVING_EPA": s.RECEIVING_EPA,
+
+            # Fantasy
+            "FANTASY_POINTS": s.FANTASY_POINTS,
+            "FANTASY_POINTS_PPR": s.FANTASY_POINTS_PPR,
+
+            # Advanced Rushing Metrics
+            "RUSHING_YARDS_BEFORE_CONTACT": s.RUSHING_YARDS_BEFORE_CONTACT,
+            "RUSHING_YARDS_BEFORE_CONTACT_AVG": s.RUSHING_YARDS_BEFORE_CONTACT_AVG,
+            "RUSHING_YARDS_AFTER_CONTACT": s.RUSHING_YARDS_AFTER_CONTACT,
+            "RUSHING_YARDS_AFTER_CONTACT_AVG": s.RUSHING_YARDS_AFTER_CONTACT_AVG,
+            "RUSHING_BROKEN_TACKLES": s.RUSHING_BROKEN_TACKLES,
+            "EFFICIENCY": s.EFFICIENCY,
+            "PERCENT_ATTEMPTS_GTE_EIGHT_DEFENDERS": s.PERCENT_ATTEMPTS_GTE_EIGHT_DEFENDERS,
+            "AVG_TIME_TO_LOS": s.AVG_TIME_TO_LOS,
+            "EXPECTED_RUSH_YARDS": s.EXPECTED_RUSH_YARDS,
+            "RUSH_YARDS_OVER_EXPECTED": s.RUSH_YARDS_OVER_EXPECTED,
+            "RUSH_YARDS_OVER_EXPECTED_PER_ATT": s.RUSH_YARDS_OVER_EXPECTED_PER_ATT,
+            "RUSH_PCT_OVER_EXPECTED": s.RUSH_PCT_OVER_EXPECTED
+        }
+        data.append(game_data)
+
     return jsonify(data)

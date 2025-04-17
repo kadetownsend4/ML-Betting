@@ -264,6 +264,66 @@ class NFLTeam(db.Model):
 
     def __repr__(self):
         return f"<NFLTeam {self.TEAM_NAME} ({self.TEAM_ABR})>"
+    
+
+class NFLGames(db.Model):
+    __tablename__ = "nfl_game_schedule"
+
+    GAME_ID = db.Column(db.String(25), primary_key=True)
+    
+    HOME_TEAM = db.Column(db.String(10), db.ForeignKey('nfl_teams.TEAM_ABR'))
+    AWAY_TEAM = db.Column(db.String(10), db.ForeignKey('nfl_teams.TEAM_ABR'))
+
+    HOME_SCORE = db.Column(db.Integer)
+    AWAY_SCORE = db.Column(db.Integer)
+    WEEK = db.Column(db.Integer)
+
+    # Relationships
+    home_team_ref = db.relationship('NFLTeam', foreign_keys=[HOME_TEAM], backref='home_games')
+    away_team_ref = db.relationship('NFLTeam', foreign_keys=[AWAY_TEAM], backref='away_games')
+
+class NFLTeamGameStats(db.Model):
+    __tablename__ = 'nfl_team_game_stats'
+
+    STAT_ID = db.Column(db.Integer, primary_key=True)
+    TEAM = db.Column(db.String(25), db.ForeignKey('nfl_teams.TEAM_ABR'), nullable=False)
+    GAME_ID = db.Column(db.String(25), db.ForeignKey('nfl_game_schedule.GAME_ID'), nullable=False)
+    WEEK = db.Column(db.Integer, nullable=False)
+    
+    TOTAL_YARDS = db.Column(db.Integer)
+    TOTAL_TDS = db.Column(db.Integer)
+    PASSING_TDS = db.Column(db.Integer)
+    RUSHING_TDS = db.Column(db.Integer)
+    NUM_PLAYS = db.Column(db.Integer)
+    AVG_EPA = db.Column(db.Float)
+    SUCCESS_RATE = db.Column(db.Float)
+    TOTAL_RUSH_YARDS = db.Column(db.Integer)
+    RUSH_ATTEMPTS = db.Column(db.Integer)
+    LONGEST_RUSH = db.Column(db.Integer)
+    RUSHES_FOR_LOSS = db.Column(db.Integer)
+    TOTAL_PASS_YARDS = db.Column(db.Integer)
+    PASS_ATTEMPTS = db.Column(db.Integer)
+    COMPLETE_PASSES = db.Column(db.Integer)
+    INCOMPLETE_PASSES = db.Column(db.Integer)
+    SACKS = db.Column(db.Integer)
+    LONGEST_PASS = db.Column(db.Integer)
+    TOTAL_PENALTY_YARDS = db.Column(db.Integer)
+    FUMBLES_LOST = db.Column(db.Integer)
+    INTERCEPTIONS = db.Column(db.Integer)
+    THIRD_DOWN_CONVERTED = db.Column(db.Integer)
+    FOURTH_DOWN_CONVERTED = db.Column(db.Integer)
+    WP = db.Column(db.Float)  # Win Probability
+    HOME_WP = db.Column(db.Float)  # Home Team Win Probability
+    AWAY_WP = db.Column(db.Float)  # Away Team Win Probability
+
+    # Relationships
+    team = db.relationship('NFLTeam', backref='team_stats', lazy=True)
+    game = db.relationship('NFLGames', backref='game_stats', lazy=True)
+
+    def __repr__(self):
+        return f"<NFLTeamGameStats TEAM={self.TEAM}, GAME_ID={self.GAME_ID}>"
+
+
 
 class NFLPlayer(db.Model):
     __tablename__ = 'nfl_players'
@@ -297,6 +357,14 @@ class NFLPlayer(db.Model):
         back_populates='PLAYER',
         cascade='all, delete-orphan'
     )
+
+      # One-to-many relationship to receiving weekly stats
+    running_stats = db.relationship(
+        'NFLRBWeeklyStats',
+        back_populates='PLAYER',
+        cascade='all, delete-orphan'
+    )
+
 
     def __repr__(self):
         return f"<Player {self.PLAYER_NAME} ({self.TEAM.team_name})>"
@@ -463,11 +531,67 @@ class NFLReceivingWeeklyStats(db.Model):
     def __repr__(self):
         return f"<ReceivingStats {self.PLAYER_NAME} - Week {self.WEEK}, Season {self.SEASON}>"
 
+class NFLRBWeeklyStats(db.Model):
+    __tablename__ = 'nfl_rb_weekly_stats'
 
+    STAT_ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    
+    # Foreign key relationship to NFLPlayer
+    PLAYER_ID = db.Column(db.String(25), db.ForeignKey('nfl_players.PLAYER_ID'), nullable=False)
+    PLAYER = db.relationship('NFLPlayer', back_populates='running_stats')
 
+    PLAYER_NAME = db.Column(db.String(100), nullable=False)
+    PLAYER_ABBR = db.Column(db.String(50), nullable=True)
+    GAME_ID = db.Column(db.String(50), nullable=True)
+    WEEK = db.Column(db.Integer, nullable=False)
+    RECENT_TEAM = db.Column(db.String(10), nullable=True)
+    OPPONENT_TEAM = db.Column(db.String(10), nullable=True)
+    SEASON = db.Column(db.Integer, nullable=False)
+    SEASON_TYPE = db.Column(db.String(20), nullable=True)
+    POSITION = db.Column(db.String(10), nullable=True)
+    HEADSHOT_URL = db.Column(db.String(255), nullable=True)
 
+    # Rushing Stats
+    CARRIES = db.Column(db.Integer, nullable=True)
+    RUSHING_YARDS = db.Column(db.Integer, nullable=True)
+    RUSHING_TDS = db.Column(db.Integer, nullable=True)
+    RUSHING_FUMBLES = db.Column(db.Integer, nullable=True)
+    RUSHING_FUMBLES_LOST = db.Column(db.Integer, nullable=True)
+    RUSHING_FIRST_DOWNS = db.Column(db.Integer, nullable=True)
+    RUSHING_EPA = db.Column(db.Float, nullable=True)
+    RUSHING_2PT_CONVERSIONS = db.Column(db.Integer, nullable=True)
 
+    # Receiving Stats
+    RECEPTIONS = db.Column(db.Integer, nullable=True)
+    TARGETS = db.Column(db.Integer, nullable=True)
+    RECEIVING_YARDS = db.Column(db.Integer, nullable=True)
+    RECEIVING_TDS = db.Column(db.Integer, nullable=True)
+    RECEIVING_FUMBLES = db.Column(db.Integer, nullable=True)
+    RECEIVING_FUMBLES_LOST = db.Column(db.Integer, nullable=True)
+    RECEIVING_AIR_YARDS = db.Column(db.Float, nullable=True)
+    RECEIVING_YARDS_AFTER_CATCH = db.Column(db.Float, nullable=True)
+    RECEIVING_FIRST_DOWNS = db.Column(db.Integer, nullable=True)
+    RECEIVING_EPA = db.Column(db.Float, nullable=True)
+
+    # Fantasy
+    FANTASY_POINTS = db.Column(db.Float, nullable=True)
+    FANTASY_POINTS_PPR = db.Column(db.Float, nullable=True)
+
+    # Advanced Rushing Metrics
+    RUSHING_YARDS_BEFORE_CONTACT = db.Column(db.Float, nullable=True)
+    RUSHING_YARDS_BEFORE_CONTACT_AVG = db.Column(db.Float, nullable=True)
+    RUSHING_YARDS_AFTER_CONTACT = db.Column(db.Float, nullable=True)
+    RUSHING_YARDS_AFTER_CONTACT_AVG = db.Column(db.Float, nullable=True)
+    RUSHING_BROKEN_TACKLES = db.Column(db.Integer, nullable=True)
+    EFFICIENCY = db.Column(db.Float, nullable=True)
+    PERCENT_ATTEMPTS_GTE_EIGHT_DEFENDERS = db.Column(db.Float, nullable=True)
+    AVG_TIME_TO_LOS = db.Column(db.Float, nullable=True)
+    EXPECTED_RUSH_YARDS = db.Column(db.Float, nullable=True)
+    RUSH_YARDS_OVER_EXPECTED = db.Column(db.Float, nullable=True)
+    RUSH_YARDS_OVER_EXPECTED_PER_ATT = db.Column(db.Float, nullable=True)
+    RUSH_PCT_OVER_EXPECTED = db.Column(db.Float, nullable=True)
+
+    def __repr__(self):
+        return f"<NFLRBWeeklyStats {self.PLAYER_NAME} - Week {self.WEEK}, Season {self.SEASON}>"
 
 
