@@ -50,9 +50,9 @@ export default function NFLTeams() {
 
   return (
     <Dashboard>
-      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
-        <div className="w-full max-w-5xl mt-10 bg-white/10 shadow-lg rounded-xl p-6 relative z-50">
-          <h2 className="text-4xl font-bold text-green-400 text-center mb-4">NFL Player Prop Positions</h2>
+      {/* <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']"> */}
+        {/* <div className="w-full max-w-5xl mt-10 bg-white/10 shadow-lg rounded-xl p-6 relative z-50"> */}
+          <h2 className="text-4xl font-bold text-purple-400 text-center mb-4">NFL Player Prop Positions</h2>
   
           <div className="mb-4">
             <label htmlFor="team" className="text-lg font-semibold">Choose a Team:</label>
@@ -98,14 +98,14 @@ export default function NFLTeams() {
                 {posts.map((post) => (
                   <li key={post.id} className="p-4 border border-gray-200 rounded-lg shadow-sm bg-gray-900">
                     <h2 className="text-lg font-semibold">{post.title}</h2>
-                    <div className="text-green-400">
+                    <div className="text-purple-400">
                       {post.body.split(',').map((player, index) => (
                         <div key={index} className="group relative">
                           <a
                             href={`https://www.example.com/players/${player.trim()}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-green-400 hover:text-white-600 group-hover:underline"
+                            className="text-purple-400 hover:text-white-600 group-hover:underline"
                           >
                             {player.trim()}
                           </a>
@@ -117,12 +117,12 @@ export default function NFLTeams() {
               </ul>
             </>
           )}
-        </div>
+        {/* </div> */}
   
         <footer className="mt-auto py-6 text-gray-400">
           <p>&copy; 2025 NFL Stats. All rights reserved.</p>
         </footer>
-      </div>
+      {/* </div> */}
     </Dashboard>
   );
 }  

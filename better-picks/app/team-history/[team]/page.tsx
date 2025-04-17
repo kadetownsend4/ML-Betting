@@ -74,15 +74,19 @@ export default function TeamHistoryPage() {
   <span className="text-purple-300 font-semibold">{formattedTitle}</span>
 </div>
 </div>
-        {games.map((game) => (
-          <li
-            key={game.GAME_ID}
-            className="bg-gradient-to-br from-gray-800 to-gray-500 p-5 rounded-xl border border-white/10 shadow-lg hover:shadow-purple-500/30 transition-transform duration-300 hover:scale-[1.02]"
-            >
-            <p className="text-lg font-bold">{game.AWAY_TEAM} @ {game.HOME_TEAM}</p>
-            <p className="text-sm text-gray-400">Date: {game.DATE} | Location: {game.CITY}</p>
-          </li>
-        ))}
+{games.map((game) => (
+  <Link
+    key={game.GAME_ID}
+    href={`/team-history/${team}/${game.GAME_ID}`}
+    className="block"
+  >
+    <li className="bg-gradient-to-br from-gray-800 to-gray-500 p-5 rounded-xl border border-white/10 shadow-lg hover:shadow-purple-500/30 transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
+      <p className="text-lg font-bold">{game.AWAY_TEAM} @ {game.HOME_TEAM}</p>
+      <p className="text-sm text-gray-400">Date: {game.DATE} | Location: {game.CITY}</p>
+    </li>
+  </Link>
+))}
+
       </ul>
       <div className="mt-6">
         <Link href="/" className="text-green-400 underline">← Back to Home</Link>

@@ -64,17 +64,16 @@ function NFLTeams() {
   const [activeDropdown, setActiveDropdown] =useState<string | null>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
-
   useEffect(() => {
     axios
       .get("https://betterpicks-demo.onrender.com/nfl_teams")
       .then((response) => {
-        console.log("Fetched Teams Data:", response.data); // Debugging log
+        console.log("Fetched NFL Teams Data:", response.data);
         setTeams(response.data);
       })
-      .catch((error) => console.error("Error fetching teams:", error));
+      .catch((error) => console.error("Error fetching NFL teams:", error));
   }, []);
-
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-green-500 text-white p-10 flex flex-col items-center font-sans">
       
@@ -230,9 +229,9 @@ function NFLTeams() {
                        key={index}
                        className="bg-gray-900 p-5 rounded-2xl shadow-xl border border-white/10 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-gray-800"
                      >
- <h2 className="text-xl font-bold text-white text-center tracking-wide mb-2">
-    {team.TEAM_NAME}
-  </h2>
+                    <h2 className="text-xl font-bold text-white text-center tracking-wide mb-2">
+                      {team.TEAM_NAME}
+                    </h2>
                           <div className="mt-2 flex flex-col items-center gap-3">
                             {/* Team Logo */}
                             <div className="relative w-[140px] h-[120px]">
