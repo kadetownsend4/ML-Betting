@@ -55,7 +55,7 @@ export default function Login() {
         setError(data.error || 'Login failed');
       }
     } catch (err) {
-      setError('Server error, please try again later.');
+      setError('Server error. Could not connect');
     }
   };
 
