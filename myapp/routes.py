@@ -371,7 +371,7 @@ def login():
         password = request.form['password']
 
         # Find the user by username
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(email=username).first()
 
         # Check if the password matches
         if user and user.check_password(password):
