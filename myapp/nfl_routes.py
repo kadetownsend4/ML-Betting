@@ -16,6 +16,7 @@ def fetch_teams():
     teams = NFLTeam.query.with_entities(
         NFLTeam.TEAM_ID,
         NFLTeam.TEAM_NAME,
+        NFLTeam.TEAM_ABR,
         NFLTeam.TEAM_CONF,
         NFLTeam.TEAM_DIVISION,
         NFLTeam.TEAM_LOGO,
@@ -31,6 +32,7 @@ def fetch_teams():
             "TEAM_DIVISION": team.TEAM_DIVISION,
             "TEAM_LOGO": team.TEAM_LOGO,
             "TEAM_WORDMARK": team.TEAM_WORDMARK,
+            "TEAM_ABR": team.TEAM_ABR
         }
         for team in teams
     ]

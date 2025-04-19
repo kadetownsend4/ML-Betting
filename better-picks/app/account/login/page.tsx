@@ -60,7 +60,11 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+    
+    <div
+        className="min-h-screen flex items-center justify-center bg-cover bg-center text-white"
+        style={{ backgroundImage: `url('/lebron_login.jpg')` }}
+      >
       {/* Login Container */}
       <div className="w-full max-w-md bg-black/80 p-8 rounded-lg shadow-lg">
         <h2 className="text-2xl font-semibold text-center text-green-400">Login</h2>
