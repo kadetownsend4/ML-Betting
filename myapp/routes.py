@@ -363,25 +363,18 @@ def add_user():
     return render_template('register.html')
 
 
-@main.route('/login', methods=['GET', 'POST'])
+@main.route('/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        # Retrieve form data
-        username = request.form['username']
-        password = request.form['password']
+    data = request.get_json()  
+    username = data.get('username')
+    password = data.get('password')
 
-        # Find the user by username
-        user = User.query.filter_by(email=username).first()
+    user = User.query.filter_by(email=username).first()
 
-        # Check if the password matches
-        if user and user.check_password(password):
-            # User is authenticated, redirect to a protected page
-            flash("Login successful!", category="success")
-            # Or any other page you want to redirect to
-            return redirect(url_for('main.index'))
-        else:
-            flash("Invalid username or password", category="error")
-
-    # If GET request, just render the login page
-    return render_template('login.html')
+    if user and user.check_password(password):
+        # Set session data or token if needed
+        session['user_id'] = user.id  # if using Flask sessions
+        return jsonify({"message": "Login successful!"}), 200
+    else:
+        return jsonify({"error": "Invalid username or password"}), 401
 
