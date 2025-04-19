@@ -3,14 +3,12 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
-from dotenv import load_dotenv
 
 def create_app():
     from .extensions import db
     from .routes import main
     from .nfl_routes import nfl_stats_bp 
 
-    load_dotenv()
 
     app = Flask(__name__)
     
