@@ -61,7 +61,9 @@ export default function Home() {
           <div className="relative z-10"></div>
           {/* Header Section */}
           <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
-            <h1 className="text-4xl font-extrabold text-white drop-shadow-2xl border-b-4 border-green-400">Better Picks</h1>
+            <a href="https://ml-betting-react-app.onrender.com">
+              <h1 className="text-4xl font-extrabold text-white drop-shadow-2xl border-b-4 border-green-400">Better Picks</h1>
+            </a>
             <nav className="flex space-x-10 relative">
               {menuItems.map((item, index) => (
                 <div

@@ -3,15 +3,19 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Player {
   PLAYER_NAME: string;
   POSITION: string;
+  PLAYER_ID: string;
 }
 
 interface Game {
+  GAME_ID: string;
   WEEK: number;
   OPPONENT_NAME: string;
+  OPPONENT_LOGO: string;
   RESULT: string;
 }
 
@@ -31,44 +35,32 @@ export default function TeamDetailsPage() {
   useEffect(() => {
     if (teamAbr) {
       const formattedAbr = teamAbr.toString().toUpperCase();
-      console.log("🟡 Team Abbreviation:", formattedAbr);
-  
       axios
         .get("https://betterpicks-demo.onrender.com/nfl_teams")
         .then((res) => {
-          console.log("✅ All NFL Teams Fetched:", res.data);
-  
           const match = res.data.find(
             (t: any) => t.TEAM_ABR.toUpperCase() === formattedAbr
           );
-          console.log("🔍 Matched Team:", match);
-  
+
           if (!match) {
-            console.error("❌ Team not found");
             setLoading(false);
             return;
           }
-  
+
           setTeamInfo({
             team_name: match.TEAM_NAME,
             team_logo: match.TEAM_LOGO,
             team_wordmark: match.TEAM_WORDMARK,
           });
-  
+
           axios
             .get(`https://betterpicks-demo.onrender.com/nfl_teams/${formattedAbr}/schedule`)
-            .then((res) => {
-              console.log("📅 Schedule Fetched:", res.data);
-              setSchedule(res.data.schedule || []);
-            })
+            .then((res) => setSchedule(res.data.schedule || []))
             .catch((err) => console.error("❌ Error fetching schedule", err));
-  
+
           axios
             .get(`https://betterpicks-demo.onrender.com/nfl_teams/${formattedAbr}/players`)
-            .then((res) => {
-              console.log("👥 Players Fetched:", res.data);
-              setPlayers(res.data.players || []);
-            })
+            .then((res) => setPlayers(res.data.players || []))
             .catch((err) => console.error("❌ Error fetching players", err))
             .finally(() => setLoading(false));
         })
@@ -78,58 +70,108 @@ export default function TeamDetailsPage() {
         });
     }
   }, [teamAbr]);
+
+  const groupByPosition = (players: Player[]) => {
+    const positionOrder = ["QB", "RB", "WR", "TE", "K"];
+    const grouped: Record<string, Player[]> = {};
   
+    // Group players by position
+    players.forEach((player) => {
+      const pos = player.POSITION || "Unknown";
+      if (!grouped[pos]) {
+        grouped[pos] = [];
+      }
+      grouped[pos].push(player);
+    });
+  
+    // Sort grouped keys by custom order, with fallback for unknowns
+    const sortedGrouped: Record<string, Player[]> = {};
+  
+    // First add in custom ordered positions
+    positionOrder.forEach((pos) => {
+      if (grouped[pos]) {
+        sortedGrouped[pos] = grouped[pos];
+      }
+    });
+  
+    // Then add any remaining positions that weren't in the custom order
+    Object.keys(grouped).forEach((pos) => {
+      if (!positionOrder.includes(pos)) {
+        sortedGrouped[pos] = grouped[pos];
+      }
+    });
+  
+    return sortedGrouped;
+  };
 
-  if (loading) {
-    return <p className="text-white text-center mt-10">Loading team data...</p>;
-  }
+  const groupedPlayers = groupByPosition(players);
 
-  if (!teamInfo) {
-    return <p className="text-red-400 text-center mt-10">Team not found.</p>;
-  }
+  if (loading) return <p className="text-white text-center mt-10">Loading team data...</p>;
+  if (!teamInfo) return <p className="text-red-400 text-center mt-10">Team not found.</p>;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-green-700 text-white p-8 font-sans">
-      <div className="flex flex-col items-center mb-12">
-        <div className="relative w-[140px] h-[120px] mb-4">
-          <Image src={teamInfo.team_logo} alt="Team Logo" fill className="object-contain" unoptimized />
+    {/* Sticky Breadcrumb */}
+    <div className="sticky top-0 z-50 bg-gradient-to-r from-black/80 via-green-900/80 to-black/80 backdrop-blur-md py-3 px-4 rounded-b-lg shadow-lg border-b border-white/10 mb-8">
+        <div className="text-sm text-gray-400 mb-6">
+        <Link href="/" className="hover:text-green-300 transition">Home</Link>
+        <span className="mx-2 text-white">›</span>
+        <Link href="/nfl-teams" className="hover:text-white-300 transition">NFL Teams</Link>
+        <span className="mx-2 text-white">›</span>
+        <span className="text-white-300 font-semibold">{teamInfo?.team_name}</span>
         </div>
-        <h1 className="text-4xl font-extrabold text-green-300 tracking-wide">
-          {teamInfo.team_name}
-        </h1>
-        <div className="relative w-[180px] h-[40px] mt-3">
-          <Image src={teamInfo.team_wordmark} alt="Wordmark" fill className="object-contain" unoptimized />
-        </div>
-      </div>
+    </div>
 
-      {/* Schedule */}
+    {/* Team Title Section */}
+    <div className="flex items-center gap-4 mb-12 border-b-2 border-green-500 pb-4">
+        <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px]">
+        <Image src={teamInfo.team_logo} alt="Team Logo" fill className="object-contain" unoptimized />
+        </div>
+        <div>
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-white-300 tracking-wide uppercase">
+            {teamInfo.team_name}
+        </h1>
+        </div>
+    </div>
+
+      {/* 🟢 Players */}
       <section className="mb-14">
-        <h2 className="text-3xl font-bold text-white mb-6 border-b border-white/20 pb-2">
-          Season Schedule
-        </h2>
+        <h2 className="text-3xl font-bold text-white mb-6 border-b border-white/20 pb-2">Team Roster</h2>
+        {Object.entries(groupedPlayers).map(([position, playersInPos]) => (
+          <div key={position} className="mb-6">
+            <h3 className="text-2xl font-semibold text-green-300 mb-2">{position}</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {playersInPos.map((player) => (
+                <Link
+                  key={player.PLAYER_ID}
+                  href={`/nfl_players/${player.PLAYER_ID}`}
+                  className="bg-gray-900 p-4 rounded-lg shadow-lg text-center hover:bg-gray-800 transition duration-200"
+                >
+                  <p className="text-white font-semibold">{player.PLAYER_NAME}</p>
+                  <p className="text-gray-400 text-sm">{player.POSITION}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {/* 📅 Schedule */}
+      <section>
+        <h2 className="text-3xl font-bold text-white mb-6 border-b border-white/20 pb-2">Season Schedule</h2>
         <ul className="space-y-3">
           {schedule.map((game, index) => (
-            <li key={index} className="bg-gray-800 rounded-lg px-6 py-4 flex justify-between items-center">
-              <span className="text-lg">Week {game.WEEK}: vs {game.OPPONENT_NAME}</span>
-              <span className="font-bold text-green-400">{game.RESULT}</span>
+            <li key={index}>
+              <Link
+                href={`/nfl_games/${game.GAME_ID}`}
+                className="bg-gray-800 rounded-lg px-6 py-4 flex justify-between items-center hover:bg-gray-700 transition duration-200"
+              >
+                <span className="text-lg">Week {game.WEEK}: vs {game.OPPONENT_NAME}</span>
+                <span className="font-bold text-green-400">{game.RESULT}</span>
+              </Link>
             </li>
           ))}
         </ul>
-      </section>
-
-      {/* Players */}
-      <section>
-        <h2 className="text-3xl font-bold text-white mb-6 border-b border-white/20 pb-2">
-          Team Roster
-        </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {players.map((player, i) => (
-            <div key={i} className="bg-gray-900 p-4 rounded-lg shadow-lg text-center">
-              <p className="text-white font-semibold">{player.PLAYER_NAME}</p>
-              <p className="text-gray-400 text-sm">{player.POSITION}</p>
-            </div>
-          ))}
-        </div>
       </section>
     </div>
   );
