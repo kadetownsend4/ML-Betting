@@ -208,7 +208,8 @@ function NFLTeams() {
                     team.TEAM_CONF?.toLowerCase().includes(conf.toLowerCase()) &&
                     team.TEAM_DIVISION?.toLowerCase().includes(div.toLowerCase())
                 );
-
+                 {/* ChatGPT helped me set up creating links for each of the teams: 
+                  https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a */}
                 return (
                   <div key={div} className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-2xl border border-white/10">
                     <h4 className="text-2xl font-semibold text-white text-center tracking-wide">
@@ -256,7 +257,7 @@ function NFLTeams() {
           </div>
         ))}
       </div>
-
+        
       {/* Posts Section */}
       <div className="mt-20 sm:mt-28">
       <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-6">
