@@ -3,10 +3,11 @@
    authors = Timothy Berlanga, Kade Townsend
 """
 
-from flask import Blueprint, render_template, jsonify, request, redirect, url_for, flash, Flask
+from flask import Blueprint, render_template, jsonify, request, redirect, url_for, flash, Flask, session
 from .models import User, NFLTeam, NFLQuarterbackWeeklyStats, NBATeam, NBAGameIds, NBAGameLogs, NBAPredictions
 from .extensions import db
 from sqlalchemy.orm import aliased
+
 
 main = Blueprint('main', __name__)
 
