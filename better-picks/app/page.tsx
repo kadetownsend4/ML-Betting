@@ -9,6 +9,7 @@ const menuItems = [
     title: "NBA",
     links: [
       { name: "Latest Games", path: "/latest-games" },
+      { name: "Predictions", path: "/nba-predictions"},
       { name: "Team Stats", path: "/team-stats" },
       { name: "Player Prop Analysis", path: "/player-analysis" },
     ],

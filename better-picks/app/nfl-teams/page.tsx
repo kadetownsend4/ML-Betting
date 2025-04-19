@@ -16,6 +16,7 @@ type Team = {
   TEAM_DIVISION: string;
   TEAM_LOGO: string;
   TEAM_WORDMARK: string;
+  TEAM_ABR: string;
 };
 
 const menuItems = [
@@ -78,37 +79,7 @@ function NFLTeams() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-green-500 text-white p-10 flex flex-col items-center font-sans">
       
 
-      <div className="flex gap-4 justify-center mt-6">
-  <button
-    onClick={() => setSelectedOption('AFC')}
-    className="bg-red-600 text-white py-2 px-4 rounded-lg shadow-lg transition duration-300 hover:bg-red-700"
-  >
-    AFC
-  </button>
-  <button
-    onClick={() => setSelectedOption('NFC')}
-    className="bg-blue-600 text-white py-2 px-4 rounded-lg shadow-lg transition duration-300 hover:bg-blue-700"
-  >
-    NFC
-  </button>
-</div>
-
-{/* For AFC and NFC Divisions */}
-{selectedOption === "AFC" || selectedOption === "NFC" ? (
-  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6 text-center">
-    {divisions.map((div) => (
-      <button
-        key={div}
-        onClick={() => setSelectedOption(`${selectedOption} ${div}`)}
-        className="bg-gray-700 text-white py-2 px-4 rounded-lg shadow-lg transition duration-300 hover:bg-gray-800"
-      >
-        {selectedOption} {div}
-      </button>
-    ))}
-  </div>
-) : null}
-
-<div className="mt-8">
+      <div className="mt-8">
   {selectedOption && selectedOption !== 'AFC' && selectedOption !== 'NFC' && (
     <div>
       <h3 className="text-3xl text-center text-green-400">
@@ -121,28 +92,48 @@ function NFLTeams() {
               team.TEAM_CONF === selectedOption.split(' ')[0] &&
               team.TEAM_DIVISION === selectedOption.split(' ')[1]
           )
-          .map((team, index) => (
-            <div
-              key={index}
-              className="bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center"
-            >
-              <h4 className="text-xl font-semibold text-green-400 text-center">{team.TEAM_NAME}</h4>
-              <div className="relative w-[140px] h-[120px] mb-2 mt-4">
-                <Image
-                  src={team.TEAM_LOGO}
-                  alt={`${team.TEAM_NAME} Logo`}
-                  layout="fill"
-                  objectFit="contain"
-                  className="rounded-lg"
-                  unoptimized
-                />
-              </div>
-            </div>
-          ))}
+          .map((team, index) => {
+            const href = `/nfl-teams/${team.TEAM_ABR.toLowerCase()}`;
+            console.log("Navigating to:", href);
+
+            return (
+              <Link key={index} href={href}>
+                <div className="cursor-pointer bg-gray-900 p-5 rounded-2xl shadow-xl border border-white/10 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-gray-800">
+                  <h2 className="text-xl font-bold text-white text-center tracking-wide mb-2">
+                    {team.TEAM_NAME}
+                  </h2>
+                  <div className="mt-2 flex flex-col items-center gap-3">
+                    <div className="relative w-[140px] h-[120px]">
+                      <Image
+                        src={team.TEAM_LOGO}
+                        alt={`${team.TEAM_NAME} Logo`}
+                        fill
+                        className="rounded-md object-contain"
+                        unoptimized
+                      />
+                    </div>
+                    <div className="relative w-[150px] h-[35px]">
+                      <Image
+                        src={team.TEAM_WORDMARK}
+                        alt={`${team.TEAM_NAME} Wordmark`}
+                        fill
+                        className="rounded-md object-contain"
+                        unoptimized
+                      />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
       </div>
     </div>
   )}
 </div>
+
+
+
+
 
 
       {/* Header Section */}
