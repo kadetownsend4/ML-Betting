@@ -12,6 +12,7 @@ nfl_stats_bp = Blueprint('nfl_stats', __name__)
 @nfl_stats_bp.route('/nfl_teams', methods=['GET'])
 def fetch_teams():
     # Fetch all teams from the NFLTeam table with only the required columns
+    # Changes to commit
     teams = NFLTeam.query.with_entities(
         NFLTeam.TEAM_ID,
         NFLTeam.TEAM_NAME,

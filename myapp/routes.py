@@ -3,7 +3,7 @@
    authors = Timothy Berlanga, Kade Townsend
 """
 
-from flask import Blueprint, render_template, jsonify, request, redirect, url_for, flash
+from flask import Blueprint, render_template, jsonify, request, redirect, url_for, flash, Flask
 from .models import User, NFLTeam, NFLQuarterbackWeeklyStats, NBATeam, NBAGameIds, NBAGameLogs, NBAPredictions
 from .extensions import db
 from sqlalchemy.orm import aliased
@@ -384,3 +384,4 @@ def login():
 
     # If GET request, just render the login page
     return render_template('login.html')
+
