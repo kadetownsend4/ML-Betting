@@ -40,7 +40,7 @@ export default function Login() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: email,  // Assuming you're using email as the username
+          username: email,  
           password: password,
         }),
         credentials: 'include', // important if you're dealing with cookies/sessions
