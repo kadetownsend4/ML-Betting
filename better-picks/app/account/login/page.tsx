@@ -30,12 +30,32 @@ export default function Login() {
    * 
    * @param {React.FormEvent} e - Form event to prevent default submission behavior. 
    */
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email === "test@example.com" && password === "password") {
-      alert("Login successful! Redirecting...");
-    } else {
-      setError("Invalid email or password.");
+  
+    try {
+      const response = await fetch('https://betterpicks-demo.onrender.com/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: email,  // Assuming you're using email as the username
+          password: password,
+        }),
+        credentials: 'include', // important if you're dealing with cookies/sessions
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        alert(data.message);  // Login successful
+        // You can redirect using Router or Link
+      } else {
+        setError(data.error || 'Login failed');
+      }
+    } catch (err) {
+      setError('Server error, please try again later.');
     }
   };
 
