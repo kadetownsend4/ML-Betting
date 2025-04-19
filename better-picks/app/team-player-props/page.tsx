@@ -1,12 +1,9 @@
-"use client"; // Use this in Next.js (App Router) to enable client-side behavior
+"use client";
 
 import { useState, useEffect } from "react";
-import { FaFootballBall } from "react-icons/fa";
-import Dashboard from "../components/Dashboard"; // Adjust the import path to your project structure
+import Dashboard from "../components/Dashboard";
 
-// Basic NFL Teams Component
 export default function NFLTeams() {
-  // Static teams data with logos
   const teams = [
     { id: "1", name: "Arizona Cardinals", logo: "/nfl-logos/arizona-cardinals.png" },
     { id: "2", name: "Atlanta Falcons", logo: "/nfl-logos/atlanta-falcons.png" },
@@ -16,7 +13,6 @@ export default function NFLTeams() {
     { id: "6", name: "Chicago Bears", logo: "/nfl-logos/chicago-bears.png" },
   ];
 
-  // Static posts data
   const postsData: Record<string, { id: string; title: string; body: string }[]> = {
     "Arizona Cardinals": [
       { id: "1", title: "Quarterbacks", body: "Kyler Murray" },
@@ -33,10 +29,9 @@ export default function NFLTeams() {
       { id: "5", title: "Kicker", body: "Younghoe Koo" },
     ],
     "Baltimore Ravens": [
-      { id: "5", title: "Quarterbacks", body: "Lamar Jackson" },
-      { id: "6", title: "Running Backs", body: "J.K. Dobbins" },
+      { id: "1", title: "Quarterbacks", body: "Lamar Jackson" },
+      { id: "2", title: "Running Backs", body: "J.K. Dobbins" },
     ],
-    // Add posts for other teams as needed
   };
 
   const [selectedTeam, setSelectedTeam] = useState<string>("");
@@ -44,85 +39,79 @@ export default function NFLTeams() {
 
   useEffect(() => {
     if (selectedTeam) {
-      setPosts(postsData[selectedTeam] || []); // Set posts for selected team
+      setPosts(postsData[selectedTeam] || []);
     }
   }, [selectedTeam]);
 
   return (
     <Dashboard>
-      {/* <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']"> */}
-        {/* <div className="w-full max-w-5xl mt-10 bg-white/10 shadow-lg rounded-xl p-6 relative z-50"> */}
-          <h2 className="text-4xl font-bold text-purple-400 text-center mb-4">NFL Player Prop Positions</h2>
-  
-          <div className="mb-4">
-            <label htmlFor="team" className="text-lg font-semibold">Choose a Team:</label>
-            <div className="relative">
-              <button
-                className="mt-2 p-2 border rounded-md w-full bg-gray-800 text-white flex items-center justify-between"
-                onClick={() => document.getElementById('team-dropdown')?.classList.toggle('hidden')}
-              >
-                {selectedTeam ? (
-                  <div className="flex items-center">
-                    <img src={teams.find(team => team.name === selectedTeam)?.logo || ''} alt={selectedTeam} className="w-6 h-6 mr-2" />
-                    {selectedTeam}
-                  </div>
-                ) : (
-                  "Select a Team"
-                )}
-              </button>
-              <div
-                id="team-dropdown"
-                className="absolute left-0 right-0 mt-2 bg-gray-800 text-white rounded-lg shadow-lg max-h-60 overflow-y-auto hidden"
-              >
-                {teams.map((team) => (
-                  <button
-                    key={team.id}
-                    onClick={() => {
-                      setSelectedTeam(team.name);
-                      document.getElementById('team-dropdown')?.classList.add('hidden');
-                    }}
-                    className="flex items-center p-2 hover:bg-gray-700 w-full text-left"
-                  >
-                    <img src={team.logo} alt={team.name} className="w-6 h-6 mr-2" />
-                    {team.name}
-                  </button>
-                ))}
-              </div>
+      <div className="w-full max-w-6xl mt-20 bg-white/5 shadow-xl rounded-xl px-8 py-10 sm:px-12 sm:py-14 space-y-8 border border-white/20 text-white font-['Orbitron']">
+        
+        {/* Header with Dropdown */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-purple-400 tracking-wide">
+            NFL Player Prop Positions
+          </h2>
+
+          <select
+            value={selectedTeam}
+            onChange={(e) => setSelectedTeam(e.target.value)}
+            className="w-full sm:w-72 p-3 rounded-md bg-gray-800 text-white border border-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          >
+            <option value="" disabled>Select a Team</option>
+            {teams.map((team) => (
+              <option key={team.id} value={team.name}>
+                {team.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Team info */}
+        {selectedTeam && (
+          <>
+            <div className="flex items-center gap-3 mt-6">
+              <img
+                src={teams.find((t) => t.name === selectedTeam)?.logo || ""}
+                alt={selectedTeam}
+                className="w-10 h-10"
+              />
+              <h3 className="text-2xl font-semibold">
+                Player Prop Positions: {selectedTeam}
+              </h3>
             </div>
-          </div>
-  
-          {selectedTeam && (
-            <>
-              <h1 className="text-2xl font-bold mb-4">Player Prop Positions: {selectedTeam}</h1>
-              <ul className="space-y-4">
-                {posts.map((post) => (
-                  <li key={post.id} className="p-4 border border-gray-200 rounded-lg shadow-sm bg-gray-900">
-                    <h2 className="text-lg font-semibold">{post.title}</h2>
-                    <div className="text-purple-400">
-                      {post.body.split(',').map((player, index) => (
-                        <div key={index} className="group relative">
-                          <a
-                            href={`https://www.example.com/players/${player.trim()}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-purple-400 hover:text-white-600 group-hover:underline"
-                          >
-                            {player.trim()}
-                          </a>
-                        </div>
-                      ))}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-        {/* </div> */}
-  
-        <footer className="mt-auto py-6 text-gray-400">
+
+            <ul className="space-y-4">
+              {posts.map((post) => (
+                <li
+                  key={post.id}
+                  className="p-4 border border-gray-700 rounded-lg bg-gray-900"
+                >
+                  <h4 className="text-lg font-semibold">{post.title}</h4>
+                  <div className="text-purple-300">
+                    {post.body.split(",").map((player, idx) => (
+                      <div key={idx}>
+                        <a
+                          href={`https://www.example.com/players/${player.trim()}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:underline"
+                        >
+                          {player.trim()}
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        <footer className="mt-10 py-6 text-gray-400 text-sm text-center">
           <p>&copy; 2025 NFL Stats. All rights reserved.</p>
         </footer>
-      {/* </div> */}
+      </div>
     </Dashboard>
   );
-}  
+}

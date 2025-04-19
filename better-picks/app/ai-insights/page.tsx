@@ -34,17 +34,17 @@ export default function PlayerPropAnalysisPage() {
 
   return (
     <Dashboard>
-      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white px-6 py-10 flex flex-col items-center font-['Orbitron']">
+      {/* <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white px-6 py-10 flex flex-col items-center font-['Orbitron']"> */}
         {/* Title */}
-        <h1 className="text-4xl font-bold text-green-400 mt-10 mb-6 tracking-wide uppercase font-['Rajdhani']">
+        <h1 className="text-4xl font-bold text-purple-400 mt-10 mb-6 tracking-wide uppercase font-['Rajdhani']">
           AI Insights : Player Prop Analysis
         </h1>
 
         {/* Table Section */}
-        <div className="w-full max-w-6xl bg-white/10 backdrop-blur-lg shadow-xl rounded-xl p-6">
+        <div className="w-full max-w-6xl bg-white/10 shadow-xl rounded-xl p-6">
           <div className="overflow-y-auto max-h-[500px] rounded-lg">
             <table className="w-full border-collapse border border-gray-700 text-lg">
-              <thead className="bg-gray-800 text-green-400">
+              <thead className="bg-gray-800 text-purple-400">
                 <tr>
                   <th className="border border-gray-700 px-4 py-3 text-left">Player</th>
                   <th className="border border-gray-700 px-4 py-3">Bet Type</th>
@@ -84,7 +84,7 @@ export default function PlayerPropAnalysisPage() {
             </button>
           </Link>
         </div> */}
-      </div>
+      {/* </div> */}
     </Dashboard>
   );
 }
