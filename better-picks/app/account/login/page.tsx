@@ -106,11 +106,25 @@ export default function Login() {
           </button>
         </form>
 
+         {/* Register Button */}
+         <div className="mt-6 text-center">
+          <p> Don't have an account? </p>
+          <br></br>
+          <Link href="/account/register">
+            <span className="bg-gray-600 text-white font-semibold py-2
+            px-6 rounded-md hover:bg-gray-700 transition-all duration-200
+            cursor-pointer">
+              Register
+            </span>
+          </Link>
+        </div>
+
+
         {/* Back to Profile Button */}
         <div className="mt-6 text-center">
-          <Link href="/account/profile">
+          <Link href="/">
             <span className="bg-gray-600 text-white font-semibold py-2 px-6 rounded-md hover:bg-gray-700 transition-all duration-200 cursor-pointer">
-              Back to Profile
+              Back to Home
             </span>
           </Link>
         </div>

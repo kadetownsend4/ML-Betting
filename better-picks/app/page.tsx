@@ -116,7 +116,7 @@ export default function Home() {
   
             <div className="flex gap-6 items-center flex-col sm:flex-row">
               <Link
-              href="/dashboard"
+              href="/account/register"
               className="rounded-full transition-all transform hover:scale-105 flex items-center justify-center bg-gradient-to-r from-green-400 to-green-600 text-black font-bold shadow-2xl border-2 border-white text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10"
               >
                 Get Started
