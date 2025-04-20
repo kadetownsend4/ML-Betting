@@ -379,3 +379,22 @@ def login():
     else:
         return jsonify({"error": "Invalid username or password"}), 401
 
+@main.route('/user', methods=['GET'])
+def get_current_user():
+    user_id = session.get('user_id')
+    
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    user = User.query.get(user_id)
+    
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    user_data = {
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+    }
+
+    return jsonify(user_data), 200
