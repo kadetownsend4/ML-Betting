@@ -1,3 +1,5 @@
+// I used chat gpt to help generate the page based on the backend route and changed it according to certain specfications:
+// https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a 
 'use client';
 
 import { useEffect, useState } from 'react';

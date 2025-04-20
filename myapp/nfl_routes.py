@@ -181,32 +181,37 @@ def get_team_game_stats(team_abr):
 
 @nfl_stats_bp.route('/nfl_games/<string:game_id>/team_stats', methods=['GET'])
 def get_game_team_stats(game_id):
-    # Fetch the game
+    # Get the game info
     game = NFLGames.query.filter_by(GAME_ID=game_id).first()
     if not game:
         return jsonify({'error': 'Game not found'}), 404
 
-    # Fetch team references
-    home_team = game.home_team_ref
-    away_team = game.away_team_ref
+    # Get the team stats for both teams in this game
+    team_stats = NFLTeamGameStats.query \
+        .filter(NFLTeamGameStats.GAME_ID == game_id) \
+        .all()
 
-    # Get both teams' stats
-    stats = NFLTeamGameStats.query.filter_by(GAME_ID=game_id).all()
+    if not team_stats or len(team_stats) != 2:
+        return jsonify({'error': 'Game stats not available for both teams'}), 404
 
-    if not stats or len(stats) != 2:
-        return jsonify({'error': 'Stats for both teams not found'}), 404
+    results = []
 
-    team_stats = []
-    for stat in stats:
-        is_home = stat.TEAM == game.HOME_TEAM
-        team_ref = home_team if is_home else away_team
-        team_stats.append({
-            'TEAM': stat.TEAM,
-            'TEAM_NAME': team_ref.TEAM_NAME if team_ref else None,
-            'TEAM_LOGO': team_ref.TEAM_LOGO if team_ref else None,
-            'IS_HOME': is_home,
-            'SCORE': game.HOME_SCORE if is_home else game.AWAY_SCORE,
-            'OPPONENT': game.AWAY_TEAM if is_home else game.HOME_TEAM,
+    for stat in team_stats:
+        team = NFLTeam.query.filter_by(TEAM_ABR=stat.TEAM).first()
+        if not team:
+            continue
+
+        results.append({
+            'TEAM': {
+                'TEAM_ID': team.TEAM_ID,
+                'TEAM_NAME': team.TEAM_NAME,
+                'TEAM_ABR': team.TEAM_ABR,
+                'TEAM_LOGO': team.TEAM_LOGO,
+                'TEAM_WORDMARK': team.TEAM_WORDMARK
+            },
+            'IS_HOME': stat.TEAM == game.HOME_TEAM,
+            'SCORE': game.HOME_SCORE if stat.TEAM == game.HOME_TEAM else game.AWAY_SCORE,
+            'OPPONENT_SCORE': game.AWAY_SCORE if stat.TEAM == game.HOME_TEAM else game.HOME_SCORE,
             'TOTAL_YARDS': stat.TOTAL_YARDS,
             'TOTAL_TDS': stat.TOTAL_TDS,
             'PASSING_TDS': stat.PASSING_TDS,
@@ -234,11 +239,11 @@ def get_game_team_stats(game_id):
     return jsonify({
         'GAME_ID': game.GAME_ID,
         'WEEK': game.WEEK,
-        'HOME_TEAM': game.HOME_TEAM,
         'AWAY_TEAM': game.AWAY_TEAM,
-        'HOME_SCORE': game.HOME_SCORE,
+        'HOME_TEAM': game.HOME_TEAM,
         'AWAY_SCORE': game.AWAY_SCORE,
-        'team_stats': team_stats
+        'HOME_SCORE': game.HOME_SCORE,
+        'team_stats': results
     })
 
 @nfl_stats_bp.route('/nfl_games', methods=['GET'])
