@@ -17,7 +17,8 @@ def create_app():
 
     CORS(app, supports_credentials=True, origins=[
     "http://localhost:3000",
-    "https://ml-betting-react-app.onrender.com"])
+    "https://ml-betting-react-app.onrender.com",
+    "https://curly-chainsaw-7vv965p9p5jr2rpq4-3000.app.github.dev"])
    
     # Set the SECRET_KEY from environment variable or fallback to a default one if not set
     app.config["SECRET_KEY"] = os.environ.get("SECRET", "32e865dab7e61c1ed8ea62b5a6211bfde377dab86dd232976ec5944a1edfee79")
