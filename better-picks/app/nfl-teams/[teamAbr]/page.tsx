@@ -142,14 +142,14 @@ export default function TeamDetailsPage() {
             <h3 className="text-2xl font-semibold text-green-300 mb-2">{position}</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {playersInPos.map((player) => (
-                <Link
-                  key={player.PLAYER_ID}
-                  href={`/nfl_players/${player.PLAYER_ID}`}
-                  className="bg-gray-900 p-4 rounded-lg shadow-lg text-center hover:bg-gray-800 transition duration-200"
-                >
-                  <p className="text-white font-semibold">{player.PLAYER_NAME}</p>
-                  <p className="text-gray-400 text-sm">{player.POSITION}</p>
-                </Link>
+               <Link
+               key={player.PLAYER_ID}
+               href={`/nfl-players/${player.POSITION.toLowerCase()}/${player.PLAYER_ID}`}
+               className="bg-gray-900 p-4 rounded-lg shadow-lg text-center hover:bg-gray-800 transition duration-200"
+             >
+               <p className="text-white font-semibold">{player.PLAYER_NAME}</p>
+               <p className="text-gray-400 text-sm">{player.POSITION}</p>
+             </Link>
               ))}
             </div>
           </div>
