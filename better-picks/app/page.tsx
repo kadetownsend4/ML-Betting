@@ -62,7 +62,7 @@ export default function Home() {
           {/* Header Section */}
           <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
             <a href="https://ml-betting-react-app.onrender.com">
-              <h1 className="text-4xl font-extrabold text-white drop-shadow-2xl border-b-4 border-green-400">Better Picks</h1>
+              <h1 className="text-4xl font-extrabold text-white drop-shadow-2xl border-b-4 border-purple-400">Better Picks</h1>
             </a>
             <nav className="flex space-x-10 relative">
               {menuItems.map((item, index) => (
@@ -72,7 +72,7 @@ export default function Home() {
                   onMouseEnter={() => setActiveDropdown(item.title)}
                   onMouseLeave={() => setActiveDropdown(null)}
                 >
-                  <button className="text-xl font-bold hover:text-green-400 transition">
+                  <button className="text-xl font-bold hover:text-purple-400 transition">
                     {item.title}
                   </button>
   
@@ -117,7 +117,7 @@ export default function Home() {
             <div className="flex gap-6 items-center flex-col sm:flex-row">
               <Link
               href="/dashboard"
-              className="rounded-full transition-all transform hover:scale-105 flex items-center justify-center bg-gradient-to-r from-green-400 to-green-600 text-black font-bold shadow-2xl border-2 border-white text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10"
+              className="rounded-full transition-all transform hover:scale-105 flex items-center justify-center bg-gradient-to-r from-purple-400 to-purple-600 text-black font-bold shadow-2xl border-2 border-white text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10"
               >
                 Get Started
               </Link>
@@ -146,7 +146,7 @@ export default function Home() {
       href="https://www.ncpgambling.org/" 
       target="_blank" 
       rel="noopener noreferrer" 
-      className="text-green-400 font-bold underline hover:text-green-300 transition-colors duration-200"
+      className="text-purple-400 font-bold underline hover:text-purple-300 transition-colors duration-200"
     >
       {" "}National Council on Problem Gambling
     </a>.
