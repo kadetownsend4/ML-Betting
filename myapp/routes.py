@@ -363,7 +363,7 @@ def add_user():
 
     return render_template('register.html')
 
-
+# I referenced ChatGPT for help connecting to react and fetching the user's login details
 @main.route('/login', methods=['POST'])
 def login():
     data = request.get_json()  

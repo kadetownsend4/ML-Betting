@@ -179,6 +179,67 @@ def get_team_game_stats(team_abr):
         'game_stats': results
     })
 
+@nfl_stats_bp.route('/nfl_games/<string:game_id>/team_stats', methods=['GET'])
+def get_game_team_stats(game_id):
+    # Fetch the game
+    game = NFLGames.query.filter_by(GAME_ID=game_id).first()
+    if not game:
+        return jsonify({'error': 'Game not found'}), 404
+
+    # Fetch team references
+    home_team = game.home_team_ref
+    away_team = game.away_team_ref
+
+    # Get both teams' stats
+    stats = NFLTeamGameStats.query.filter_by(GAME_ID=game_id).all()
+
+    if not stats or len(stats) != 2:
+        return jsonify({'error': 'Stats for both teams not found'}), 404
+
+    team_stats = []
+    for stat in stats:
+        is_home = stat.TEAM == game.HOME_TEAM
+        team_ref = home_team if is_home else away_team
+        team_stats.append({
+            'TEAM': stat.TEAM,
+            'TEAM_NAME': team_ref.TEAM_NAME if team_ref else None,
+            'TEAM_LOGO': team_ref.TEAM_LOGO if team_ref else None,
+            'IS_HOME': is_home,
+            'SCORE': game.HOME_SCORE if is_home else game.AWAY_SCORE,
+            'OPPONENT': game.AWAY_TEAM if is_home else game.HOME_TEAM,
+            'TOTAL_YARDS': stat.TOTAL_YARDS,
+            'TOTAL_TDS': stat.TOTAL_TDS,
+            'PASSING_TDS': stat.PASSING_TDS,
+            'RUSHING_TDS': stat.RUSHING_TDS,
+            'NUM_PLAYS': stat.NUM_PLAYS,
+            'AVG_EPA': stat.AVG_EPA,
+            'SUCCESS_RATE': stat.SUCCESS_RATE,
+            'TOTAL_RUSH_YARDS': stat.TOTAL_RUSH_YARDS,
+            'TOTAL_PASS_YARDS': stat.TOTAL_PASS_YARDS,
+            'PASS_ATTEMPTS': stat.PASS_ATTEMPTS,
+            'RUSH_ATTEMPTS': stat.RUSH_ATTEMPTS,
+            'COMPLETE_PASSES': stat.COMPLETE_PASSES,
+            'INCOMPLETE_PASSES': stat.INCOMPLETE_PASSES,
+            'SACKS': stat.SACKS,
+            'TOTAL_PENALTY_YARDS': stat.TOTAL_PENALTY_YARDS,
+            'FUMBLES_LOST': stat.FUMBLES_LOST,
+            'INTERCEPTIONS': stat.INTERCEPTIONS,
+            'THIRD_DOWN_CONVERTED': stat.THIRD_DOWN_CONVERTED,
+            'FOURTH_DOWN_CONVERTED': stat.FOURTH_DOWN_CONVERTED,
+            'WP': stat.WP,
+            'HOME_WP': stat.HOME_WP,
+            'AWAY_WP': stat.AWAY_WP
+        })
+
+    return jsonify({
+        'GAME_ID': game.GAME_ID,
+        'WEEK': game.WEEK,
+        'HOME_TEAM': game.HOME_TEAM,
+        'AWAY_TEAM': game.AWAY_TEAM,
+        'HOME_SCORE': game.HOME_SCORE,
+        'AWAY_SCORE': game.AWAY_SCORE,
+        'team_stats': team_stats
+    })
 
 @nfl_stats_bp.route('/nfl_games', methods=['GET'])
 def get_all_games():
