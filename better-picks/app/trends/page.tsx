@@ -34,24 +34,24 @@ export default function Trends() {
 
         {/* Trending Player Props Section */}
         {selectedSport && (
-          <div className="w-full max-w-5xl mt-6 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6">
-            <h2 className="text-4xl tracking-wide uppercase text-green-400 flex items-center gap-2 font-['Rajdhani']">
-              <FaChartLine className="text-green-400" /> Trending Player Props
+          <div className="w-full max-w-5xl mt-6 bg-white/10 bac shadow-lg rounded-xl p-6">
+            <h2 className="text-4xl tracking-wide uppercase text-purple-400 flex items-center gap-2 font-['Rajdhani']">
+              <FaChartLine className="text-purple-400" /> Trending Player Props
             </h2>
             <div className="overflow-y-auto max-h-[500px] rounded-lg p-2">
-              <table className="w-full border-collapse border border-gray-700 text-lg">
-                <thead className="sticky top-0 bg-gray-800 text-green-400">
+              <table className="w-full border-collapse text-lg">
+                <thead className="sticky top-0 bg-transparent text-purple-400">
                   <tr>
                     <th className="border border-gray-700 px-6 py-3 text-left">Player</th>
                     <th className="border border-gray-700 px-6 py-3 text-left">Team</th>
-                    <th className="border border-gray-700 px-6 py-3">Bet Type</th>
-                    <th className="border border-gray-700 px-6 py-3">Odds</th>
+                    <th className="border border-gray-700 px-6 py-3 text-center">Bet Type</th>
+                    <th className="border border-gray-700 px-6 py-3 text-center">Odds</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredProps.length > 0 ? (
                     filteredProps.map((prop, index) => (
-                      <tr key={index} className="border border-gray-700">
+                      <tr key={index} className="border border-gray-700 hover:bg-white/5 transition">
                         <td className="border border-gray-700 px-6 py-3">{prop.player}</td>
                         <td className="border border-gray-700 px-6 py-3">{prop.team}</td>
                         <td className="border border-gray-700 px-6 py-3 text-center">{prop.betType}</td>

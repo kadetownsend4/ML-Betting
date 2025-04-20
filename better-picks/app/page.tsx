@@ -62,7 +62,7 @@ export default function Home() {
           {/* Header Section */}
           <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
             <a href="https://ml-betting-react-app.onrender.com">
-              <h1 className="text-4xl font-extrabold text-white drop-shadow-2xl border-b-4 border-green-400">Better Picks</h1>
+              <h1 className="text-4xl font-extrabold text-white drop-shadow-2xl border-b-4 border-purple-400">Better Picks</h1>
             </a>
             <nav className="flex space-x-10 relative">
               {menuItems.map((item, index) => (
@@ -72,7 +72,7 @@ export default function Home() {
                   onMouseEnter={() => setActiveDropdown(item.title)}
                   onMouseLeave={() => setActiveDropdown(null)}
                 >
-                  <button className="text-xl font-bold hover:text-green-400 transition">
+                  <button className="text-xl font-bold hover:text-purple-400 transition">
                     {item.title}
                   </button>
   
@@ -146,7 +146,7 @@ export default function Home() {
       href="https://www.ncpgambling.org/" 
       target="_blank" 
       rel="noopener noreferrer" 
-      className="text-green-400 font-bold underline hover:text-green-300 transition-colors duration-200"
+      className="text-purple-400 font-bold underline hover:text-purple-300 transition-colors duration-200"
     >
       {" "}National Council on Problem Gambling
     </a>.

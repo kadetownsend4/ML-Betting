@@ -1,43 +1,99 @@
 "use client";
-import { FaBasketballBall } from "react-icons/fa";
+import { useState } from "react";
+import { FaChartLine } from "react-icons/fa";
 import Dashboard from "../components/Dashboard";
-import Link from "next/link";
 
-const playerData = [
-  { name: "LeBron James", team: "Lakers", points: 27, assists: 8, rebounds: 7 },
-  { name: "Stephen Curry", team: "Warriors", points: 30, assists: 6, rebounds: 5 },
-  { name: "Giannis Antetokounmpo", team: "Bucks", points: 29, assists: 5, rebounds: 11 },
-  { name: "Luka Dončić", team: "Lakers", points: 32, assists: 9, rebounds: 8 },
-  { name: "Kevin Durant", team: "Suns", points: 28, assists: 7, rebounds: 6 },
-  { name: "Jayson Tatum", team: "Celtics", points: 26, assists: 4, rebounds: 8 },
+const trendingProps = [
+  { player: "LeBron James", team: "Lakers", betType: "Points Over 28.5", odds: "-110", sport: "NBA" },
+  { player: "Stephen Curry", team: "Warriors", betType: "3PT Made Over 4.5", odds: "+120", sport: "NBA" },
+  { player: "Giannis Antetokounmpo", team: "Bucks", betType: "Rebounds Over 11.5", odds: "-115", sport: "NBA" },
+  { player: "Patrick Mahomes", team: "Chiefs", betType: "Passing Yards Over 290.5", odds: "-105", sport: "NFL" },
+  { player: "Josh Allen", team: "Bills", betType: "Rushing Yards Over 40.5", odds: "-102", sport: "NFL" },
 ];
 
-export default function PlayerAnalysis() {
+// Extract unique prop types
+const uniquePropTypes = [...new Set(trendingProps.map((prop) => prop.betType.split(" ")[0]))];
+
+export default function PropStreaks() {
+  const [selectedSport, setSelectedSport] = useState("");
+  const [selectedPropType, setSelectedPropType] = useState("");
+
+  const filteredProps = trendingProps.filter(
+    (prop) =>
+      (selectedSport ? prop.sport === selectedSport : true) &&
+      (selectedPropType ? prop.betType.startsWith(selectedPropType) : true)
+  );
+
   return (
     <Dashboard>
       <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
-        <h1 className="text-4xl font-bold text-green-400 mt-10 mb-6 tracking-wide uppercase font-['Rajdhani']">
-          NBA Player Prop Analysis
-        </h1>
+        {/* Filter Controls */}
+        <div className="mt-10 w-full max-w-5xl flex flex-col md:flex-row justify-end gap-4">
+          <select
+            value={selectedSport}
+            onChange={(e) => setSelectedSport(e.target.value)}
+            className="bg-gray-800 text-white border border-gray-600 rounded-lg px-4 py-2 text-lg"
+          >
+            <option value="">Choose League</option>
+            <option value="NBA">NBA</option>
+            <option value="NFL">NFL</option>
+          </select>
 
-        <div className="w-full max-w-6xl mt-6 bg-white/10 shadow-lg rounded-xl p-6">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {playerData.map((player, index) => (
-              <div key={index} className="bg-gray-800 p-4 rounded-lg text-center shadow-md flex flex-col items-center min-h-[150px] w-full">
-                <h3 className="text-xl font-bold text-green-400 break-words leading-tight text-center">{player.name}</h3>
-                <p className="text-gray-300">{player.team}</p>
-                <Link href={`/player/${encodeURIComponent(player.name.toLowerCase().replace(/\s+/g, "-"))}`}>
-                  <button className="mt-auto px-4 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600">
-                    View Props
-                  </button>
-                </Link>
-              </div>
+          <select
+            value={selectedPropType}
+            onChange={(e) => setSelectedPropType(e.target.value)}
+            className="bg-gray-800 text-white border border-gray-600 rounded-lg px-4 py-2 text-lg"
+          >
+            <option value="">Choose Prop Type</option>
+            {uniquePropTypes.map((type, idx) => (
+              <option key={idx} value={type}>
+                {type}
+              </option>
             ))}
-          </div>
+          </select>
         </div>
 
+        {/* Streaks Section */}
+        {(selectedSport || selectedPropType) && (
+          <div className="w-full max-w-5xl mt-6 bg-white/10 backdrop-blur-lg shadow-lg rounded-xl p-6">
+            <h2 className="text-4xl tracking-wide uppercase text-purple-400 flex items-center gap-2 font-['Rajdhani']">
+              <FaChartLine className="text-purple-400" /> Player Prop Streaks
+            </h2>
+            <div className="overflow-y-auto max-h-[500px] rounded-lg p-2">
+              <table className="w-full border-collapse text-lg">
+                <thead className="sticky top-0 bg-transparent text-purple-400">
+                  <tr>
+                    <th className="border border-gray-700 px-6 py-3 text-left">Player</th>
+                    <th className="border border-gray-700 px-6 py-3 text-left">Team</th>
+                    <th className="border border-gray-700 px-6 py-3 text-center">Bet Type</th>
+                    <th className="border border-gray-700 px-6 py-3 text-center">Odds</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredProps.length > 0 ? (
+                    filteredProps.map((prop, index) => (
+                      <tr key={index} className="border border-gray-700 hover:bg-white/5 transition">
+                        <td className="border border-gray-700 px-6 py-3">{prop.player}</td>
+                        <td className="border border-gray-700 px-6 py-3">{prop.team}</td>
+                        <td className="border border-gray-700 px-6 py-3 text-center">{prop.betType}</td>
+                        <td className="border border-gray-700 px-6 py-3 text-center">{prop.odds}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={4} className="text-center py-4 text-gray-400">
+                        No streaks found for this filter.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
         <footer className="mt-auto py-6 text-gray-400">
-          <p>&copy; 2025 NBA Stats. All rights reserved.</p>
+          <p>&copy; 2025 Player Prop Streaks. All rights reserved.</p>
         </footer>
       </div>
     </Dashboard>
