@@ -357,6 +357,86 @@ def get_full_qb_stats(player_id):
     
     return jsonify(data)
 
+@nfl_stats_bp.route('/qb/stats/game/<game_id>', methods=['GET'])
+def get_qbs_by_game(game_id):
+    stats = NFLQuarterbackWeeklyStats.query.filter_by(GAME_ID=game_id).all()
+
+    if not stats:
+        return jsonify({"message": "No QB stats found for this game"}), 404
+
+    results = []
+    for s in stats:
+        results.append({
+           # Core player/game info
+            "PLAYER_NAME": s.PLAYER_NAME,
+            "PLAYER_ABBR": s.PLAYER_ABBR,
+            "GAME_ID": s.GAME_ID,
+            "WEEK": s.WEEK,
+            "RECENT_TEAM": s.RECENT_TEAM,
+            "OPPONENT_TEAM": s.OPPONENT_TEAM,
+            "SEASON": s.SEASON,
+            "SEASON_TYPE": s.SEASON_TYPE,
+            "POSITION": s.POSITION,
+            "HEADSHOT_URL": s.HEADSHOT_URL,
+            
+            # Snap counts
+            "OFFENSE_SNAPS": s.OFFENSE_SNAPS,
+            "OFFENSE_PCT": s.OFFENSE_PCT,
+            
+            # Passing stats
+            "COMPLETIONS": s.COMPLETIONS,
+            "ATTEMPTS": s.ATTEMPTS,
+            "PASSING_YARDS": s.PASSING_YARDS,
+            "PASSING_TDS": s.PASSING_TDS,
+            "INTERCEPTIONS": s.INTERCEPTIONS,
+            "SACKS": s.SACKS,
+            "SACK_YARDS": s.SACK_YARDS,
+            "PASSING_EPA": s.PASSING_EPA,
+            "PASSING_AIR_YARDS": s.PASSING_AIR_YARDS,
+            "PASSING_YARDS_AFTER_CATCH": s.PASSING_YARDS_AFTER_CATCH,
+            "PASSING_FIRST_DOWNS": s.PASSING_FIRST_DOWNS,
+            "PACR": s.PACR,
+            "DAKOTA": s.DAKOTA,
+            "PASSER_RATING": s.PASSER_RATING,
+            "COMPLETION_PERCENTAGE": s.COMPLETION_PERCENTAGE,
+            "FANTASY_POINTS": s.FANTASY_POINTS,
+            "FANTASY_POINTS_PPR": s.FANTASY_POINTS_PPR,
+
+            # Rushing stats
+            "CARRIES": s.CARRIES,
+            "RUSHING_YARDS": s.RUSHING_YARDS,
+            "RUSHING_TDS": s.RUSHING_TDS,
+            "RUSHING_FUMBLES": s.RUSHING_FUMBLES,
+            "RUSHING_FUMBLES_LOST": s.RUSHING_FUMBLES_LOST,
+            "RUSHING_FIRST_DOWNS": s.RUSHING_FIRST_DOWNS,
+            "RUSHING_EPA": s.RUSHING_EPA,
+            "RUSHING_YARDS_BEFORE_CONTACT": s.RUSHING_YARDS_BEFORE_CONTACT,
+            "RUSHING_YARDS_AFTER_CONTACT": s.RUSHING_YARDS_AFTER_CONTACT,
+            "RUSHING_BROKEN_TACKLES": s.RUSHING_BROKEN_TACKLES,
+
+            # Advanced + pressure metrics
+            "PASSING_DROPS": s.PASSING_DROPS,
+            "PASSING_DROP_PCT": s.PASSING_DROP_PCT,
+            "PASSING_BAD_THROWS": s.PASSING_BAD_THROWS,
+            "PASSING_BAD_THROW_PCT": s.PASSING_BAD_THROW_PCT,
+            "AVG_TIME_TO_THROW": s.AVG_TIME_TO_THROW,
+            "AVG_COMPLETED_AIR_YARDS": s.AVG_COMPLETED_AIR_YARDS,
+            "AVG_INTENDED_AIR_YARDS": s.AVG_INTENDED_AIR_YARDS,
+            "AVG_AIR_YARDS_DIFFERENTIAL": s.AVG_AIR_YARDS_DIFFERENTIAL,
+            "AGGRESSIVENESS": s.AGGRESSIVENESS,
+            "AVG_AIR_YARDS_TO_STICKS": s.AVG_AIR_YARDS_TO_STICKS,
+            "AVG_AIR_DISTANCE": s.AVG_AIR_DISTANCE,
+            "MAX_AIR_DISTANCE": s.MAX_AIR_DISTANCE, 
+            "TIMES_SACKED": s.TIMES_SACKED,
+            "TIMES_BLITZED": s.TIMES_BLITZED,
+            "TIMES_HURRIED": s.TIMES_HURRIED,
+            "TIMES_HIT": s.TIMES_HIT,
+            "TIMES_PRESSURED": s.TIMES_PRESSURED,
+            "TIMES_PRESSURED_PCT": s.TIMES_PRESSURED_PCT
+        })
+
+    return jsonify(results)
+
 
 
 @nfl_stats_bp.route('/receiving/stats/<player_id>', methods=['GET'])
@@ -424,6 +504,76 @@ def get_receiving_stats_for_player(player_id):
     return jsonify(data)
 
 
+@nfl_stats_bp.route('/rec/stats/game/<game_id>', methods=['GET'])
+def get_receivers_by_game(game_id):
+    stats = NFLReceivingWeeklyStats.query.filter_by(GAME_ID=game_id).all()
+
+    if not stats:
+        return jsonify({"message": "No receiving stats found for this game"}), 404
+
+    results = []
+    for s in stats:
+        results.append({
+            # Core player/game info
+            "PLAYER_NAME": s.PLAYER_NAME,
+            "PLAYER_ABBR": s.PLAYER_ABBR,
+            "GAME_ID": s.GAME_ID,
+            "WEEK": s.WEEK,
+            "RECENT_TEAM": s.RECENT_TEAM,
+            "OPPONENT_TEAM": s.OPPONENT_TEAM,
+            "SEASON": s.SEASON,
+            "SEASON_TYPE": s.SEASON_TYPE,
+            "POSITION": s.POSITION,
+            "HEADSHOT_URL": s.HEADSHOT_URL,
+
+            # Receiving stats
+            "RECEPTIONS": s.RECEPTIONS,
+            "TARGETS": s.TARGETS,
+            "RECEIVING_YARDS": s.RECEIVING_YARDS,
+            "RECEIVING_TDS": s.RECEIVING_TDS,
+            "RECEIVING_FUMBLES": s.RECEIVING_FUMBLES,
+            "RECEIVING_FUMBLES_LOST": s.RECEIVING_FUMBLES_LOST,
+            "RECEIVING_AIR_YARDS": s.RECEIVING_AIR_YARDS,
+            "RECEIVING_YARDS_AFTER_CATCH": s.RECEIVING_YARDS_AFTER_CATCH,
+            "RECEIVING_FIRST_DOWNS": s.RECEIVING_FIRST_DOWNS,
+            "RECEIVING_EPA": s.RECEIVING_EPA,
+            "RECEIVING_2PT_CONVERSIONS": s.RECEIVING_2PT_CONVERSIONS,
+
+            # Advanced Receiving Metrics
+            "RACR": s.RACR,
+            "TARGET_SHARE": s.TARGET_SHARE,
+            "AIR_YARDS_SHARE": s.AIR_YARDS_SHARE,
+            "WOPR": s.WOPR,
+
+            # Special Teams & Fantasy
+            "SPECIAL_TEAMS_TDS": s.SPECIAL_TEAMS_TDS,
+            "FANTASY_POINTS": s.FANTASY_POINTS,
+            "FANTASY_POINTS_PPR": s.FANTASY_POINTS_PPR,
+
+            # Extra Advanced Receiving Metrics
+            "RECEIVING_BROKEN_TACKLES": s.RECEIVING_BROKEN_TACKLES,
+            "RECEIVING_DROP": s.RECEIVING_DROP,
+            "RECEIVING_DROP_PCT": s.RECEIVING_DROP_PCT,
+            "RECEIVING_INT": s.RECEIVING_INT,
+            "RECEIVING_RAT": s.RECEIVING_RAT,
+
+            # Tracking Metrics
+            "AVG_CUSHION": s.AVG_CUSHION,
+            "AVG_SEPARATION": s.AVG_SEPARATION,
+            "AVG_INTENDED_AIR_YARDS": s.AVG_INTENDED_AIR_YARDS,
+            "PERCENT_SHARE_OF_INTENDED_AIR_YARDS": s.PERCENT_SHARE_OF_INTENDED_AIR_YARDS,
+            "AVG_YAC": s.AVG_YAC,
+            "AVG_EXPECTED_YAC": s.AVG_EXPECTED_YAC,
+            "AVG_YAC_ABOVE_EXPECTATION": s.AVG_YAC_ABOVE_EXPECTATION,
+        })
+
+    return jsonify(results)
+
+
+
+
+
+
 # --- MERGED RB STATS ROUTE ---
 @nfl_stats_bp.route('/rb/stats/<player_id>', methods=['GET'])
 def get_full_rb_stats(player_id):
@@ -438,9 +588,6 @@ def get_full_rb_stats(player_id):
             "GAME_ID": s.GAME_ID,
             "WEEK": s.WEEK,
             "RECENT_TEAM": s.RECENT_TEAM,
-            "OPPONENT_TEAM": s.OPPONENT_TEAM,
-            "SEASON": s.SEASON,
-            "SEASON_TYPE": s.SEASON_TYPE,
             "POSITION": s.POSITION,
             "HEADSHOT_URL": s.HEADSHOT_URL,
 
@@ -487,3 +634,65 @@ def get_full_rb_stats(player_id):
         data.append(game_data)
 
     return jsonify(data)
+
+@nfl_stats_bp.route('/rb/stats/game/<game_id>', methods=['GET'])
+def get_rbs_by_game(game_id):
+    stats = NFLRBWeeklyStats.query.filter_by(GAME_ID=game_id).all()
+
+    if not stats:
+        return jsonify({"message": "No RB stats found for this game"}), 404
+
+    results = []
+    for s in stats:
+        results.append({
+             # Core player/game info
+            "PLAYER_NAME": s.PLAYER_NAME,
+            "PLAYER_ABBR": s.PLAYER_ABBR,
+            "GAME_ID": s.GAME_ID,
+            "WEEK": s.WEEK,
+            "RECENT_TEAM": s.RECENT_TEAM,
+            "POSITION": s.POSITION,
+            "HEADSHOT_URL": s.HEADSHOT_URL,
+
+            # Rushing stats
+            "CARRIES": s.CARRIES,
+            "RUSHING_YARDS": s.RUSHING_YARDS,
+            "RUSHING_TDS": s.RUSHING_TDS,
+            "RUSHING_FUMBLES": s.RUSHING_FUMBLES,
+            "RUSHING_FUMBLES_LOST": s.RUSHING_FUMBLES_LOST,
+            "RUSHING_FIRST_DOWNS": s.RUSHING_FIRST_DOWNS,
+            "RUSHING_EPA": s.RUSHING_EPA,
+            "RUSHING_2PT_CONVERSIONS": s.RUSHING_2PT_CONVERSIONS,
+
+            # Receiving stats
+            "RECEPTIONS": s.RECEPTIONS,
+            "TARGETS": s.TARGETS,
+            "RECEIVING_YARDS": s.RECEIVING_YARDS,
+            "RECEIVING_TDS": s.RECEIVING_TDS,
+            "RECEIVING_FUMBLES": s.RECEIVING_FUMBLES,
+            "RECEIVING_FUMBLES_LOST": s.RECEIVING_FUMBLES_LOST,
+            "RECEIVING_AIR_YARDS": s.RECEIVING_AIR_YARDS,
+            "RECEIVING_YARDS_AFTER_CATCH": s.RECEIVING_YARDS_AFTER_CATCH,
+            "RECEIVING_FIRST_DOWNS": s.RECEIVING_FIRST_DOWNS,
+            "RECEIVING_EPA": s.RECEIVING_EPA,
+
+            # Fantasy
+            "FANTASY_POINTS": s.FANTASY_POINTS,
+            "FANTASY_POINTS_PPR": s.FANTASY_POINTS_PPR,
+
+            # Advanced Rushing Metrics
+            "RUSHING_YARDS_BEFORE_CONTACT": s.RUSHING_YARDS_BEFORE_CONTACT,
+            "RUSHING_YARDS_BEFORE_CONTACT_AVG": s.RUSHING_YARDS_BEFORE_CONTACT_AVG,
+            "RUSHING_YARDS_AFTER_CONTACT": s.RUSHING_YARDS_AFTER_CONTACT,
+            "RUSHING_YARDS_AFTER_CONTACT_AVG": s.RUSHING_YARDS_AFTER_CONTACT_AVG,
+            "RUSHING_BROKEN_TACKLES": s.RUSHING_BROKEN_TACKLES,
+            "EFFICIENCY": s.EFFICIENCY,
+            "PERCENT_ATTEMPTS_GTE_EIGHT_DEFENDERS": s.PERCENT_ATTEMPTS_GTE_EIGHT_DEFENDERS,
+            "AVG_TIME_TO_LOS": s.AVG_TIME_TO_LOS,
+            "EXPECTED_RUSH_YARDS": s.EXPECTED_RUSH_YARDS,
+            "RUSH_YARDS_OVER_EXPECTED": s.RUSH_YARDS_OVER_EXPECTED,
+            "RUSH_YARDS_OVER_EXPECTED_PER_ATT": s.RUSH_YARDS_OVER_EXPECTED_PER_ATT,
+            "RUSH_PCT_OVER_EXPECTED": s.RUSH_PCT_OVER_EXPECTED
+        })
+
+    return jsonify(results)

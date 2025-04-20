@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { useRouter } from "next/router";
 import axios from 'axios';
 
 type TeamInfo = {
@@ -36,10 +37,191 @@ type GameData = {
   team_stats: TeamGameStats[];
 };
 
+type QuarterbackGameStats = {
+    // Core Info
+    PLAYER_NAME: string;
+    PLAYER_ABBR: string;
+    GAME_ID: string;
+    WEEK: number;
+    RECENT_TEAM: string;
+    OPPONENT_TEAM: string;
+    SEASON: number;
+    SEASON_TYPE: string;
+    POSITION: string;
+    HEADSHOT_URL: string;
+  
+    // Snap Counts
+    OFFENSE_SNAPS: number;
+    OFFENSE_PCT: number;
+  
+    // Passing Stats
+    COMPLETIONS: number;
+    ATTEMPTS: number;
+    PASSING_YARDS: number;
+    PASSING_TDS: number;
+    INTERCEPTIONS: number;
+    SACKS: number;
+    SACK_YARDS: number;
+    PASSING_EPA: number;
+    PASSING_AIR_YARDS: number;
+    PASSING_YARDS_AFTER_CATCH: number;
+    PASSING_FIRST_DOWNS: number;
+    PACR: number;
+    DAKOTA: number;
+    PASSER_RATING: number;
+    COMPLETION_PERCENTAGE: number;
+    FANTASY_POINTS: number;
+    FANTASY_POINTS_PPR: number;
+  
+    // Rushing Stats
+    CARRIES: number;
+    RUSHING_YARDS: number;
+    RUSHING_TDS: number;
+    RUSHING_FUMBLES: number;
+    RUSHING_FUMBLES_LOST: number;
+    RUSHING_FIRST_DOWNS: number;
+    RUSHING_EPA: number;
+    RUSHING_YARDS_BEFORE_CONTACT: number;
+    RUSHING_YARDS_AFTER_CONTACT: number;
+    RUSHING_BROKEN_TACKLES: number;
+  
+    // Advanced + Pressure Metrics
+    PASSING_DROPS: number;
+    PASSING_DROP_PCT: number;
+    PASSING_BAD_THROWS: number;
+    PASSING_BAD_THROW_PCT: number;
+    AVG_TIME_TO_THROW: number;
+    AVG_COMPLETED_AIR_YARDS: number;
+    AVG_INTENDED_AIR_YARDS: number;
+    AVG_AIR_YARDS_DIFFERENTIAL: number;
+    AGGRESSIVENESS: number;
+    AVG_AIR_YARDS_TO_STICKS: number;
+    AVG_AIR_DISTANCE: number;
+    MAX_AIR_DISTANCE: number;
+    TIMES_SACKED: number;
+    TIMES_BLITZED: number;
+    TIMES_HURRIED: number;
+    TIMES_HIT: number;
+    TIMES_PRESSURED: number;
+    TIMES_PRESSURED_PCT: number;
+  };
+  
+
+
+type RunningBackGameStats = {
+    // Core Info
+    PLAYER_NAME: string;
+    PLAYER_ABBR: string;
+    GAME_ID: string;
+    WEEK: number;
+    RECENT_TEAM: string;
+    POSITION: string;
+    HEADSHOT_URL: string;
+  
+    // Rushing Stats
+    CARRIES: number;
+    RUSHING_YARDS: number;
+    RUSHING_TDS: number;
+    RUSHING_FUMBLES: number;
+    RUSHING_FUMBLES_LOST: number;
+    RUSHING_FIRST_DOWNS: number;
+    RUSHING_EPA: number;
+    RUSHING_2PT_CONVERSIONS: number;
+  
+    // Receiving Stats
+    RECEPTIONS: number;
+    TARGETS: number;
+    RECEIVING_YARDS: number;
+    RECEIVING_TDS: number;
+    RECEIVING_FUMBLES: number;
+    RECEIVING_FUMBLES_LOST: number;
+    RECEIVING_AIR_YARDS: number;
+    RECEIVING_YARDS_AFTER_CATCH: number;
+    RECEIVING_FIRST_DOWNS: number;
+    RECEIVING_EPA: number;
+  
+    // Fantasy Stats
+    FANTASY_POINTS: number;
+    FANTASY_POINTS_PPR: number;
+  
+    // Advanced Rushing Metrics
+    RUSHING_YARDS_BEFORE_CONTACT: number;
+    RUSHING_YARDS_BEFORE_CONTACT_AVG: number;
+    RUSHING_YARDS_AFTER_CONTACT: number;
+    RUSHING_YARDS_AFTER_CONTACT_AVG: number;
+    RUSHING_BROKEN_TACKLES: number;
+    EFFICIENCY: number;
+    PERCENT_ATTEMPTS_GTE_EIGHT_DEFENDERS: number;
+    AVG_TIME_TO_LOS: number;
+    EXPECTED_RUSH_YARDS: number;
+    RUSH_YARDS_OVER_EXPECTED: number;
+    RUSH_YARDS_OVER_EXPECTED_PER_ATT: number;
+    RUSH_PCT_OVER_EXPECTED: number;
+  };
+
+type ReceiverGameStats = {
+    // Core Info
+    PLAYER_NAME: string;
+    PLAYER_ABBR: string;
+    GAME_ID: string;
+    WEEK: number;
+    RECENT_TEAM: string;
+    OPPONENT_TEAM: string;
+    SEASON: number;
+    SEASON_TYPE: string;
+    POSITION: string;
+    HEADSHOT_URL: string;
+  
+    // Receiving Stats
+    RECEPTIONS: number;
+    TARGETS: number;
+    RECEIVING_YARDS: number;
+    RECEIVING_TDS: number;
+    RECEIVING_FUMBLES: number;
+    RECEIVING_FUMBLES_LOST: number;
+    RECEIVING_AIR_YARDS: number;
+    RECEIVING_YARDS_AFTER_CATCH: number;
+    RECEIVING_FIRST_DOWNS: number;
+    RECEIVING_EPA: number;
+    RECEIVING_2PT_CONVERSIONS: number;
+  
+    // Advanced Receiving Metrics
+    RACR: number;
+    TARGET_SHARE: number;
+    AIR_YARDS_SHARE: number;
+    WOPR: number;
+  
+    // Special Teams & Fantasy
+    SPECIAL_TEAMS_TDS: number;
+    FANTASY_POINTS: number;
+    FANTASY_POINTS_PPR: number;
+  
+    // Extra Advanced Receiving Metrics
+    RECEIVING_BROKEN_TACKLES: number;
+    RECEIVING_DROP: number;
+    RECEIVING_DROP_PCT: number;
+    RECEIVING_INT: number;
+    RECEIVING_RAT: number;
+  
+    // Tracking Metrics
+    AVG_CUSHION: number;
+    AVG_SEPARATION: number;
+    AVG_INTENDED_AIR_YARDS: number;
+    PERCENT_SHARE_OF_INTENDED_AIR_YARDS: number;
+    AVG_YAC: number;
+    AVG_EXPECTED_YAC: number;
+    AVG_YAC_ABOVE_EXPECTATION: number;
+  };
+  
+  
+
 export default function GamePage() {
-  const params = useParams();
-  const gameId = params?.gameId as string;
+  const { GAME_ID } = useParams();
+  const gameId = GAME_ID as string;
   const [gameData, setGameData] = useState<GameData | null>(null);
+  const [quarterbackStats, setQuarterbackStats] = useState<QuarterbackGameStats[] | null>(null);
+  const [runningbackStats, setRunningbackStats] = useState<RunningBackGameStats[] | null>(null);
+  const [receiverStats, setReceiverStats] = useState<ReceiverGameStats[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -53,6 +235,37 @@ export default function GamePage() {
           console.error('Failed to load game stats:', err);
         })
         .finally(() => setLoading(false));
+
+        // Fetch quarterback stats
+      axios
+      .get<QuarterbackGameStats[]>(`https://betterpicks-demo.onrender.com/nfl_games/${gameId}/quarterback_stats`)
+      .then((res) => {
+        setQuarterbackStats(res.data);
+      })
+      .catch((err) => {
+        console.error('Failed to load quarterback stats:', err);
+      });
+
+    // Fetch running back stats
+    axios
+      .get<RunningBackGameStats[]>(`https://betterpicks-demo.onrender.com/nfl_games/${gameId}/runningback_stats`)
+      .then((res) => {
+        setRunningbackStats(res.data);
+      })
+      .catch((err) => {
+        console.error('Failed to load running back stats:', err);
+      });
+
+    // Fetch receiver stats
+    axios
+      .get<ReceiverGameStats[]>(`https://betterpicks-demo.onrender.com/nfl_games/${gameId}/receiver_stats`)
+      .then((res) => {
+        setReceiverStats(res.data);
+      })
+      .catch((err) => {
+        console.error('Failed to load receiver stats:', err);
+      })
+      .finally(() => setLoading(false));
     }
   }, [gameId]);
 
