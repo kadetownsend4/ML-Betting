@@ -175,6 +175,7 @@ export default function NFLPage() {
     const homeIsWinner = game.HOME_SCORE > game.AWAY_SCORE;
 
     return (
+        <Link href={`/nfl-game/${game.GAME_ID}`} key={game.GAME_ID}>
         <div
         key={game.GAME_ID}
         className="bg-gray-700 rounded-lg p-4 shadow-md flex items-center justify-between"
@@ -220,6 +221,7 @@ export default function NFLPage() {
           </span>
         </div>
       </div>
+      </Link>
     );
   })}
 </div>
