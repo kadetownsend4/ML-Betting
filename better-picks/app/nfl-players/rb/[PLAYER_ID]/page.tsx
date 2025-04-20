@@ -7,77 +7,73 @@ import { useParams } from 'next/navigation';
 import axios from 'axios';
 import Link from "next/link";
 
-interface QBGameStats {
+interface RBGameStats {
+    // Core player/game info
     PLAYER_NAME: string;
+    PLAYER_ABBR: string;
+    GAME_ID: string;
     WEEK: number;
-    SEASON: number;
-    SEASON_TYPE: string;
     RECENT_TEAM: string;
     OPPONENT_TEAM: string;
+    SEASON: number;
+    SEASON_TYPE: string;
     POSITION: string;
     HEADSHOT_URL: string;
   
-    OFFENSE_SNAPS: number;
-    OFFENSE_PCT: number;
-  
-    COMPLETIONS: number;
-    ATTEMPTS: number;
-    PASSING_YARDS: number;
-    PASSING_TDS: number;
-    INTERCEPTIONS: number;
-    SACKS: number;
-    SACK_YARDS: number;
-    PASSER_RATING: number;
-    COMPLETION_PERCENTAGE: number;
-    PASSING_EPA: number;
-    PASSING_AIR_YARDS: number;
-    PASSING_YARDS_AFTER_CATCH: number;
-    PASSING_FIRST_DOWNS: number;
-    PACR: number;
-    DAKOTA: number;
-  
-    FANTASY_POINTS: number;
-    FANTASY_POINTS_PPR: number;
-  
+    // Rushing stats
     CARRIES: number;
     RUSHING_YARDS: number;
     RUSHING_TDS: number;
+    RUSHING_FUMBLES: number;
+    RUSHING_FUMBLES_LOST: number;
     RUSHING_FIRST_DOWNS: number;
     RUSHING_EPA: number;
+    RUSHING_2PT_CONVERSIONS: number;
   
-    PASSING_DROPS: number;
-    PASSING_DROP_PCT: number;
-    PASSING_BAD_THROWS: number;
-    PASSING_BAD_THROW_PCT: number;
-    AVG_TIME_TO_THROW: number;
-    AVG_COMPLETED_AIR_YARDS: number;
-    AVG_INTENDED_AIR_YARDS: number;
-    AVG_AIR_YARDS_DIFFERENTIAL: number;
-    AGGRESSIVENESS: number;
-    AVG_AIR_YARDS_TO_STICKS: number;
-    AVG_AIR_DISTANCE: number;
-    MAX_AIR_DISTANCE: number;
+    // Receiving stats
+    RECEPTIONS: number;
+    TARGETS: number;
+    RECEIVING_YARDS: number;
+    RECEIVING_TDS: number;
+    RECEIVING_FUMBLES: number;
+    RECEIVING_FUMBLES_LOST: number;
+    RECEIVING_AIR_YARDS: number;
+    RECEIVING_YARDS_AFTER_CATCH: number;
+    RECEIVING_FIRST_DOWNS: number;
+    RECEIVING_EPA: number;
   
-    TIMES_SACKED: number;
-    TIMES_BLITZED: number;
-    TIMES_HURRIED: number;
-    TIMES_HIT: number;
-    TIMES_PRESSURED: number;
-    TIMES_PRESSURED_PCT: number;
-}
+    // Fantasy stats
+    FANTASY_POINTS: number;
+    FANTASY_POINTS_PPR: number;
+  
+    // Advanced rushing metrics
+    RUSHING_YARDS_BEFORE_CONTACT: number;
+    RUSHING_YARDS_BEFORE_CONTACT_AVG: number;
+    RUSHING_YARDS_AFTER_CONTACT: number;
+    RUSHING_YARDS_AFTER_CONTACT_AVG: number;
+    RUSHING_BROKEN_TACKLES: number;
+    EFFICIENCY: number;
+    PERCENT_ATTEMPTS_GTE_EIGHT_DEFENDERS: number;
+    AVG_TIME_TO_LOS: number;
+    EXPECTED_RUSH_YARDS: number;
+    RUSH_YARDS_OVER_EXPECTED: number;
+    RUSH_YARDS_OVER_EXPECTED_PER_ATT: number;
+    RUSH_PCT_OVER_EXPECTED: number;
+  }
+  
 
-const QBPlayerStats = () => {
+const RBPlayerStats = () => {
     const { PLAYER_ID } = useParams();
     const playerId = PLAYER_ID as string;
   
-    const [weeklyStats, setWeeklyStats] = useState<QBGameStats[]>([]);
+    const [weeklyStats, setWeeklyStats] = useState<RBGameStats[]>([]);
     const [playerName, setPlayerName] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
       if (playerId) {
         axios
-          .get(`https://betterpicks-demo.onrender.com/qb/stats/${playerId}`)
+          .get(`https://betterpicks-demo.onrender.com/rb/stats/${playerId}`)
           .then((res) => {
             const data = res.data;
             setWeeklyStats(data);
@@ -165,54 +161,44 @@ const QBPlayerStats = () => {
         </div>
         </div>
 
-      {/* Stats Table */}
+      {/* RB Stats Table */}
 <table className="min-w-full text-sm text-left border-collapse bg-gray-800 text-gray-100">
   <thead>
     <tr className="bg-gray-900 text-xs uppercase tracking-wider border-b border-gray-700">
       <th className="p-3">Week</th>
       <th className="p-3">Season</th>
       <th className="p-3">Opp</th>
-      <th className="p-3">Snaps</th>
-      <th className="p-3">Snap%</th>
-      <th className="p-3">Cmp/Att</th>
-      <th className="p-3">Cmp%</th>
-      <th className="p-3">Yds</th>
-      <th className="p-3">TD</th>
-      <th className="p-3">INT</th>
-      <th className="p-3">Rating</th>
-      <th className="p-3">EPA</th>
-      <th className="p-3">Air Yds</th>
-      <th className="p-3">YAC</th>
-      <th className="p-3">1D</th>
-      <th className="p-3">PACR</th>
-      <th className="p-3">DAKOTA</th>
       <th className="p-3">Car</th>
       <th className="p-3">Rush Yds</th>
       <th className="p-3">Rush TD</th>
       <th className="p-3">Rush 1D</th>
       <th className="p-3">Rush EPA</th>
+      <th className="p-3">Rush Fum</th>
+      <th className="p-3">Rush Fum Lost</th>
+      <th className="p-3">Rush YBC</th>
+      <th className="p-3">Rush YBC Avg</th>
+      <th className="p-3">Rush YAC</th>
+      <th className="p-3">Rush YAC Avg</th>
+      <th className="p-3">BTK</th>
+      <th className="p-3">Eff</th>
+      <th className="p-3">% ≥8 Def</th>
+      <th className="p-3">Time to LOS</th>
+      <th className="p-3">Expected Rush Yds</th>
+      <th className="p-3">RYOE</th>
+      <th className="p-3">RYOE/Att</th>
+      <th className="p-3">% Rush Over Expected</th>
+      <th className="p-3">Rec</th>
+      <th className="p-3">Tgt</th>
+      <th className="p-3">Rec Yds</th>
+      <th className="p-3">Rec TD</th>
+      <th className="p-3">Rec 1D</th>
+      <th className="p-3">Rec EPA</th>
+      <th className="p-3">Rec Air Yds</th>
+      <th className="p-3">YAC</th>
+      <th className="p-3">Rec Fum</th>
+      <th className="p-3">Rec Fum Lost</th>
       <th className="p-3">Fantasy</th>
       <th className="p-3">PPR</th>
-      <th className="p-3">Drops</th>
-      <th className="p-3">Drop%</th>
-      <th className="p-3">Bad Throws</th>
-      <th className="p-3">Bad Throw%</th>
-      <th className="p-3">Time to Throw</th>
-      <th className="p-3">CAY</th>
-      <th className="p-3">IAY</th>
-      <th className="p-3">AY Diff</th>
-      <th className="p-3">AGG%</th>
-      <th className="p-3">AY to Sticks</th>
-      <th className="p-3">Air Dist</th>
-      <th className="p-3">Max Air</th>
-      <th className="p-3">Sacks</th>
-      <th className="p-3">Sack Yds</th>
-      <th className="p-3">Times Sacked</th>
-      <th className="p-3">Blitzed</th>
-      <th className="p-3">Hurried</th>
-      <th className="p-3">Hit</th>
-      <th className="p-3">Pressured</th>
-      <th className="p-3">Press%</th>
     </tr>
   </thead>
   <tbody>
@@ -221,54 +207,45 @@ const QBPlayerStats = () => {
         <td className="p-3">{game.WEEK}</td>
         <td className="p-3">{game.SEASON}</td>
         <td className="p-3">{game.OPPONENT_TEAM}</td>
-        <td className="p-3">{game.OFFENSE_SNAPS}</td>
-        <td className="p-3">{game.OFFENSE_PCT?.toFixed(1)}%</td>
-        <td className="p-3">{game.COMPLETIONS}/{game.ATTEMPTS}</td>
-        <td className="p-3">{game.COMPLETION_PERCENTAGE?.toFixed(1)}%</td>
-        <td className="p-3">{game.PASSING_YARDS}</td>
-        <td className="p-3">{game.PASSING_TDS}</td>
-        <td className="p-3">{game.INTERCEPTIONS}</td>
-        <td className="p-3">{game.PASSER_RATING?.toFixed(1)}</td>
-        <td className="p-3">{game.PASSING_EPA?.toFixed(2)}</td>
-        <td className="p-3">{game.PASSING_AIR_YARDS}</td>
-        <td className="p-3">{game.PASSING_YARDS_AFTER_CATCH}</td>
-        <td className="p-3">{game.PASSING_FIRST_DOWNS}</td>
-        <td className="p-3">{game.PACR?.toFixed(2)}</td>
-        <td className="p-3">{game.DAKOTA?.toFixed(2)}</td>
         <td className="p-3">{game.CARRIES}</td>
         <td className="p-3">{game.RUSHING_YARDS}</td>
         <td className="p-3">{game.RUSHING_TDS}</td>
         <td className="p-3">{game.RUSHING_FIRST_DOWNS}</td>
         <td className="p-3">{game.RUSHING_EPA?.toFixed(2)}</td>
+        <td className="p-3">{game.RUSHING_FUMBLES}</td>
+        <td className="p-3">{game.RUSHING_FUMBLES_LOST}</td>
+        <td className="p-3">{game.RUSHING_YARDS_BEFORE_CONTACT}</td>
+        <td className="p-3">{game.RUSHING_YARDS_BEFORE_CONTACT_AVG?.toFixed(2)}</td>
+        <td className="p-3">{game.RUSHING_YARDS_AFTER_CONTACT}</td>
+        <td className="p-3">{game.RUSHING_YARDS_AFTER_CONTACT_AVG?.toFixed(2)}</td>
+        <td className="p-3">{game.RUSHING_BROKEN_TACKLES}</td>
+        <td className="p-3">{game.EFFICIENCY?.toFixed(2)}</td>
+        <td className="p-3">{game.PERCENT_ATTEMPTS_GTE_EIGHT_DEFENDERS?.toFixed(1)}%</td>
+        <td className="p-3">{game.AVG_TIME_TO_LOS?.toFixed(2)}</td>
+        <td className="p-3">{game.EXPECTED_RUSH_YARDS.toFixed(2)}</td>
+        <td className="p-3">{game.RUSH_YARDS_OVER_EXPECTED.toFixed(2)}</td>
+        <td className="p-3">{game.RUSH_YARDS_OVER_EXPECTED_PER_ATT?.toFixed(2)}</td>
+        <td className="p-3">{game.RUSH_PCT_OVER_EXPECTED?.toFixed(1)}%</td>
+        <td className="p-3">{game.RECEPTIONS}</td>
+        <td className="p-3">{game.TARGETS}</td>
+        <td className="p-3">{game.RECEIVING_YARDS}</td>
+        <td className="p-3">{game.RECEIVING_TDS}</td>
+        <td className="p-3">{game.RECEIVING_FIRST_DOWNS}</td>
+        <td className="p-3">{game.RECEIVING_EPA?.toFixed(2)}</td>
+        <td className="p-3">{game.RECEIVING_AIR_YARDS}</td>
+        <td className="p-3">{game.RECEIVING_YARDS_AFTER_CATCH}</td>
+        <td className="p-3">{game.RECEIVING_FUMBLES}</td>
+        <td className="p-3">{game.RECEIVING_FUMBLES_LOST}</td>
         <td className="p-3">{game.FANTASY_POINTS?.toFixed(1)}</td>
         <td className="p-3">{game.FANTASY_POINTS_PPR?.toFixed(1)}</td>
-        <td className="p-3">{game.PASSING_DROPS}</td>
-        <td className="p-3">{game.PASSING_DROP_PCT?.toFixed(1)}%</td>
-        <td className="p-3">{game.PASSING_BAD_THROWS}</td>
-        <td className="p-3">{game.PASSING_BAD_THROW_PCT?.toFixed(1)}%</td>
-        <td className="p-3">{game.AVG_TIME_TO_THROW?.toFixed(2)}</td>
-        <td className="p-3">{game.AVG_COMPLETED_AIR_YARDS?.toFixed(1)}</td>
-        <td className="p-3">{game.AVG_INTENDED_AIR_YARDS?.toFixed(1)}</td>
-        <td className="p-3">{game.AVG_AIR_YARDS_DIFFERENTIAL?.toFixed(1)}</td>
-        <td className="p-3">{game.AGGRESSIVENESS?.toFixed(2)}</td>
-        <td className="p-3">{game.AVG_AIR_YARDS_TO_STICKS?.toFixed(1)}</td>
-        <td className="p-3">{game.AVG_AIR_DISTANCE?.toFixed(1)}</td>
-        <td className="p-3">{game.MAX_AIR_DISTANCE?.toFixed(1)}</td>
-        <td className="p-3">{game.TIMES_SACKED}</td>
-        <td className="p-3">{game.SACK_YARDS}</td>
-        <td className="p-3">{game.TIMES_SACKED}</td>
-        <td className="p-3">{game.TIMES_BLITZED}</td>
-        <td className="p-3">{game.TIMES_HURRIED}</td>
-        <td className="p-3">{game.TIMES_HIT}</td>
-        <td className="p-3">{game.TIMES_PRESSURED}</td>
-        <td className="p-3">{game.TIMES_PRESSURED_PCT?.toFixed(2)}%</td>
       </tr>
     ))}
   </tbody>
 </table>
+
     </div>
     </div> 
   );
 }
 
-export default QBPlayerStats;
+export default RBPlayerStats;
