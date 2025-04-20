@@ -211,20 +211,21 @@ function NFLTeams() {
                  {/* ChatGPT helped me set up creating links for each of the teams: 
                   https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a */}
                 return (
-                  <div key={div} className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-2xl border border-white/10">
+                    <div key={div} className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-2xl border border-white/10">
                     <h4 className="text-2xl font-semibold text-white text-center tracking-wide">
                       {conf} {div}
                     </h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 mt-4 justify-center">
-                    {filteredTeams.map((team, index) => (
-                      <Link
-                        key={index}
-                        href={`/nfl-teams/${team.TEAM_ABR}`}
-                        className="bg-gray-900 p-5 rounded-2xl shadow-xl border border-white/10 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-gray-800"
-                      >
-                        <h2 className="text-xl font-bold text-white text-center tracking-wide mb-2">
-                          {team.TEAM_NAME}
-                        </h2>
+                  
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 mt-4 justify-items-center">
+                      {filteredTeams.map((team, index) => (
+                        <Link
+                          key={index}
+                          href={`/nfl-teams/${team.TEAM_ABR}`}
+                          className="w-52 h-60 bg-gray-700 p-5 rounded-2xl shadow-xl border border-white/10 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-gray-800"
+                        >
+                          <h2 className="text-xl font-bold text-white text-center tracking-wide mb-2">
+                            {team.TEAM_NAME}
+                          </h2>
                         <div className="mt-2 flex flex-col items-center gap-3">
                           <div className="relative w-[140px] h-[120px]">
                             <Image
@@ -236,7 +237,7 @@ function NFLTeams() {
                               unoptimized
                             />
                           </div>
-                          <div className="relative w-[150px] h-[35px]">
+                          {/* <div className="relative w-[150px] h-[35px]">
                             <Image
                               src={team.TEAM_WORDMARK}
                               alt={`${team.TEAM_NAME} Wordmark`}
@@ -245,7 +246,7 @@ function NFLTeams() {
                               className="rounded-md"
                               unoptimized
                             />
-                          </div>
+                          </div> */}
                         </div>
                       </Link>
                     ))}
