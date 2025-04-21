@@ -163,7 +163,7 @@ export default function TeamDetailsPage() {
           {schedule.map((game, index) => (
             <li key={index}>
               <Link
-                href={`/nfl_games/${game.GAME_ID}`}
+                href={`/nfl-game/${game.GAME_ID}`}
                 className="bg-gray-800 rounded-lg px-6 py-4 flex justify-between items-center hover:bg-gray-700 transition duration-200"
               >
                 <span className="text-lg">Week {game.WEEK}: vs {game.OPPONENT_NAME}</span>
