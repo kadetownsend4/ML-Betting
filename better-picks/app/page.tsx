@@ -2,6 +2,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import Dashboard from "../app/components/Dashboard";
+
 
 // Navigation menu structure containing categorized links.
 const menuItems = [
@@ -58,53 +60,8 @@ export default function Home() {
         {/* Overlay */}
           <div className="absolute inset-0 bg-black/30 z-0"></div>
 
-        {/* content wrapper */}
-          <div className="relative z-10"></div>
-          {/* Header Section */}
-          <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
-            <a href="https://ml-betting-react-app.onrender.com">
-              <h1 className="text-4xl font-extrabold text-white drop-shadow-2xl border-b-4 border-purple-400">Better Picks</h1>
-            </a>
-            <nav className="flex space-x-10 relative">
-              {menuItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="relative group flex flex-col items-center"
-                  onMouseEnter={() => setActiveDropdown(item.title)}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
-                  <button className="text-xl font-bold hover:text-purple-400 transition">
-                    {item.title}
-                  </button>
-  
-                  {/* Animated Dropdown - Centered */}
-                  <AnimatePresence>
-                    {activeDropdown === item.title && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 0.80 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="absolute left-1/8 mt-2 w-40 bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl shadow-xl p-3"
-                        onMouseEnter={() => setActiveDropdown(item.title)}
-                        onMouseLeave={() => setActiveDropdown(null)}
-                      >
-                        {item.links.map((link, idx) => (
-                          <Link
-                            key={idx}
-                            href={link.path}
-                            className="block px-4 py-2 bg-transparent hover:bg-white/20 rounded-lg transition-all duration-200 ease-in-out text-center w-full"
-                          >
-                            {link.name}
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
-            </nav>
-          </header>
+          <Dashboard>
+          </Dashboard>
   
           {/* Main Content Section */}
           <main className="flex flex-col gap-8 items-center sm:items-start mt-16 flex-grow">
@@ -153,6 +110,7 @@ export default function Home() {
     </a>.
   </p>
 </footer>
+
         </div>
       </>
     );

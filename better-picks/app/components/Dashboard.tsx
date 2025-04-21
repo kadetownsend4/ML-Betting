@@ -11,7 +11,8 @@ const menuItems = [
   {
     title: "NBA",
     links: [
-      { name: "Latest Games", path: "/latest-games" },
+      { name: "NBA Teams", path: "/latest-games" },
+      { name: "Game Predictions", path: "/nba-predictions" },
       { name: "Team Stats", path: "/team-stats" },
       { name: "Player Prop Analysis", path: "/nba-player-analysis" },
     ],
@@ -20,9 +21,9 @@ const menuItems = [
     title: "NFL",
     links: [
       { name: "NFL Teams", path: "/nfl-teams" },
+      { name: "NFL Schedule", path: "/nfl-schedule" },
       { name: "Team Based Player Props", path: "/team-player-props" },
       { name: "Player Prop Analysis", path: "/nfl-player-analysis" },
-      { name: "Betting Insights", path: "/nfl/betting-insights" },
     ],
   },
   {
@@ -44,11 +45,11 @@ const menuItems = [
   },
 ];
 
-const Dashboard = ({ children }: DashboardLayoutProps) => {
+const Dashboard = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans">
+    <>
       {/* Header */}
       <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
         <Link href="/" passHref>
@@ -91,34 +92,8 @@ const Dashboard = ({ children }: DashboardLayoutProps) => {
             </div>
           ))}
         </nav>
-      </header>
-
-      {/* Main Content */}
-      <main className="w-full max-w-6xl mt-20 relative z-50">{children}</main>
-
-      {/* Footer */}
-      <footer className="mt-20 py-6 text-gray-400 text-sm text-center">
-        <div className="flex justify-center gap-6 mb-4">
-          <a href="/privacy-policy" className="hover:text-green-400 transition-colors">
-            Privacy Policy
-          </a>
-          <a href="/terms" className="hover:text-green-400 transition-colors">
-            Terms of Service
-          </a>
-        </div>
-        <p>
-          <span className="text-red-400 uppercase">Disclaimer:</span> Please gamble responsibly. If you have a gambling problem, seek help from a professional organization such as{" "}
-          <a
-            href="https://www.ncpgambling.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-green-400 font-bold underline hover:text-green-300 transition-colors duration-200"
-          >
-            National Council on Problem Gambling
-          </a>.
-        </p>
-      </footer>
-    </div>
+      </header> 
+      </>
   );
 };
 
