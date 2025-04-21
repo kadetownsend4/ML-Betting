@@ -259,14 +259,15 @@ type ReceiverGameStats = {
   export default function GamePage() {
     const { GAME_ID } = useParams();
     const gameId = GAME_ID as string;
-    const [gameData, setGameData] = useState<GameData | null>(null);
-    const [quarterbackStats, setQuarterbackStats] = useState<QuarterbackGameStats[] | null>(null);
-    const [runningbackStats, setRunningbackStats] = useState<RunningBackGameStats[] | null>(null);
-    const [receiverStats, setReceiverStats] = useState<ReceiverGameStats[] | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    const [activeDropdown, setActiveDropdown] = useState<string | null>(null); // Fixed here
   
+    const [gameData, setGameData] = useState<GameData | null>(null);
+    const [quarterbackStats, setQuarterbackStats] = useState<QuarterbackGameStats[]>([]);
+    const [runningbackStats, setRunningbackStats] = useState<RunningBackGameStats[]>([]);
+    const [receiverStats, setReceiverStats] = useState<ReceiverGameStats[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+    const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
     useEffect(() => {
       if (gameId) {
         const fetchData = async () => {
@@ -279,7 +280,7 @@ type ReceiverGameStats = {
             setGameData(gameDataResponse.data);
           } catch (err) {
             console.error('Error loading game data:', err);
-            setGameData(null); // Optional: reset state
+            setGameData(null);
           }
     
           try {
@@ -322,6 +323,8 @@ type ReceiverGameStats = {
     if (loading) {
       return <div>Loading...</div>;
     }
+    // Ensure gameData exists before rendering the page
+    if (!gameData) return <div>No game data available.</div>;
   
     if (error) {
       return <div>{error}</div>;
