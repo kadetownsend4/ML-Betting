@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useRouter } from "next/router";
 import axios from 'axios';
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 
 type TeamInfo = {
   TEAM_ID: number;
@@ -212,116 +214,778 @@ type ReceiverGameStats = {
     AVG_EXPECTED_YAC: number;
     AVG_YAC_ABOVE_EXPECTATION: number;
   };
+
+  const menuItems = [
+    {
+      title: "NBA",
+      links: [
+        { name: "Latest Games", path: "/latest-games" },
+        { name: "Predictions", path: "/nba-predictions" },
+        { name: "Team Stats", path: "/team-stats" },
+        { name: "Player Prop Analysis", path: "/player-analysis" },
+      ],
+    },
+    {
+      title: "NFL",
+      links: [
+        { name: "NFL Teams", path: "/nfl-teams" },
+        { name: "NFL Schedule", path: "/nfl-schedule" },
+        { name: "Team Based Player Props", path: "/team-player-props" },
+        { name: "Player Prop Analysis", path: "/nfl-player-analysis" },
+        { name: "Betting Insights", path: "/nfl/betting-insights" },
+      ],
+    },
+    {
+      title: "Performance Analysis",
+      links: [
+        { name: "Trending Player Props", path: "/trends" },
+        { name: "NBA Defense vs Position", path: "/defense-vs-position" },
+        { name: "Prop Streak & Success Rate", path: "/prop-streak-success-rate" },
+        { name: "AI Insights", path: "/ai-insights" },
+      ],
+    },
+    {
+      title: "Account",
+      links: [
+        { name: "Profile", path: "/account/profile" },
+        { name: "Settings", path: "/account/settings" },
+        { name: "Login", path: "/account/login" },
+      ],
+    },
+  ];
   
   
 
-export default function GamePage() {
-  const { GAME_ID } = useParams();
-  const gameId = GAME_ID as string;
-  const [gameData, setGameData] = useState<GameData | null>(null);
-  const [quarterbackStats, setQuarterbackStats] = useState<QuarterbackGameStats[] | null>(null);
-  const [runningbackStats, setRunningbackStats] = useState<RunningBackGameStats[] | null>(null);
-  const [receiverStats, setReceiverStats] = useState<ReceiverGameStats[] | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    if (gameId) {
-      axios
-        .get<GameData>(`https://betterpicks-demo.onrender.com/nfl_games/${gameId}/team_stats`)
-        .then((res) => {
-          setGameData(res.data);
-        })
-        .catch((err) => {
-          console.error('Failed to load game stats:', err);
-        })
-        .finally(() => setLoading(false));
-
-        // Fetch quarterback stats
-      axios
-      .get<QuarterbackGameStats[]>(`https://betterpicks-demo.onrender.com/nfl_games/${gameId}/quarterback_stats`)
-      .then((res) => {
-        setQuarterbackStats(res.data);
-      })
-      .catch((err) => {
-        console.error('Failed to load quarterback stats:', err);
-      });
-
-    // Fetch running back stats
-    axios
-      .get<RunningBackGameStats[]>(`https://betterpicks-demo.onrender.com/nfl_games/${gameId}/runningback_stats`)
-      .then((res) => {
-        setRunningbackStats(res.data);
-      })
-      .catch((err) => {
-        console.error('Failed to load running back stats:', err);
-      });
-
-    // Fetch receiver stats
-    axios
-      .get<ReceiverGameStats[]>(`https://betterpicks-demo.onrender.com/nfl_games/${gameId}/receiver_stats`)
-      .then((res) => {
-        setReceiverStats(res.data);
-      })
-      .catch((err) => {
-        console.error('Failed to load receiver stats:', err);
-      })
-      .finally(() => setLoading(false));
+  export default function GamePage() {
+    const { GAME_ID } = useParams();
+    const gameId = GAME_ID as string;
+    const [gameData, setGameData] = useState<GameData | null>(null);
+    const [quarterbackStats, setQuarterbackStats] = useState<QuarterbackGameStats[] | null>(null);
+    const [runningbackStats, setRunningbackStats] = useState<RunningBackGameStats[] | null>(null);
+    const [receiverStats, setReceiverStats] = useState<ReceiverGameStats[] | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+    const [activeDropdown, setActiveDropdown] = useState<string | null>(null); // Fixed here
+  
+    useEffect(() => {
+      if (gameId) {
+        const fetchData = async () => {
+          setLoading(true);
+          try {
+            // Fetch game data
+            const gameDataResponse = await axios.get<GameData>(
+              `https://betterpicks-demo.onrender.com/nfl_games/${gameId}/team_stats`
+            );
+            setGameData(gameDataResponse.data);
+          } catch (err) {
+            console.error('Error loading game data:', err);
+            setGameData(null); // Optional: reset state
+          }
+    
+          try {
+            const qbStatsResponse = await axios.get<QuarterbackGameStats[]>(
+              `https://betterpicks-demo.onrender.com/qb/stats/game/${gameId}`
+            );
+            setQuarterbackStats(qbStatsResponse.data);
+          } catch (err) {
+            console.error('Error loading QB stats:', err);
+            setQuarterbackStats([]); // default to empty array
+          }
+    
+          try {
+            const rbStatsResponse = await axios.get<RunningBackGameStats[]>(
+              `https://betterpicks-demo.onrender.com/rb/stats/game/${gameId}`
+            );
+            setRunningbackStats(rbStatsResponse.data);
+          } catch (err) {
+            console.error('Error loading RB stats:', err);
+            setRunningbackStats([]); // default to empty array
+          }
+    
+          try {
+            const recStatsResponse = await axios.get<ReceiverGameStats[]>(
+              `https://betterpicks-demo.onrender.com/rec/stats/game/${gameId}`
+            );
+            setReceiverStats(recStatsResponse.data);
+          } catch (err) {
+            console.error('Error loading receiver stats:', err);
+            setReceiverStats([]); // default to empty array
+          }
+    
+          setLoading(false);
+        };
+  
+        fetchData();
+      }
+    }, [gameId]);
+  
+    if (loading) {
+      return <div>Loading...</div>;
     }
-  }, [gameId]);
-
-  if (loading) return <div className="text-white text-center mt-10">Loading...</div>;
-  if (!gameData) return <div className="text-red-400 text-center mt-10">Game not found</div>;
-
+  
+    if (error) {
+      return <div>{error}</div>;
+    }
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
-      <h1 className="text-3xl font-bold text-center mb-10 tracking-wide font-['Rajdhani']">
-        Week {gameData.WEEK} — {gameData.HOME_TEAM} vs {gameData.AWAY_TEAM}
-      </h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-green-500 text-white p-10 flex flex-col items-center font-sans">
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-        {gameData.team_stats.map((teamStats, index) => (
-          <div
-            key={index}
-            className="bg-gray-800 border border-white/10 rounded-xl p-6 shadow-xl"
-          >
-            <div className="flex flex-col items-center mb-4">
-              <img
-                src={teamStats.TEAM.TEAM_LOGO}
-                alt={`${teamStats.TEAM.TEAM_NAME} logo`}
-                className="w-16 h-16 mb-2"
-              />
-              <h2 className="text-xl font-bold">{teamStats.TEAM.TEAM_NAME}</h2>
-              <p className="text-sm text-gray-400">
-                {teamStats.IS_HOME ? 'Home' : 'Away'} Team
-              </p>
-              <h3 className="text-3xl mt-2 font-semibold">
-                {teamStats.SCORE}{' '}
-                <span className="text-gray-500">–</span> {teamStats.OPPONENT_SCORE}
-              </h3>
-            </div>
+<div className="space-y-8">
+        {/* Header Section */}
+      <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
+  <h1 className="text-4xl font-extrabold text-white drop-shadow-2xl border-b-4 border-green-400">
+    Better Picks
+  </h1>
+  <nav className="flex space-x-10 relative">
+    {menuItems.map((item, index) => (
+      <div
+        key={index}
+        className="relative group flex flex-col items-center"
+        onMouseEnter={() => setActiveDropdown(item.title)}
+        onMouseLeave={() => setActiveDropdown(null)}
+      >
+        <button className="text-xl font-bold hover:text-green-400 transition">
+          {item.title}
+        </button>
 
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="text-gray-400">Total Yards:</div>
-              <div>{teamStats.TOTAL_YARDS}</div>
+        <AnimatePresence>
+          {activeDropdown === item.title && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 0.80 }}
+              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="absolute left-1/8 mt-2 w-40 bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl shadow-xl p-3 z-50"
+              onMouseEnter={() => setActiveDropdown(item.title)}
+              onMouseLeave={() => setActiveDropdown(null)}
+            >
+              {item.links.map((link, idx) => (
+                <Link
+                  key={idx}
+                  href={link.path}
+                  className="block px-4 py-2 bg-transparent hover:bg-white/20 rounded-lg transition-all duration-200 ease-in-out text-center w-full"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    ))}
+  </nav>
+</header>
+        
 
-              <div className="text-gray-400">Pass Yards:</div>
-              <div>{teamStats.TOTAL_PASS_YARDS}</div>
+  <div className="flex flex-col items-center mb-12 w-full">
+  <h2 className="text-4xl text-white font-extrabold tracking-widest mb-6 font-['Rajdhani'] uppercase">
+    Week {gameData.WEEK}
+  </h2>
+  </div>
 
-              <div className="text-gray-400">Rush Yards:</div>
-              <div>{teamStats.TOTAL_RUSH_YARDS}</div>
+  <div className="w-full max-w-[1075px]">
+  <div className="flex items-center justify-center gap-12 bg-gray-800 px-10 py-4 rounded-2xl shadow-xl">
+      {/* Team 1 */}
+      <div className="flex items-center gap-4">
+        <img
+          src={gameData.team_stats[0].TEAM.TEAM_LOGO}
+          alt={`${gameData.team_stats[0].TEAM.TEAM_NAME} logo`}
+          className="h-14 w-14 object-contain"
+        />
+        <div className="flex flex-col items-start">
+          <span className="text-2xl font-bold font-['Rajdhani'] tracking-wide">
+            {gameData.team_stats[0].TEAM.TEAM_NAME}
+          </span>
+          <span className="text-2xl font-extrabold text-white-300 font-['Rajdhani']">
+            {gameData.team_stats[0].SCORE}
+          </span>
+        </div>
+      </div>
 
-              <div className="text-gray-400">Total TDs:</div>
-              <div>{teamStats.TOTAL_TDS}</div>
+      {/* VS */}
+      <span className="text-3xl font-extrabold tracking-widest font-['Rajdhani'] text-white">
+        VS
+      </span>
 
-              <div className="text-gray-400">Avg EPA:</div>
-              <div>{teamStats.AVG_EPA?.toFixed(2)}</div>
-
-              <div className="text-gray-400">Success Rate:</div>
-              <div>{(teamStats.SUCCESS_RATE * 100).toFixed(1)}%</div>
-            </div>
-          </div>
-        ))}
+      {/* Team 2 */}
+      <div className="flex items-center gap-4">
+        <img
+          src={gameData.team_stats[1].TEAM.TEAM_LOGO}
+          alt={`${gameData.team_stats[1].TEAM.TEAM_NAME} logo`}
+          className="h-14 w-14 object-contain"
+        />
+        <div className="flex flex-col items-start">
+          <span className="text-2xl font-bold font-['Rajdhani'] tracking-wide">
+            {gameData.team_stats[1].TEAM.TEAM_NAME}
+          </span>
+          <span className="text-2xl font-extrabold text-white-300 font-['Rajdhani']">
+            {gameData.team_stats[1].SCORE}
+          </span>
+        </div>
       </div>
     </div>
+  </div>
+
+
+
+
+
+<div className="bg-gray-800 border border-white/10 rounded-xl p-6 shadow-xl space-y-12 w-full max-w-[1600px]">
+{/* Team Stats */}
+<div className="flex flex-col items-center mt-12">
+  <h2 className="text-2xl font-bold text-center mb-4">Team Stats</h2>
+  <div className="overflow-x-auto w-full max-w-5xl">
+    <table className="w-full text-sm text-left border-collapse bg-gray-800 text-gray-100">
+      <thead>
+        <tr className="bg-gray-900 text-xs uppercase tracking-wider border-b border-gray-700">
+          <th className="p-3">Team</th>
+          <th className="p-3">Score</th>
+          <th className="p-3">Opp Score</th>
+          <th className="p-3">Total Yards</th>
+          <th className="p-3">Pass Yards</th>
+          <th className="p-3">Rush Yards</th>
+          <th className="p-3">Total TDs</th>
+          <th className="p-3">Pass TDs</th>
+          <th className="p-3">Rush TDs</th>
+          <th className="p-3">EPA</th>
+          <th className="p-3">Success Rate</th>
+          <th className="p-3">Plays</th>
+          <th className="p-3">Pass Att</th>
+          <th className="p-3">Rush Att</th>
+          <th className="p-3">Sacks</th>
+          <th className="p-3">INTs</th>
+          <th className="p-3">Fumbles Lost</th>
+          <th className="p-3">Pen Yards</th>
+          <th className="p-3">3rd Down Conv</th>
+          <th className="p-3">4th Down Conv</th>
+          <th className="p-3">Win Prob</th>
+        </tr>
+      </thead>
+      <tbody>
+        {gameData.team_stats.map((team, index) => (
+          <tr key={index} className="border-b border-gray-700 hover:bg-gray-700">
+            <td className="p-3 flex items-center space-x-3 min-w-[180px]">
+              <img src={team.TEAM.TEAM_LOGO} alt={team.TEAM.TEAM_ABR} className="w-8 h-8 object-contain" />
+              <span className="whitespace-nowrap">{team.TEAM.TEAM_NAME}</span>
+            </td>
+            <td className="p-3">{team.SCORE}</td>
+            <td className="p-3">{team.OPPONENT_SCORE}</td>
+            <td className="p-3">{team.TOTAL_YARDS}</td>
+            <td className="p-3">{team.TOTAL_PASS_YARDS}</td>
+            <td className="p-3">{team.TOTAL_RUSH_YARDS}</td>
+            <td className="p-3">{team.TOTAL_TDS}</td>
+            <td className="p-3">{team.PASSING_TDS}</td>
+            <td className="p-3">{team.RUSHING_TDS}</td>
+            <td className="p-3">{team.AVG_EPA?.toFixed(2)}</td>
+            <td className="p-3">{(team.SUCCESS_RATE * 100).toFixed(1)}%</td>
+            <td className="p-3">{team.NUM_PLAYS}</td>
+            <td className="p-3">{team.PASS_ATTEMPTS}</td>
+            <td className="p-3">{team.RUSH_ATTEMPTS}</td>
+            <td className="p-3">{team.SACKS}</td>
+            <td className="p-3">{team.INTERCEPTIONS}</td>
+            <td className="p-3">{team.FUMBLES_LOST}</td>
+            <td className="p-3">{team.TOTAL_PENALTY_YARDS}</td>
+            <td className="p-3">{team.THIRD_DOWN_CONVERTED}</td>
+            <td className="p-3">{team.FOURTH_DOWN_CONVERTED}</td>
+            <td className="p-3">{(team.WP * 100).toFixed(1)}%</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+
+
+  <div className="bg-gray-800 border border-white/10 rounded-xl p-6 shadow-xl space-y-12 w-full max-w-[1600px]">
+  {/* Quarterbacks */}
+  <div className="flex flex-col items-center">
+    <h2 className="text-2xl font-bold text-center mb-4">Quarterbacks — {gameData.HOME_TEAM}</h2>
+    <div className="overflow-x-auto w-full max-w-5xl">
+      <table className="w-full text-sm text-left border-collapse bg-gray-800 text-gray-100">
+        <thead>
+        <tr className="bg-gray-900 text-xs uppercase tracking-wider border-b border-gray-700">
+  <th className="p-3">Player</th>
+  <th className="p-3">Cmp</th>
+  <th className="p-3">Att</th>
+  <th className="p-3">Yds</th>
+  <th className="p-3">TD</th>
+  <th className="p-3">Fantasy</th>
+  <th className="p-3">Int</th>
+  <th className="p-3">Sacks</th>
+  <th className="p-3">Sack Yds</th>
+  <th className="p-3">Passer Rating</th>
+  <th className="p-3">Completion %</th>
+  <th className="p-3">Rush Yds</th>
+  <th className="p-3">Rush TD</th>
+  <th className="p-3">Rush Yards Before Contact</th>
+  <th className="p-3">Rush Yards After Contact</th>
+  <th className="p-3">Rush Broken Tackles</th>
+  <th className="p-3">Passing EPA</th>
+  <th className="p-3">Passing Air Yards</th>
+  <th className="p-3">Passing YAC</th>
+  <th className="p-3">Passing First Downs</th>
+  <th className="p-3">PACR</th>
+  <th className="p-3">Dakota</th>
+  <th className="p-3">Passing Drops</th>
+  <th className="p-3">Passing Bad Throws</th>
+  <th className="p-3">Avg Time to Throw</th>
+  <th className="p-3">Aggressiveness</th>
+  <th className="p-3">Times Pressured</th>
+  <th className="p-3">Times Sacked</th>
+  <th className="p-3">Times Blitzed</th>
+</tr>
+</thead>
+<tbody>
+  {quarterbackStats
+    .filter((qb) => qb.RECENT_TEAM === gameData.HOME_TEAM)
+    .map((qb) => (
+      <tr key={qb.PLAYER_NAME} className="border-b border-gray-700 hover:bg-gray-700">
+        <td className="p-3 flex items-center space-x-3 min-w-[200px]">
+        <img src={qb.HEADSHOT_URL} alt={qb.PLAYER_NAME} className="w-8 h-8 rounded-full object-cover shrink-0" />
+        <span className="whitespace-nowrap">{qb.PLAYER_NAME}</span>
+        </td>
+        <td className="p-3">{qb.COMPLETIONS}</td>
+        <td className="p-3">{qb.ATTEMPTS}</td>
+        <td className="p-3">{qb.PASSING_YARDS}</td>
+        <td className="p-3">{qb.PASSING_TDS}</td>
+        <td className="p-3">{qb.FANTASY_POINTS?.toFixed(1)}</td>
+        <td className="p-3">{qb.INTERCEPTIONS}</td>
+        <td className="p-3">{qb.SACKS}</td>
+        <td className="p-3">{qb.SACK_YARDS}</td>
+        <td className="p-3">{qb.PASSER_RATING}</td>
+        <td className="p-3">{qb.COMPLETION_PERCENTAGE?.toFixed(1)}%</td>
+        <td className="p-3">{qb.RUSHING_YARDS}</td>
+        <td className="p-3">{qb.RUSHING_TDS}</td>
+        <td className="p-3">{qb.RUSHING_YARDS_BEFORE_CONTACT}</td>
+        <td className="p-3">{qb.RUSHING_YARDS_AFTER_CONTACT}</td>
+        <td className="p-3">{qb.RUSHING_BROKEN_TACKLES}</td>
+        <td className="p-3">{qb.PASSING_EPA}</td>
+        <td className="p-3">{qb.PASSING_AIR_YARDS}</td>
+        <td className="p-3">{qb.PASSING_YARDS_AFTER_CATCH}</td>
+        <td className="p-3">{qb.PASSING_FIRST_DOWNS}</td>
+        <td className="p-3">{qb.PACR}</td>
+        <td className="p-3">{qb.DAKOTA}</td>
+        <td className="p-3">{qb.PASSING_DROPS}</td>
+        <td className="p-3">{qb.PASSING_BAD_THROWS}</td>
+        <td className="p-3">{qb.AVG_TIME_TO_THROW}</td>
+        <td className="p-3">{qb.AGGRESSIVENESS}</td>
+        <td className="p-3">{qb.TIMES_PRESSURED}</td>
+        <td className="p-3">{qb.TIMES_SACKED}</td>
+        <td className="p-3">{qb.TIMES_BLITZED}</td>
+      </tr>
+    ))}
+</tbody>
+      </table>
+    </div>
+  </div>
+
+  {/* Running Backs */}
+<div className="flex flex-col items-center">
+  <h2 className="text-2xl font-bold text-center mb-4">Running Backs — {gameData.HOME_TEAM}</h2>
+  <div className="overflow-x-auto w-full max-w-5xl">
+    <table className="w-3/4 text-sm text-left border-collapse bg-gray-800 text-gray-100">
+      <thead>
+        <tr className="bg-gray-900 text-xs uppercase tracking-wider border-b border-gray-700">
+          <th className="p-3">Player</th>
+          <th className="p-3">Carries</th>
+          <th className="p-3">Rush Yds</th>
+          <th className="p-3">Yds/Carry</th>
+          <th className="p-3">Rush TD</th>
+          <th className="p-3">Rush Fumbles</th>
+          <th className="p-3">Rush Fumbles Lost</th>
+          <th className="p-3">First Downs</th>
+          <th className="p-3">Rushing EPA</th>
+          <th className="p-3">2PT Conversions</th>
+          <th className="p-3">Receptions</th>
+          <th className="p-3">Targets</th>
+          <th className="p-3">Rec Yards</th>
+          <th className="p-3">Rec TDs</th>
+          <th className="p-3">Rec Fumbles</th>
+          <th className="p-3">Rec Fumbles Lost</th>
+          <th className="p-3">Air Yards</th>
+          <th className="p-3">YAC</th>
+          <th className="p-3">Fantasy Points</th>
+          <th className="p-3">Fantasy PPR</th>
+          <th className="p-3">Yards Before Contact</th>
+          <th className="p-3">Yards After Contact</th>
+          <th className="p-3">Broken Tackles</th>
+          <th className="p-3">Efficiency</th>
+          <th className="p-3">Attempts vs 8+ Defenders</th>
+          <th className="p-3">Avg Time to Loss</th>
+          <th className="p-3">Expected Rush Yards</th>
+          <th className="p-3">Rush Yds Over Expected</th>
+          <th className="p-3">Rush Pct Over Expected</th>
+        </tr>
+      </thead>
+      <tbody>
+        {runningbackStats
+          .filter((rb) => rb.RECENT_TEAM === gameData.HOME_TEAM)
+          .map((rb) => (
+            <tr key={rb.PLAYER_NAME} className="border-b border-gray-700 hover:bg-gray-700">
+              <td className="p-3 flex items-center space-x-3 min-w-[200px]">
+                <img src={rb.HEADSHOT_URL} alt={rb.PLAYER_NAME} className="w-8 h-8 rounded-full object-cover" />
+                <span>{rb.PLAYER_NAME}</span>
+              </td>
+              <td className="p-3">{rb.CARRIES}</td>
+              <td className="p-3">{rb.RUSHING_YARDS}</td>
+              <td className="p-3">{(rb.RUSHING_YARDS / rb.CARRIES)?.toFixed(2)}</td> {/* Yards per carry */}
+              <td className="p-3">{rb.RUSHING_TDS}</td>
+              <td className="p-3">{rb.RUSHING_FUMBLES}</td>
+              <td className="p-3">{rb.RUSHING_FUMBLES_LOST}</td>
+              <td className="p-3">{rb.RUSHING_FIRST_DOWNS}</td>
+              <td className="p-3">{rb.RUSHING_EPA}</td>
+              <td className="p-3">{rb.RUSHING_2PT_CONVERSIONS}</td>
+              <td className="p-3">{rb.RECEPTIONS}</td>
+              <td className="p-3">{rb.TARGETS}</td>
+              <td className="p-3">{rb.RECEIVING_YARDS}</td>
+              <td className="p-3">{rb.RECEIVING_TDS}</td>
+              <td className="p-3">{rb.RECEIVING_FUMBLES}</td>
+              <td className="p-3">{rb.RECEIVING_FUMBLES_LOST}</td>
+              <td className="p-3">{rb.RECEIVING_AIR_YARDS}</td>
+              <td className="p-3">{rb.RECEIVING_YARDS_AFTER_CATCH}</td>
+              <td className="p-3">{rb.FANTASY_POINTS?.toFixed(1)}</td>
+              <td className="p-3">{rb.FANTASY_POINTS_PPR?.toFixed(1)}</td>
+              <td className="p-3">{rb.RUSHING_YARDS_BEFORE_CONTACT}</td>
+              <td className="p-3">{rb.RUSHING_YARDS_AFTER_CONTACT}</td>
+              <td className="p-3">{rb.RUSHING_BROKEN_TACKLES}</td>
+              <td className="p-3">{rb.EFFICIENCY?.toFixed(2)}</td>
+              <td className="p-3">{rb.PERCENT_ATTEMPTS_GTE_EIGHT_DEFENDERS?.toFixed(2)}</td>
+              <td className="p-3">{rb.AVG_TIME_TO_LOS?.toFixed(2)}</td>
+              <td className="p-3">{rb.EXPECTED_RUSH_YARDS?.toFixed(1)}</td>
+              <td className="p-3">{rb.RUSH_YARDS_OVER_EXPECTED?.toFixed(1)}</td>
+              <td className="p-3">{rb.RUSH_PCT_OVER_EXPECTED?.toFixed(1)}</td>
+            </tr>
+          ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+  {/* Receivers */}
+<h2 className="text-2xl font-bold text-center mb-4">Receivers — {gameData.HOME_TEAM}</h2>
+
+{/* Wrap the table with overflow-x-auto */}
+<div className="overflow-x-auto w-full max-w-5xl">
+  <table className="w-full text-sm text-left border-collapse bg-gray-800 text-gray-100">
+    <thead>
+      <tr className="bg-gray-900 text-xs uppercase tracking-wider border-b border-gray-700">
+        <th className="p-3">Player</th>
+        <th className="p-3">Rec</th>
+        <th className="p-3">Targets</th>
+        <th className="p-3">Yards</th>
+        <th className="p-3">TD</th>
+        <th className="p-3">Fantasy</th>
+        <th className="p-3">YAC</th>
+        <th className="p-3">First Downs</th>
+        <th className="p-3">2PT Conversions</th>
+        <th className="p-3">Fumbles</th>
+        <th className="p-3">Fumbles Lost</th>
+        <th className="p-3">Air Yards</th>
+        <th className="p-3">Broken Tackles</th>
+        <th className="p-3">Target Share</th>
+        <th className="p-3">RACR</th>
+        <th className="p-3">WOPR</th>
+        <th className="p-3">Cushion</th>
+        <th className="p-3">Separation</th>
+        <th className="p-3">Intended Air Yards</th>
+        <th className="p-3">Intended Air Yard Share</th>
+        <th className="p-3">YAC Above Expectation</th>
+        <th className="p-3">EPA</th>
+        <th className="p-3">Broken Tackles</th>
+        <th className="p-3">Receiving RAT</th>
+        <th className="p-3">Special Teams TD</th>
+      </tr>
+    </thead>
+    <tbody>
+      {receiverStats
+        .filter((wr) => wr.RECENT_TEAM === gameData.HOME_TEAM)
+        .map((wr) => (
+          <tr key={wr.PLAYER_NAME} className="border-b border-gray-700 hover:bg-gray-700">
+        <td className="p-3 flex items-center space-x-3 min-w-[200px]">
+              <img src={wr.HEADSHOT_URL} alt={wr.PLAYER_NAME} className="w-8 h-8 rounded-full object-cover" />
+              <span>{wr.PLAYER_NAME}</span>
+            </td>
+            <td className="p-3">{wr.RECEPTIONS}</td>
+            <td className="p-3">{wr.TARGETS}</td>
+            <td className="p-3">{wr.RECEIVING_YARDS}</td>
+            <td className="p-3">{wr.RECEIVING_TDS}</td>
+            <td className="p-3">{wr.FANTASY_POINTS?.toFixed(1)}</td>
+            <td className="p-3">{wr.RECEIVING_YARDS_AFTER_CATCH}</td>
+            <td className="p-3">{wr.RECEIVING_FIRST_DOWNS}</td>
+            <td className="p-3">{wr.RECEIVING_2PT_CONVERSIONS}</td>
+            <td className="p-3">{wr.RECEIVING_FUMBLES}</td>
+            <td className="p-3">{wr.RECEIVING_FUMBLES_LOST}</td>
+            <td className="p-3">{wr.RECEIVING_AIR_YARDS}</td>
+            <td className="p-3">{wr.RECEIVING_BROKEN_TACKLES}</td>
+            <td className="p-3">{wr.TARGET_SHARE?.toFixed(2)}</td>
+            <td className="p-3">{wr.RACR?.toFixed(2)}</td>
+            <td className="p-3">{wr.WOPR?.toFixed(2)}</td>
+            <td className="p-3">{wr.AVG_CUSHION?.toFixed(2)}</td>
+            <td className="p-3">{wr.AVG_SEPARATION?.toFixed(2)}</td>
+            <td className="p-3">{wr.AVG_INTENDED_AIR_YARDS?.toFixed(2)}</td>
+            <td className="p-3">{wr.PERCENT_SHARE_OF_INTENDED_AIR_YARDS?.toFixed(2)}</td>
+            <td className="p-3">{wr.AVG_YAC_ABOVE_EXPECTATION?.toFixed(2)}</td>
+            <td className="p-3">{wr.RECEIVING_EPA?.toFixed(2)}</td>
+            <td className="p-3">{wr.RECEIVING_BROKEN_TACKLES}</td>
+            <td className="p-3">{wr.RECEIVING_RAT?.toFixed(2)}</td>
+            <td className="p-3">{wr.SPECIAL_TEAMS_TDS}</td>
+          </tr>
+        ))}
+    </tbody>
+  </table>
+
+  </div>
+</div>
+
+<div className="space-y-8">
+  <div className="bg-gray-800 border border-white/10 rounded-xl p-6 shadow-xl space-y-12 w-full max-w-[1600px]">
+    {/* Quarterbacks - Away Team */}
+    <div className="flex flex-col items-center">
+      <h2 className="text-2xl font-bold text-center mb-4">Quarterbacks — {gameData.AWAY_TEAM}</h2>
+      <div className="overflow-x-auto w-full max-w-5xl">
+        <table className="w-full text-sm text-left border-collapse bg-gray-800 text-gray-100">
+          <thead>
+            <tr className="bg-gray-900 text-xs uppercase tracking-wider border-b border-gray-700">
+              <th className="p-3">Player</th>
+              <th className="p-3">Cmp</th>
+              <th className="p-3">Att</th>
+              <th className="p-3">Yds</th>
+              <th className="p-3">TD</th>
+              <th className="p-3">Fantasy</th>
+              <th className="p-3">Int</th>
+              <th className="p-3">Sacks</th>
+              <th className="p-3">Sack Yds</th>
+              <th className="p-3">Passer Rating</th>
+              <th className="p-3">Completion %</th>
+              <th className="p-3">Rush Yds</th>
+              <th className="p-3">Rush TD</th>
+              <th className="p-3">Rush Yards Before Contact</th>
+              <th className="p-3">Rush Yards After Contact</th>
+              <th className="p-3">Rush Broken Tackles</th>
+              <th className="p-3">Passing EPA</th>
+              <th className="p-3">Passing Air Yards</th>
+              <th className="p-3">Passing YAC</th>
+              <th className="p-3">Passing First Downs</th>
+              <th className="p-3">PACR</th>
+              <th className="p-3">Dakota</th>
+              <th className="p-3">Passing Drops</th>
+              <th className="p-3">Passing Bad Throws</th>
+              <th className="p-3">Avg Time to Throw</th>
+              <th className="p-3">Aggressiveness</th>
+              <th className="p-3">Times Pressured</th>
+              <th className="p-3">Times Sacked</th>
+              <th className="p-3">Times Blitzed</th>
+            </tr>
+          </thead>
+          <tbody>
+            {quarterbackStats
+              .filter((qb) => qb.RECENT_TEAM === gameData.AWAY_TEAM)
+              .map((qb) => (
+                <tr key={qb.PLAYER_NAME} className="border-b border-gray-700 hover:bg-gray-700">
+                  <td className="p-3 flex items-center space-x-3 min-w-[200px]">
+                    <img src={qb.HEADSHOT_URL} alt={qb.PLAYER_NAME} className="w-8 h-8 rounded-full object-cover shrink-0" />
+                    <span className="whitespace-nowrap">{qb.PLAYER_NAME}</span>
+                  </td>
+                  <td className="p-3">{qb.COMPLETIONS}</td>
+                  <td className="p-3">{qb.ATTEMPTS}</td>
+                  <td className="p-3">{qb.PASSING_YARDS}</td>
+                  <td className="p-3">{qb.PASSING_TDS}</td>
+                  <td className="p-3">{qb.FANTASY_POINTS?.toFixed(1)}</td>
+                  <td className="p-3">{qb.INTERCEPTIONS}</td>
+                  <td className="p-3">{qb.SACKS}</td>
+                  <td className="p-3">{qb.SACK_YARDS}</td>
+                  <td className="p-3">{qb.PASSER_RATING}</td>
+                  <td className="p-3">{qb.COMPLETION_PERCENTAGE?.toFixed(1)}%</td>
+                  <td className="p-3">{qb.RUSHING_YARDS}</td>
+                  <td className="p-3">{qb.RUSHING_TDS}</td>
+                  <td className="p-3">{qb.RUSHING_YARDS_BEFORE_CONTACT}</td>
+                  <td className="p-3">{qb.RUSHING_YARDS_AFTER_CONTACT}</td>
+                  <td className="p-3">{qb.RUSHING_BROKEN_TACKLES}</td>
+                  <td className="p-3">{qb.PASSING_EPA}</td>
+                  <td className="p-3">{qb.PASSING_AIR_YARDS}</td>
+                  <td className="p-3">{qb.PASSING_YARDS_AFTER_CATCH}</td>
+                  <td className="p-3">{qb.PASSING_FIRST_DOWNS}</td>
+                  <td className="p-3">{qb.PACR}</td>
+                  <td className="p-3">{qb.DAKOTA}</td>
+                  <td className="p-3">{qb.PASSING_DROPS}</td>
+                  <td className="p-3">{qb.PASSING_BAD_THROWS}</td>
+                  <td className="p-3">{qb.AVG_TIME_TO_THROW}</td>
+                  <td className="p-3">{qb.AGGRESSIVENESS}</td>
+                  <td className="p-3">{qb.TIMES_PRESSURED}</td>
+                  <td className="p-3">{qb.TIMES_SACKED}</td>
+                  <td className="p-3">{qb.TIMES_BLITZED}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {/* Running Backs - Away Team */}
+    <div className="flex flex-col items-center">
+      <h2 className="text-2xl font-bold text-center mb-4">Running Backs — {gameData.AWAY_TEAM}</h2>
+      <div className="overflow-x-auto w-full max-w-5xl">
+        <table className="w-3/4 text-sm text-left border-collapse bg-gray-800 text-gray-100">
+          <thead>
+            <tr className="bg-gray-900 text-xs uppercase tracking-wider border-b border-gray-700">
+              <th className="p-3">Player</th>
+              <th className="p-3">Carries</th>
+              <th className="p-3">Rush Yds</th>
+              <th className="p-3">Yds/Carry</th>
+              <th className="p-3">Rush TD</th>
+              <th className="p-3">Rush Fumbles</th>
+              <th className="p-3">Rush Fumbles Lost</th>
+              <th className="p-3">First Downs</th>
+              <th className="p-3">Rushing EPA</th>
+              <th className="p-3">2PT Conversions</th>
+              <th className="p-3">Receptions</th>
+              <th className="p-3">Targets</th>
+              <th className="p-3">Rec Yards</th>
+              <th className="p-3">Rec TDs</th>
+              <th className="p-3">Rec Fumbles</th>
+              <th className="p-3">Rec Fumbles Lost</th>
+              <th className="p-3">Air Yards</th>
+              <th className="p-3">YAC</th>
+              <th className="p-3">Fantasy Points</th>
+              <th className="p-3">Fantasy PPR</th>
+              <th className="p-3">Yards Before Contact</th>
+              <th className="p-3">Yards After Contact</th>
+              <th className="p-3">Broken Tackles</th>
+              <th className="p-3">Efficiency</th>
+              <th className="p-3">Attempts vs 8+ Defenders</th>
+              <th className="p-3">Avg Time to Loss</th>
+              <th className="p-3">Expected Rush Yards</th>
+              <th className="p-3">Rush Yds Over Expected</th>
+              <th className="p-3">Rush Pct Over Expected</th>
+            </tr>
+          </thead>
+          <tbody>
+            {runningbackStats
+              .filter((rb) => rb.RECENT_TEAM === gameData.AWAY_TEAM)
+              .map((rb) => (
+                <tr key={rb.PLAYER_NAME} className="border-b border-gray-700 hover:bg-gray-700">
+                  <td className="p-3 flex items-center space-x-3 min-w-[200px]">
+                    <img src={rb.HEADSHOT_URL} alt={rb.PLAYER_NAME} className="w-8 h-8 rounded-full object-cover shrink-0" />
+                    <span className="whitespace-nowrap">{rb.PLAYER_NAME}</span>
+                  </td>
+                  <td className="p-3">{rb.CARRIES}</td>
+              <td className="p-3">{rb.RUSHING_YARDS}</td>
+              <td className="p-3">{(rb.RUSHING_YARDS / rb.CARRIES)?.toFixed(2)}</td> {/* Yards per carry */}
+              <td className="p-3">{rb.RUSHING_TDS}</td>
+              <td className="p-3">{rb.RUSHING_FUMBLES}</td>
+              <td className="p-3">{rb.RUSHING_FUMBLES_LOST}</td>
+              <td className="p-3">{rb.RUSHING_FIRST_DOWNS}</td>
+              <td className="p-3">{rb.RUSHING_EPA}</td>
+              <td className="p-3">{rb.RUSHING_2PT_CONVERSIONS}</td>
+              <td className="p-3">{rb.RECEPTIONS}</td>
+              <td className="p-3">{rb.TARGETS}</td>
+              <td className="p-3">{rb.RECEIVING_YARDS}</td>
+              <td className="p-3">{rb.RECEIVING_TDS}</td>
+              <td className="p-3">{rb.RECEIVING_FUMBLES}</td>
+              <td className="p-3">{rb.RECEIVING_FUMBLES_LOST}</td>
+              <td className="p-3">{rb.RECEIVING_AIR_YARDS}</td>
+              <td className="p-3">{rb.RECEIVING_YARDS_AFTER_CATCH}</td>
+              <td className="p-3">{rb.FANTASY_POINTS?.toFixed(1)}</td>
+              <td className="p-3">{rb.FANTASY_POINTS_PPR?.toFixed(1)}</td>
+              <td className="p-3">{rb.RUSHING_YARDS_BEFORE_CONTACT}</td>
+              <td className="p-3">{rb.RUSHING_YARDS_AFTER_CONTACT}</td>
+              <td className="p-3">{rb.RUSHING_BROKEN_TACKLES}</td>
+              <td className="p-3">{rb.EFFICIENCY?.toFixed(2)}</td>
+              <td className="p-3">{rb.PERCENT_ATTEMPTS_GTE_EIGHT_DEFENDERS?.toFixed(2)}</td>
+              <td className="p-3">{rb.AVG_TIME_TO_LOS?.toFixed(2)}</td>
+              <td className="p-3">{rb.EXPECTED_RUSH_YARDS?.toFixed(1)}</td>
+              <td className="p-3">{rb.RUSH_YARDS_OVER_EXPECTED?.toFixed(1)}</td>
+              <td className="p-3">{rb.RUSH_PCT_OVER_EXPECTED?.toFixed(1)}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {/* Receivers */}
+<h2 className="text-2xl font-bold text-center mb-4">Receivers — {gameData.AWAY_TEAM}</h2>
+
+{/* Wrap the table with overflow-x-auto */}
+<div className="overflow-x-auto w-full max-w-5xl">
+  <table className="w-full text-sm text-left border-collapse bg-gray-800 text-gray-100">
+    <thead>
+      <tr className="bg-gray-900 text-xs uppercase tracking-wider border-b border-gray-700">
+        <th className="p-3">Player</th>
+        <th className="p-3">Rec</th>
+        <th className="p-3">Targets</th>
+        <th className="p-3">Yards</th>
+        <th className="p-3">TD</th>
+        <th className="p-3">Fantasy</th>
+        <th className="p-3">YAC</th>
+        <th className="p-3">First Downs</th>
+        <th className="p-3">2PT Conversions</th>
+        <th className="p-3">Fumbles</th>
+        <th className="p-3">Fumbles Lost</th>
+        <th className="p-3">Air Yards</th>
+        <th className="p-3">Broken Tackles</th>
+        <th className="p-3">Target Share</th>
+        <th className="p-3">RACR</th>
+        <th className="p-3">WOPR</th>
+        <th className="p-3">Cushion</th>
+        <th className="p-3">Separation</th>
+        <th className="p-3">Intended Air Yards</th>
+        <th className="p-3">Intended Air Yard Share</th>
+        <th className="p-3">YAC Above Expectation</th>
+        <th className="p-3">EPA</th>
+        <th className="p-3">Broken Tackles</th>
+        <th className="p-3">Receiving RAT</th>
+        <th className="p-3">Special Teams TD</th>
+      </tr>
+    </thead>
+    <tbody>
+      {receiverStats
+        .filter((wr) => wr.RECENT_TEAM === gameData.AWAY_TEAM)
+        .map((wr) => (
+          <tr key={wr.PLAYER_NAME} className="border-b border-gray-700 hover:bg-gray-700">
+        <td className="p-3 flex items-center space-x-3 min-w-[200px]">
+              <img src={wr.HEADSHOT_URL} alt={wr.PLAYER_NAME} className="w-8 h-8 rounded-full object-cover" />
+              <span>{wr.PLAYER_NAME}</span>
+            </td>
+            <td className="p-3">{wr.RECEPTIONS}</td>
+            <td className="p-3">{wr.TARGETS}</td>
+            <td className="p-3">{wr.RECEIVING_YARDS}</td>
+            <td className="p-3">{wr.RECEIVING_TDS}</td>
+            <td className="p-3">{wr.FANTASY_POINTS?.toFixed(1)}</td>
+            <td className="p-3">{wr.RECEIVING_YARDS_AFTER_CATCH}</td>
+            <td className="p-3">{wr.RECEIVING_FIRST_DOWNS}</td>
+            <td className="p-3">{wr.RECEIVING_2PT_CONVERSIONS}</td>
+            <td className="p-3">{wr.RECEIVING_FUMBLES}</td>
+            <td className="p-3">{wr.RECEIVING_FUMBLES_LOST}</td>
+            <td className="p-3">{wr.RECEIVING_AIR_YARDS}</td>
+            <td className="p-3">{wr.RECEIVING_BROKEN_TACKLES}</td>
+            <td className="p-3">{wr.TARGET_SHARE?.toFixed(2)}</td>
+            <td className="p-3">{wr.RACR?.toFixed(2)}</td>
+            <td className="p-3">{wr.WOPR?.toFixed(2)}</td>
+            <td className="p-3">{wr.AVG_CUSHION?.toFixed(2)}</td>
+            <td className="p-3">{wr.AVG_SEPARATION?.toFixed(2)}</td>
+            <td className="p-3">{wr.AVG_INTENDED_AIR_YARDS?.toFixed(2)}</td>
+            <td className="p-3">{wr.PERCENT_SHARE_OF_INTENDED_AIR_YARDS?.toFixed(2)}</td>
+            <td className="p-3">{wr.AVG_YAC_ABOVE_EXPECTATION?.toFixed(2)}</td>
+            <td className="p-3">{wr.RECEIVING_EPA?.toFixed(2)}</td>
+            <td className="p-3">{wr.RECEIVING_BROKEN_TACKLES}</td>
+            <td className="p-3">{wr.RECEIVING_RAT?.toFixed(2)}</td>
+            <td className="p-3">{wr.SPECIAL_TEAMS_TDS}</td>
+          </tr>
+        ))}
+    </tbody>
+  </table>
+  </div>
+</div>
+
+
+
+
+
+  </div>
+</div>
+  </div>
   );
 }
