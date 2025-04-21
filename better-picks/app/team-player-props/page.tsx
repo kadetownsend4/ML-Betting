@@ -51,7 +51,10 @@ export default function NFLPropPositionsPage() {
   }, [selectedTeam]);
 
   return (
-    <Dashboard>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans">
+      <Dashboard>
+
+      </Dashboard>
       <div className="w-full max-w-6xl mt-20 bg-white/5 shadow-xl rounded-xl px-8 py-10 sm:px-12 sm:py-14 space-y-8 border border-white/20 text-white font-['Orbitron']">
         
         {/* Header with Dropdown */}
@@ -142,11 +145,7 @@ export default function NFLPropPositionsPage() {
             )}
           </>
         )}
-
-        <footer className="mt-10 py-6 text-gray-400 text-sm text-center">
-          <p>&copy; 2025 NFL Stats. All rights reserved.</p>
-        </footer>
       </div>
-    </Dashboard>
+      </div>
   );
 }

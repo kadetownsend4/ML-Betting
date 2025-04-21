@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import axios from 'axios';
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import Dashboard from "../../components/Dashboard";
 
 type TeamInfo = {
   TEAM_ID: number;
@@ -214,46 +215,6 @@ type ReceiverGameStats = {
     AVG_EXPECTED_YAC: number;
     AVG_YAC_ABOVE_EXPECTATION: number;
   };
-
-  const menuItems = [
-    {
-      title: "NBA",
-      links: [
-        { name: "Latest Games", path: "/latest-games" },
-        { name: "Predictions", path: "/nba-predictions" },
-        { name: "Team Stats", path: "/team-stats" },
-        { name: "Player Prop Analysis", path: "/player-analysis" },
-      ],
-    },
-    {
-      title: "NFL",
-      links: [
-        { name: "NFL Teams", path: "/nfl-teams" },
-        { name: "NFL Schedule", path: "/nfl-schedule" },
-        { name: "Team Based Player Props", path: "/team-player-props" },
-        { name: "Player Prop Analysis", path: "/nfl-player-analysis" },
-        { name: "Betting Insights", path: "/nfl/betting-insights" },
-      ],
-    },
-    {
-      title: "Performance Analysis",
-      links: [
-        { name: "Trending Player Props", path: "/trends" },
-        { name: "NBA Defense vs Position", path: "/defense-vs-position" },
-        { name: "Prop Streak & Success Rate", path: "/prop-streak-success-rate" },
-        { name: "AI Insights", path: "/ai-insights" },
-      ],
-    },
-    {
-      title: "Account",
-      links: [
-        { name: "Profile", path: "/account/profile" },
-        { name: "Settings", path: "/account/settings" },
-        { name: "Login", path: "/account/login" },
-      ],
-    },
-  ];
-  
   
 
   export default function GamePage() {
@@ -266,7 +227,6 @@ type ReceiverGameStats = {
     const [receiverStats, setReceiverStats] = useState<ReceiverGameStats[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
     useEffect(() => {
       if (gameId) {
@@ -330,56 +290,16 @@ type ReceiverGameStats = {
       return <div>{error}</div>;
     }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-green-500 text-white p-10 flex flex-col items-center font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans">
 
-<div className="space-y-8">
-        {/* Header Section */}
-      <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
-  <h1 className="text-4xl font-extrabold text-white drop-shadow-2xl border-b-4 border-green-400">
-    Better Picks
-  </h1>
-  <nav className="flex space-x-10 relative">
-    {menuItems.map((item, index) => (
-      <div
-        key={index}
-        className="relative group flex flex-col items-center"
-        onMouseEnter={() => setActiveDropdown(item.title)}
-        onMouseLeave={() => setActiveDropdown(null)}
-      >
-        <button className="text-xl font-bold hover:text-green-400 transition">
-          {item.title}
-        </button>
 
-        <AnimatePresence>
-          {activeDropdown === item.title && (
-            <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 0.80 }}
-              exit={{ opacity: 0, y: 10, scale: 0.95 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="absolute left-1/8 mt-2 w-40 bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl shadow-xl p-3 z-50"
-              onMouseEnter={() => setActiveDropdown(item.title)}
-              onMouseLeave={() => setActiveDropdown(null)}
-            >
-              {item.links.map((link, idx) => (
-                <Link
-                  key={idx}
-                  href={link.path}
-                  className="block px-4 py-2 bg-transparent hover:bg-white/20 rounded-lg transition-all duration-200 ease-in-out text-center w-full"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    ))}
-  </nav>
-</header>
+     <Dashboard>
+   
+     </Dashboard>
+     <div className="space-y-8 mt-10">
         
-
-  <div className="flex flex-col items-center mb-12 w-full">
+     
+  <div className="flex flex-col items-center  mb-12 w-full">
   <h2 className="text-4xl text-white font-extrabold tracking-widest mb-6 font-['Rajdhani'] uppercase">
     Week {gameData.WEEK}
   </h2>
@@ -434,8 +354,13 @@ type ReceiverGameStats = {
 
 <div className="bg-gray-800 border border-white/10 rounded-xl p-6 shadow-xl space-y-12 w-full max-w-[1600px]">
 {/* Team Stats */}
-<div className="flex flex-col items-center mt-12">
-  <h2 className="text-2xl font-bold text-center mb-4">Team Stats</h2>
+<div className="flex flex-col items-center">
+<div className="text-center mb-6">
+    <h2 className="text-3xl font-extrabold font-['Rajdhani'] tracking-wider uppercase">
+        Team Stats 
+    </h2>
+    </div>
+  
   <div className="overflow-x-auto w-full max-w-5xl">
     <table className="w-full text-sm text-left border-collapse bg-gray-800 text-gray-100">
       <thead>
@@ -501,9 +426,14 @@ type ReceiverGameStats = {
 
 
   <div className="bg-gray-800 border border-white/10 rounded-xl p-6 shadow-xl space-y-12 w-full max-w-[1600px]">
+  <div className="text-center mb-6">
+  <h2 className="text-3xl font-extrabold font-['Rajdhani'] tracking-wider uppercase">
+    Top Player Performances — {gameData.HOME_TEAM}
+  </h2>
+</div>
   {/* Quarterbacks */}
   <div className="flex flex-col items-center">
-    <h2 className="text-2xl font-bold text-center mb-4">Quarterbacks — {gameData.HOME_TEAM}</h2>
+    <h2 className="text-2xl font-bold text-center mb-4">Quarterbacks</h2>
     <div className="overflow-x-auto w-full max-w-5xl">
       <table className="w-full text-sm text-left border-collapse bg-gray-800 text-gray-100">
         <thead>
@@ -585,7 +515,7 @@ type ReceiverGameStats = {
 
   {/* Running Backs */}
 <div className="flex flex-col items-center">
-  <h2 className="text-2xl font-bold text-center mb-4">Running Backs — {gameData.HOME_TEAM}</h2>
+  <h2 className="text-2xl font-bold text-center mb-4">Running Backs</h2>
   <div className="overflow-x-auto w-full max-w-5xl">
     <table className="w-3/4 text-sm text-left border-collapse bg-gray-800 text-gray-100">
       <thead>
@@ -667,7 +597,7 @@ type ReceiverGameStats = {
 
 
   {/* Receivers */}
-<h2 className="text-2xl font-bold text-center mb-4">Receivers — {gameData.HOME_TEAM}</h2>
+<h2 className="text-2xl font-bold text-center mb-4">Receivers</h2>
 
 {/* Wrap the table with overflow-x-auto */}
 <div className="overflow-x-auto w-full max-w-5xl">
@@ -744,6 +674,13 @@ type ReceiverGameStats = {
 
 <div className="space-y-8">
   <div className="bg-gray-800 border border-white/10 rounded-xl p-6 shadow-xl space-y-12 w-full max-w-[1600px]">
+  
+  <div className="text-center mb-6">
+    <h2 className="text-3xl font-extrabold font-['Rajdhani'] tracking-wider uppercase">
+        Top Player Performances — {gameData.AWAY_TEAM}
+    </h2>
+    </div>
+  
     {/* Quarterbacks - Away Team */}
     <div className="flex flex-col items-center">
       <h2 className="text-2xl font-bold text-center mb-4">Quarterbacks — {gameData.AWAY_TEAM}</h2>

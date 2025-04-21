@@ -19,43 +19,6 @@ type Team = {
   TEAM_ABR: string;
 };
 
-const menuItems = [
-  {
-    title: "NBA",
-    links: [
-      { name: "Latest Games", path: "/latest-games" },
-      { name: "Team Stats", path: "/team-stats" },
-      { name: "Player Prop Analysis", path: "/player-analysis" },
-    ],
-  },
-  {
-    title: "NFL",
-    links: [
-      { name: "Game Predictions", path: "/nfl-teams" },
-      { name: "Team Based Player Props", path: "/team-player-props" },
-      { name: "Player Prop Analysis", path: "/nfl-player-analysis" },
-      { name: "Betting Insights", path: "/nfl/betting-insights" },
-    ],
-  },
-  {
-    title: "Performance Analysis",
-    links: [
-      { name: "Trending Player Props", path: "/trends" },
-      { name: "NBA Defense vs Position", path: "/defense-vs-position" },
-      { name: "Prop Streak & Success Rate", path: "/prop-streak-success-rate" },
-      { name: "AI Insights", path: "/ai-insights" },
-    ],
-  },
-  {
-    title: "Account",
-    links: [
-      { name: "Profile", path: "/account/profile" },
-      { name: "Settings", path: "/account/settings" },
-      { name: "Login", path: "/account/login" },
-    ],
-  },
-];
-
 
 const divisions = ["East", "North", "South", "West"];
 const conferences = ["AFC", "NFC"];
@@ -76,8 +39,10 @@ function NFLTeams() {
   }, []);
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-green-500 text-white p-10 flex flex-col items-center font-sans">
-      
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans">
+      <Dashboard>    
+
+    </Dashboard> 
 
       <div className="mt-8">
   {selectedOption && selectedOption !== 'AFC' && selectedOption !== 'NFC' && (
@@ -130,15 +95,6 @@ function NFLTeams() {
     </div>
   )}
 </div>
-
-
-
-
-
-
-     <Dashboard>    
-        
-     </Dashboard>
 
 
       {/* Teams Section */}
@@ -216,31 +172,15 @@ function NFLTeams() {
           </div>
         ))}
       </div>
-        
-      {/* Posts Section */}
-      <div className="mt-20 sm:mt-28">
-      <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-6">
-          Latest NFL Posts
-        </h2>
-        <PostList />
-      </div>
 
       <footer className="mt-10 py-6 text-gray-400 text-sm">
-  <div className="flex justify-center gap-6 mb-4">
-    <a href="/privacy-policy" className="hover:text-green-400 transition-colors">
-      Privacy Policy
-    </a>
-    <a href="/terms" className="hover:text-green-400 transition-colors">
-      Terms of Service
-    </a>
-  </div>
   <p>
     <span className="text-red-400 uppercase">Disclaimer:</span> Please gamble responsibly. If you have a gambling problem, seek help from a professional organization such as{" "}
     <a
       href="https://www.ncpgambling.org/"
       target="_blank"
       rel="noopener noreferrer"
-      className="text-green-400 font-bold underline hover:text-green-300 transition-colors duration-200"
+      className="text-red-400 font-bold underline hover:text-green-300 transition-colors duration-200"
     >
       National Council on Problem Gambling
     </a>.
