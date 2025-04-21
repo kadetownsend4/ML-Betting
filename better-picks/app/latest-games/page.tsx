@@ -107,47 +107,7 @@ function NBATeams() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans">
-      <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
-        <h1 className="text-4xl font-extrabold text-white drop-shadow-2xl border-b-4 border-purple-400">
-          Better Picks
-        </h1>
-        <nav className="flex space-x-10 relative">
-          {menuItems.map((item, index) => (
-            <div
-              key={index}
-              className="relative group flex flex-col items-center"
-              onMouseEnter={() => setActiveDropdown(item.title)}
-              onMouseLeave={() => setActiveDropdown(null)}
-            >
-              <button className="text-xl font-bold hover:text-purple-400 transition">
-                {item.title}
-              </button>
-              <AnimatePresence>
-                {activeDropdown === item.title && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 0.80 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="absolute left-1/8 mt-2 w-40 bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl shadow-xl p-3 z-50"
-                  >
-                    {item.links.map((link, idx) => (
-                      <Link
-                        key={idx}
-                        href={link.path}
-                        className="block px-4 py-2 bg-transparent hover:bg-white/20 rounded-lg transition-all duration-200 ease-in-out text-center w-full"
-                      >
-                        {link.name}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ))}
-        </nav>
-      </header>
-
+    <Dashboard></Dashboard>
       <div className="w-full max-w-6xl mt-20 bg-white/5 shadow-xl rounded-xl px-8 py-10 sm:px-12 sm:py-14 space-y-8 relative z-50 border border-white/20">
         <h2 className="text-4xl sm:text-5xl font-extrabold text-white text-center drop-shadow-xl mb-8 tracking-wide font-['Rajdhani']">
           NBA Teams by Division
