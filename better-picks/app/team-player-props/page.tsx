@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Dashboard from "../components/Dashboard"; // Adjust the import based on your project structure
+import Link from "next/link";
 
 type Player = {
   PLAYER_ID: string;
@@ -60,47 +61,47 @@ export default function NFLPropPositionsPage() {
           </h2>
 
           <select
-          value={selectedTeam}
-          onChange={(e) => {
-            console.log("Selected team:", e.target.value); // Log the selected team
-            setSelectedTeam(e.target.value);
-          }}
-          className="w-full sm:w-72 p-3 rounded-md bg-gray-800 text-white border border-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500"
-        >
-        <option value="" disabled>Select a Team</option>
-  <option value="ARI">Cardinals</option>
-  <option value="ATL">Falcons</option>
-  <option value="BAL">Ravens</option>
-  <option value="BUF">Bills</option>
-  <option value="CAR">Panthers</option>
-  <option value="CHI">Bears</option>
-  <option value="CIN">Bengals</option>
-  <option value="CLE">Browns</option>
-  <option value="DAL">Cowboys</option>
-  <option value="DEN">Broncos</option>
-  <option value="DET">Lions</option>
-  <option value="GB">Packers</option>
-  <option value="HOU">Texans</option>
-  <option value="IND">Colts</option>
-  <option value="JAX">Jaguars</option>
-  <option value="KC">Chiefs</option>
-  <option value="LAC">Chargers</option>
-  <option value="LAR">Rams</option>
-  <option value="LV">Raiders</option>
-  <option value="MIA">Dolphins</option>
-  <option value="MIN">Vikings</option>
-  <option value="NE">Patriots</option>
-  <option value="NO">Saints</option>
-  <option value="NYG">Giants</option>
-  <option value="NYJ">Jets</option>
-  <option value="PHI">Eagles</option>
-  <option value="PIT">Steelers</option>
-  <option value="SEA">Seahawks</option>
-  <option value="SF">49ers</option>
-  <option value="TB">Buccaneers</option>
-  <option value="TEN">Titans</option>
-  <option value="WAS">Commanders</option>
-        </select>
+            value={selectedTeam}
+            onChange={(e) => {
+              console.log("Selected team:", e.target.value);
+              setSelectedTeam(e.target.value);
+            }}
+            className="w-full sm:w-72 p-3 rounded-md bg-gray-800 text-white border border-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          >
+            <option value="" disabled>Select a Team</option>
+            <option value="ARI">Cardinals</option>
+            <option value="ATL">Falcons</option>
+            <option value="BAL">Ravens</option>
+            <option value="BUF">Bills</option>
+            <option value="CAR">Panthers</option>
+            <option value="CHI">Bears</option>
+            <option value="CIN">Bengals</option>
+            <option value="CLE">Browns</option>
+            <option value="DAL">Cowboys</option>
+            <option value="DEN">Broncos</option>
+            <option value="DET">Lions</option>
+            <option value="GB">Packers</option>
+            <option value="HOU">Texans</option>
+            <option value="IND">Colts</option>
+            <option value="JAX">Jaguars</option>
+            <option value="KC">Chiefs</option>
+            <option value="LAC">Chargers</option>
+            <option value="LAR">Rams</option>
+            <option value="LV">Raiders</option>
+            <option value="MIA">Dolphins</option>
+            <option value="MIN">Vikings</option>
+            <option value="NE">Patriots</option>
+            <option value="NO">Saints</option>
+            <option value="NYG">Giants</option>
+            <option value="NYJ">Jets</option>
+            <option value="PHI">Eagles</option>
+            <option value="PIT">Steelers</option>
+            <option value="SEA">Seahawks</option>
+            <option value="SF">49ers</option>
+            <option value="TB">Buccaneers</option>
+            <option value="TEN">Titans</option>
+            <option value="WAS">Commanders</option>
+          </select>
         </div>
 
         {/* Team info */}
@@ -117,23 +118,30 @@ export default function NFLPropPositionsPage() {
               </h3>
             </div>
 
-            <ul className="space-y-4">
+            <ul className="space-y-12 mt-8">
               {teamData.players.map((player) => (
                 <li
                   key={player.PLAYER_ID}
                   className="p-4 border border-gray-700 rounded-lg bg-gray-900"
                 >
-                  <h4 className="text-lg font-semibold">{player.PLAYER_NAME}</h4>
-                  <div className="text-purple-300">
-                    <p>Position: {player.POSITION}</p>
-                  </div>
+                  <Link
+                    href={`/nfl-players/${player.POSITION.toLowerCase()}/${player.PLAYER_ID}`}
+                    className="block hover:bg-gray-800 rounded transition"
+                  >
+                    <h4 className="text-lg font-semibold">{player.PLAYER_NAME}</h4>
+                    <div className="text-purple-300">
+                      <p>Position: {player.POSITION}</p>
+                    </div>
+                  </Link>
                 </li>
               ))}
             </ul>
+
+            {loading && (
+              <p className="text-sm text-gray-400 mt-4">Loading player data...</p>
+            )}
           </>
         )}
-
-        {loading && <p className="text-sm text-gray-400">Loading player data...</p>}
 
         <footer className="mt-10 py-6 text-gray-400 text-sm text-center">
           <p>&copy; 2025 NFL Stats. All rights reserved.</p>
