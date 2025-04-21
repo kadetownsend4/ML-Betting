@@ -274,10 +274,10 @@ def fetch_predictions_by_date(date, feature, model):
             NBAGameLogs.GAME_ID == prediction["GAME_ID"]
         ).first()
 
-        if pred.NICKNAME in predictions_data["HOME_NAME"]:
-            prediction.update({"TEAM_W_LOOK": predictions_data["HOME_NAME"], "TEAM_W": pred.W}) 
+        if pred.NICKNAME in prediction["HOME_NAME"]:
+            prediction.update({"TEAM_W_LOOK": prediction["HOME_NAME"], "TEAM_W": pred.W}) 
         else:
-            prediction.update({"TEAM_W_LOOK": predictions_data["AWAY_NAME"], "TEAM_W": pred.W})
+            prediction.update({"TEAM_W_LOOK": prediction["AWAY_NAME"], "TEAM_W": pred.W})
 
     return jsonify(predictions_data)
 
