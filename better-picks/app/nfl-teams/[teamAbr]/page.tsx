@@ -110,20 +110,10 @@ export default function TeamDetailsPage() {
   if (!teamInfo) return <p className="text-red-400 text-center mt-10">Team not found.</p>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-green-700 text-white p-8 font-sans">
-    {/* Sticky Breadcrumb */}
-    <div className="sticky top-0 z-50 bg-gradient-to-r from-black/80 via-green-900/80 to-black/80 backdrop-blur-md py-3 px-4 rounded-b-lg shadow-lg border-b border-white/10 mb-8">
-        <div className="text-sm text-gray-400 mb-6">
-        <Link href="/" className="hover:text-green-300 transition">Home</Link>
-        <span className="mx-2 text-white">›</span>
-        <Link href="/nfl-teams" className="hover:text-white-300 transition">NFL Teams</Link>
-        <span className="mx-2 text-white">›</span>
-        <span className="text-white-300 font-semibold">{teamInfo?.team_name}</span>
-        </div>
-    </div>
-
-    {/* Team Title Section */}
-    <div className="flex items-center gap-4 mb-12 border-b-2 border-green-500 pb-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-700 text-white p-8 font-sans">
+    
+     {/* Team Title Section */}
+     <div className="flex items-center gap-4 mb-12 border-b-2 border-purple-500 pb-4">
         <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px]">
         <Image src={teamInfo.team_logo} alt="Team Logo" fill className="object-contain" unoptimized />
         </div>
@@ -132,6 +122,17 @@ export default function TeamDetailsPage() {
             {teamInfo.team_name}
         </h1>
         </div>
+    </div> 
+
+    {/* Sticky Breadcrumb */}
+    <div className="sticky top-0 z-50 bg-gradient-to-r from-black/80 via-purple-900/80 to-black/80 backdrop-blur-md py-3 px-4 rounded-b-lg shadow-lg border-b border-white/10 mb-8">
+        <div className="text-sm text-gray-400 mb-6">
+        <Link href="/" className="hover:text-purple-300 transition">Home</Link>
+        <span className="mx-2 text-white">›</span>
+        <Link href="/nfl-teams" className="hover:text-white-300 transition">NFL Teams</Link>
+        <span className="mx-2 text-white">›</span>
+        <span className="text-white-300 font-semibold">{teamInfo?.team_name}</span>
+        </div>
     </div>
 
       {/* 🟢 Players */}
@@ -139,7 +140,7 @@ export default function TeamDetailsPage() {
         <h2 className="text-3xl font-bold text-white mb-6 border-b border-white/20 pb-2">Team Roster</h2>
         {Object.entries(groupedPlayers).map(([position, playersInPos]) => (
           <div key={position} className="mb-6">
-            <h3 className="text-2xl font-semibold text-green-300 mb-2">{position}</h3>
+            <h3 className="text-2xl font-semibold text-white-300 mb-2">{position}</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {playersInPos.map((player) => (
                <Link

@@ -92,20 +92,19 @@ function NBATeams() {
                       key={team.TEAM_ID}
                       href={`/team-history/${team.TEAM_NICKNAME.toLowerCase().replace(/\s+/g, "-")}`}
                     >
-                      <div className="bg-gray-900 p-4 rounded-2xl shadow-xl border border-white/10 flex flex-col items-center justify-between transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-gray-800 cursor-pointer h-full min-h-[300px]">
+                      <div className="bg-gray-700 p-4 rounded-2xl shadow-xl border border-white/10 flex flex-col items-center justify-between transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-gray-800 cursor-pointer h-full min-h-[200px]">
+                      <h2 className="text-xl font-bold text-white text-center tracking-wide mb-2">
+                          {team.TEAM_NAME}
+                        </h2>
                         <Image
                           src={team.TEAM_LOGO}
                           alt={`${team.TEAM_NAME} logo`}
-                          width={80}
-                          height={80}
+                          width={120}
+                          height={120}
                           className="mb-4"
                         />
-                        <h2 className="text-xl font-bold text-white text-center tracking-wide mb-2">
-                          {team.TEAM_NAME}
-                        </h2>
-                        <p className="text-sm text-gray-300">{team.TEAM_CITY}, {team.TEAM_STATE}</p>
-                        <p className="text-sm text-gray-400 italic">Nickname: {team.TEAM_NICKNAME}</p>
-                        <p className="text-sm text-gray-500">Founded: {team.TEAM_YEAR_FOUNDED}</p>
+                       
+          
                       </div>
                     </Link>
                   ))}

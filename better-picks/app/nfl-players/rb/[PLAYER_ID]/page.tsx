@@ -124,9 +124,29 @@ const RBPlayerStats = () => {
 
   return  (
     <div className="w-fit mx-auto">
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-green-700 text-white p-8 font-sans">
-        {/* Sticky Breadcrumb */}
-        <div className="sticky top-0 z-50 bg-gradient-to-r from-black/80 via-green-900/80 to-black/80 backdrop-blur-md py-3 px-4 rounded-b-lg shadow-lg border-b border-white/10 mb-8">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-700 text-white p-8 font-sans"> 
+
+      {/* Player Title Section */}
+<div className="flex items-center gap-4 mb-12 border-b-2 border-purple-500 pb-4">
+  <div className="relative w-[80px] h-[80px] sm:w-[120px] sm:h-[120px]">
+    <img
+      src={weeklyStats[0]?.HEADSHOT_URL}
+      alt={`${playerName}'s headshot`}
+      className="w-full h-full object-cover square-full shadow-lg"
+    />
+  </div>
+  <div>
+    <h1 className="text-4xl sm:text-5xl font-extrabold text-white-300 tracking-wide uppercase">
+      {playerName}
+    </h1>
+    <p className="text-sm font-extrabold sm:text-base text-white-400 tracking-wide mt-1">
+      {weeklyStats[0]?.POSITION} — {weeklyStats[0]?.RECENT_TEAM}
+    </p>
+  </div>
+</div>
+
+ {/* Sticky Breadcrumb */}
+ <div className="sticky top-0 z-50 bg-gradient-to-r from-black/80 via-purple-900/80 to-black/80 backdrop-blur-md py-3 px-4 rounded-b-lg shadow-lg border-b border-white/10 mb-8">
             <div className="text-sm text-gray-400 mb-6">
             <Link href="/" className="hover:text-green-300 transition">Home</Link>
             <span className="mx-2 text-white">›</span>
@@ -144,21 +164,6 @@ const RBPlayerStats = () => {
 
             <span className="text-white font-semibold">{playerName}</span>
             </div>
-        </div>
-
-      {/* Player Info */}
-        <div className="flex items-center space-x-6 mb-8 bg-black/30 p-4 rounded-xl shadow-md">
-        <img
-            src={weeklyStats[0]?.HEADSHOT_URL}
-            alt={`${playerName}'s headshot`}
-            className="w-40 h-40 rounded-full object-cover border-4 border-white shadow-lg"
-        />
-        <div className="text-white">
-            <h2 className="font-bold text-3xl mb-2">{playerName}</h2>
-            <p className="text-sm text-white/100 tracking-wide">
-            {weeklyStats[0]?.POSITION} — {weeklyStats[0]?.RECENT_TEAM}
-            </p>
-        </div>
         </div>
 
       {/* RB Stats Table */}
