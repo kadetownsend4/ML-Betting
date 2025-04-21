@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
+import Dashboard from "../components/Dashboard";
+
+// Used ChatGPT to help me structure this page with the link below.
+// https://chatgpt.com/share/680543c5-7134-8004-9b5a-e73cd2e032d5
 
 type PredictionGame = {
   GAME_ID: number;
@@ -80,25 +84,33 @@ export default function TeamPredictionsPage() {
   }, [selectedTeam, selectedDate, selectedFeature, selectedModel, mode]);
 
   return (
+    
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-900 text-white px-4 sm:px-10 py-10 font-sans">
+      <Dashboard></Dashboard>
       <div className="max-w-6xl mx-auto">
 
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 pb-4 border-b border-purple-600">
-          <div>
+        <div className="w-full max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10 px-4 sm:px-0 py-6 border-b border-purple-600">
+          <div className="flex-1">
             <h1 className="text-4xl sm:text-5xl font-extrabold text-purple-300 tracking-wide uppercase">
               NBA Predictions
             </h1>
-            <p className="text-sm text-purple-200 mt-1">
+            <p className="text-sm text-purple-200 mt-2 sm:mt-1 leading-relaxed">
               {mode === "team" && selectedTeam && selectedFeature && selectedModel &&
                 `Predictions for ${selectedTeam} using ${selectedFeature} + ${selectedModel}`}
               {mode === "date" && selectedDate && selectedFeature && selectedModel &&
                 `Predictions for ${selectedDate} using ${selectedFeature} + ${selectedModel}`}
             </p>
           </div>
-          <Link href="/latest-games" className="text-green-400 mt-4 sm:mt-0 hover:underline text-sm sm:text-base">
-            ← Back to All Teams
-          </Link>
+
+          <div className="shrink-0">
+          <Link
+          href="/latest-games"
+          className="text-green-400 hover:text-green-300 hover:underline text-sm sm:text-base"
+          >
+      ← Go to All Teams
+    </Link>
+  </div>
         </div>
 
         {/* Mode Toggle */}
@@ -200,11 +212,11 @@ export default function TeamPredictionsPage() {
                 <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
                   <div className="flex items-center gap-4">
                     <Image src={game.AWAY_LOGO} alt={game.AWAY_TEAM} width={40} height={40} className="rounded" />
-                    <span className={`text-lg font-semibold ${predictedWinner === "AWAY" ? "text-green-500 font-extrabold" : ""}`}>
+                    <span className={"text-lg font-semibold"}>
                       {game.AWAY_TEAM}
                     </span>
                     <span className="mx-2 text-purple-300 font-bold">@</span>
-                    <span className={`text-lg font-semibold ${predictedWinner === "HOME" ? "text-green-500 font-extrabold" : ""}`}>
+                    <span className={"text-lg font-semibold"}>
                       {game.HOME_TEAM}
                     </span>
                     <Image src={game.HOME_LOGO} alt={game.HOME_TEAM} width={40} height={40} className="rounded" />
@@ -214,22 +226,13 @@ export default function TeamPredictionsPage() {
         
                 <div className="grid grid-cols-2 sm:grid-cols-4 text-center gap-4 text-sm text-gray-200">
                   <div>
-                    <p className="text-purple-300">Home Win %</p>
-                    <p className="text-green-400 text-xl font-bold">{(game.HOME_W_PROB * 100).toFixed(1)}%</p>
+                    <p className="text-purple-300">Away Win %</p>
+                    <p className="text-green-400 text-xl font-bold">{(game.AWAY_W_PROB * 100).toFixed(1)}%</p>
                   </div>
                   <div>
-                    <p className="text-purple-300">Away Win %</p>
-                    <p className="text-blue-400 text-xl font-bold">{(game.AWAY_W_PROB * 100).toFixed(1)}%</p>
+                    <p className="text-purple-300">Home Win %</p>
+                    <p className="text-blue-400 text-xl font-bold">{(game.HOME_W_PROB * 100).toFixed(1)}%</p>
                   </div>
-        
-                  {game.TEAM_W !== undefined && (
-                    <div className="col-span-2 sm:col-span-1">
-                      <p className="text-purple-300">Actual Win</p>
-                      <p className={`text-white font-semibold ${game.TEAM_W === 1 ? "text-green-300" : "text-red-400"}`}>
-                        {game.TEAM_W === 1 ? "Win" : "Loss"}
-                      </p>
-                    </div>
-                  )}
         
                   <div className="col-span-2 sm:col-span-1">
                     <p className="text-purple-300">Predicted Winner</p>
@@ -237,6 +240,15 @@ export default function TeamPredictionsPage() {
                       {predictedWinner === "HOME" ? game.HOME_TEAM : game.AWAY_TEAM}
                     </p>
                   </div>
+
+                  {game.TEAM_W !== undefined && (
+                    <div className="col-span-2 sm:col-span-1">
+                      <p className="text-purple-300">Actual Winner</p>
+                      <p className={`text-white font-semibold ${game.TEAM_W === 1 ? "text-green-300" : "text-red-400"}`}>
+                        {game.TEAM_W === 1 ? game.HOME_TEAM : game.AWAY_TEAM}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </li>
             );

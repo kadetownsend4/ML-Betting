@@ -5,44 +5,7 @@ import axios from "axios";
 import PostList from "../components/PostList";
 import Dashboard from "../components/Dashboard";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 
-const menuItems = [
-  {
-    title: "NBA",
-    links: [
-      { name: "Latest Games", path: "/latest-games" },
-      { name: "Team Stats", path: "/team-stats" },
-      { name: "Player Prop Analysis", path: "/player-analysis" },
-    ],
-  },
-  {
-    title: "NFL",
-    links: [
-      { name: "Game Predictions", path: "/nfl-teams" },
-      { name: "Team Based Player Props", path: "/team-player-props" },
-      { name: "Player Prop Analysis", path: "/nfl-player-analysis" },
-      { name: "Betting Insights", path: "/nfl/betting-insights" },
-    ],
-  },
-  {
-    title: "Performance Analysis",
-    links: [
-      { name: "Trending Player Props", path: "/trends" },
-      { name: "NBA Defense vs Position", path: "/defense-vs-position" },
-      { name: "Prop Streak & Success Rate", path: "/prop-streak-success-rate" },
-      { name: "AI Insights", path: "/ai-insights" },
-    ],
-  },
-  {
-    title: "Account",
-    links: [
-      { name: "Profile", path: "/account/profile" },
-      { name: "Settings", path: "/account/settings" },
-      { name: "Login", path: "/account/login" },
-    ],
-  },
-];
 
 const divisionMap: Record<string, { conference: string; teams: string[] }> = {
   Atlantic: {
@@ -84,8 +47,6 @@ type Team = {
 
 function NBATeams() {
   const [teams, setTeams] = useState<Team[]>([]);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-
   useEffect(() => {
     axios
       .get("https://betterpicks-demo.onrender.com/NBATeams")
@@ -152,6 +113,9 @@ function NBATeams() {
           </div>
         ))}
       </div>
+      
+      
+
 
       <div className="mt-20 sm:mt-28">
         <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-6">
