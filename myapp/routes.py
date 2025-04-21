@@ -266,6 +266,19 @@ def fetch_predictions_by_date(date, feature, model):
         for ID, HOME_PROB, AWAY_PROB, game, HOME_NAME, AWAY_NAME, HOME_LOGO, AWAY_LOGO in predictions
         # loops through each section in predictions
     ]
+
+    for prediction in predictions_data:
+        pred = db.session.query(
+            NBAGameLogs
+        ).filter(
+            NBAGameLogs.GAME_ID == prediction["GAME_ID"]
+        ).first()
+
+        if pred.NICKNAME in predictions_data["HOME_NAME"]:
+            prediction.update({"TEAM_W_LOOK": predictions_data["HOME_NAME"], "TEAM_W": pred.W}) 
+        else:
+            prediction.update({"TEAM_W_LOOK": predictions_data["AWAY_NAME"], "TEAM_W": pred.W})
+
     return jsonify(predictions_data)
 
 
