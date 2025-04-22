@@ -25,8 +25,9 @@ export default function PropStreaks() {
   );
 
   return (
-    <Dashboard>
+
       <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
+        <Dashboard></Dashboard>
         {/* Filter Controls */}
         <div className="mt-10 w-full max-w-5xl flex flex-col md:flex-row justify-end gap-4">
           <select
@@ -96,6 +97,6 @@ export default function PropStreaks() {
           <p>&copy; 2025 Player Prop Streaks. All rights reserved.</p>
         </footer>
       </div>
-    </Dashboard>
+
   );
 }
