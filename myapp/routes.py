@@ -261,7 +261,7 @@ def fetch_predictions_by_date(date, feature, model):
             "HOME_TEAM": HOME_NAME,
             "AWAY_TEAM": AWAY_NAME,
             "HOME_LOGO": HOME_LOGO,
-            "AWAY_LOGO": AWAY_LOGO
+            "AWAY_LOGO": AWAY_LOGO,
         }
         for ID, HOME_PROB, AWAY_PROB, game, HOME_NAME, AWAY_NAME, HOME_LOGO, AWAY_LOGO in predictions
         # loops through each section in predictions
