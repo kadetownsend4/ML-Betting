@@ -18,7 +18,6 @@ type PredictionGame = {
   HOME_LOGO: string;
   AWAY_LOGO: string;
   TEAM_W?: number;
-  TEAM_W_LOOK?: string;
 };
 
 const features = ["OG", "OG3", "REG", "FE", "CF"];
@@ -114,27 +113,29 @@ export default function TeamPredictionsPage() {
   </div>
         </div>
 
-       {/* Mode Toggle - Upgraded */}
-<div className="inline-flex mb-8 border border-purple-600 rounded-lg overflow-hidden">
-  {["team", "date"].map((m) => (
-    <button
-      key={m}
-      onClick={() => setMode(m as "team" | "date")}
-      className={`px-5 py-2 font-medium transition-all ${
-        mode === m
-          ? "bg-purple-600 text-white"
-          : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-      }`}
-    >
-      {m === "team" ? "By Team" : "By Date"}
-    </button>
-  ))}
-</div>
+        {/* Mode Toggle */}
+        <div className="flex gap-4 mb-8">
+          <button
+            onClick={() => setMode("team")}
+            className={`px-5 py-2 rounded-lg transition-all ${
+              mode === "team" ? "bg-purple-700" : "bg-gray-700"
+            }`}
+          >
+            By Team
+          </button>
+          <button
+            onClick={() => setMode("date")}
+            className={`px-5 py-2 rounded-lg transition-all ${
+              mode === "date" ? "bg-purple-700" : "bg-gray-700"
+            }`}
+          >
+            By Date
+          </button>
+        </div>
 
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 bg-gray-800/60 backdrop-blur-md p-6 rounded-xl shadow-inner mb-10">
+        <div className="bg-gray-800 py-4 px-6 rounded-lg shadow-md mb-8 flex flex-wrap justify-center gap-4">
   {mode === "team" && (
-    <div className="w-full md:w-[450px]">
+    <div className="w-full sm:w-[330px]">
       <label className="block mb-1 text-purple-200 font-medium">Select Team</label>
       <select
         value={selectedTeam}
@@ -150,7 +151,7 @@ export default function TeamPredictionsPage() {
   )}
 
   {mode === "date" && (
-    <div className="w-full md:w-[450px]">
+    <div className="w-full sm:w-[330px]">
       <label className="block mb-1 text-purple-200 font-medium">Select Date</label>
       <input
         type="date"
@@ -161,7 +162,7 @@ export default function TeamPredictionsPage() {
     </div>
   )}
 
-  <div className="w-full md:w-[450px]">
+  <div className="w-full sm:w-[330px]">
     <label className="block mb-1 text-purple-200 font-medium">Select Feature</label>
     <select
       value={selectedFeature}
@@ -175,7 +176,7 @@ export default function TeamPredictionsPage() {
     </select>
   </div>
 
-  <div className="w-full md:w-[450px]">
+  <div className="w-full sm:w-[330px]">
     <label className="block mb-1 text-purple-200 font-medium">Select Model</label>
     <select
       value={selectedModel}
@@ -203,25 +204,19 @@ export default function TeamPredictionsPage() {
           <ul className="space-y-6">
           {predictions.map((game) => {
             const predictedWinner = game.HOME_W_PROB > game.AWAY_W_PROB ? "HOME" : "AWAY";
-
-            const actualWinner = game.TEAM_W === 1
-            ? game.TEAM_W_LOOK
-
-            : (game.TEAM_W_LOOK === game.HOME_TEAM ? game.AWAY_TEAM : game.HOME_TEAM);
-
             return (
               <li
                 key={game.GAME_ID}
-                className="bg-gradient-to-br from-gray-900 to gray-800 p-6 rounded-xl shadow-lg border border-white/10 hover:border-purple-400 hover:scale-[1.01] transition-transform duration-200"
+                className="bg-gray-900 p-6 rounded-xl shadow-lg border border-white/10 hover:border-purple-400 transition"
               >
                 <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
-                  <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-4">
                     <Image src={game.AWAY_LOGO} alt={game.AWAY_TEAM} width={40} height={40} className="rounded" />
-                    <span className={"text-xl font-extrabold"}>
+                    <span className={"text-lg font-semibold"}>
                       {game.AWAY_TEAM}
                     </span>
                     <span className="mx-2 text-purple-300 font-bold">@</span>
-                    <span className={"text-xl font-extrabold"}>
+                    <span className={"text-lg font-semibold"}>
                       {game.HOME_TEAM}
                     </span>
                     <Image src={game.HOME_LOGO} alt={game.HOME_TEAM} width={40} height={40} className="rounded" />
@@ -229,7 +224,7 @@ export default function TeamPredictionsPage() {
                   <p className="text-sm text-gray-400">Date: {game.GAME_DATE}</p>
                 </div>
         
-                <div className="grid grid-cols-2 sm:grid-cols-4 text-center gap-6 text-sm text-gray-200">
+                <div className="grid grid-cols-2 sm:grid-cols-4 text-center gap-4 text-sm text-gray-200">
                   <div>
                     <p className="text-purple-300">Away Win %</p>
                     <p className="text-green-400 text-xl font-bold">{(game.AWAY_W_PROB * 100).toFixed(1)}%</p>
@@ -246,14 +241,14 @@ export default function TeamPredictionsPage() {
                     </p>
                   </div>
 
-                  {actualWinner && (
-              <div className="col-span-2 sm:col-span-1">
-                <p className="text-purple-300">Actual Winner</p>
-                <p className={`text-white font-semibold ${actualWinner === game.HOME_TEAM ? "text-green-300" : "text-blue-300"}`}>
-                  {actualWinner}
-                </p>
-              </div>
-            )}
+                  {game.TEAM_W !== undefined && (
+                    <div className="col-span-2 sm:col-span-1">
+                      <p className="text-purple-300">Actual Winner</p>
+                      <p className={`text-white font-semibold ${game.TEAM_W === 1 ? "text-green-300" : "text-red-400"}`}>
+                        {game.TEAM_W === 1 ? game.HOME_TEAM : game.AWAY_TEAM}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </li>
             );

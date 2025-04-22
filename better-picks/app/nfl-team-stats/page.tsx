@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Dashboard from "../components/Dashboard";
+import Link from "next/link";
 
 type TeamInfo = {
   TEAM_ID: string;
@@ -85,9 +86,9 @@ const NFLTeamStats: React.FC = () => {
 
       <h1 className="text-5xl sm:text-5xl font-extrabold text-white text-center drop-shadow-xl mb-8 tracking-wide font-['Rajdhani']">NFL Teams Season Averages</h1>
       <div className="w-110 mx-auto h-1 bg-purple-500 rounded-full"></div>
-      <div className="overflow-x-auto bg-white/10 shadow-xl rounded-2xl p-6 border border-white/20 max-h-[600px]">
-        <table className="min-w-full border border-gray-700 text-sm">
-        <thead className="bg-gray-800 text-white text-sm">
+      <div className="overflow-x-auto bg-white/10 shadow-xl rounded-2xl p-6 border border-white/20">
+      <table className="min-w-full border border-gray-700 text-sm sm:text-base">
+      <thead className="bg-gray-900 text-white-300 sticky top-0 z-10">
 
             
   <tr>
@@ -106,14 +107,16 @@ const NFLTeamStats: React.FC = () => {
 </thead>
 <tbody>
   {teamsData.map(({ teamInfo, seasonAverages }) => (
-    <tr key={teamInfo.TEAM_ID} className="border border-gray-700 hover:bg-gray-100">
-      <td className="px-4 py-2 text-center ">
+    <tr key={teamInfo.TEAM_ID} className="border border-gray-700">
+      <td className="px-4 py-2 text-center">
+      <Link href={`/nfl-teams/${teamInfo.TEAM_ABR}`}>
         <img
           src={teamInfo.TEAM_LOGO}
           alt={`${teamInfo.TEAM_NAME} logo`}
-          className="h-8 mx-auto"
+          className="h-10 mx-auto transition-transform duration-150"
         />
-      </td>  
+      </Link>
+    </td> 
       <td className="px-4 py-2 text-center font-semibold">{teamInfo.TEAM_NAME}</td>
       <td className="px-4 py-2 text-center">{seasonAverages.TOTAL_GAMES}</td>
       <td className="px-4 py-2 text-center">{seasonAverages.AVG_TOTAL_YARDS}</td>
