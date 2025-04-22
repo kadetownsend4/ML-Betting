@@ -60,7 +60,43 @@ class NBATeam(db.Model):
         overlaps="away_team,AWAY_TEAM_REF"
     )
 
+class NBATeamStats(db.Model):
+    __tablename__ = 'nbateamstats'
 
+    id = db.Column(db.Integer, primary_key=True)
+    TEAM_ID = db.Column(db.Integer, db.ForeignKey('nbateams.TEAM_ID'), nullable=False)
+    TEAM = db.Column(db.String(50), nullable=False)
+    SEASON = db.Column(db.String(50), nullable=False)
+
+
+    GP = db.Column(db.Integer)             # Games Played
+    W = db.Column(db.Integer)              # Wins
+    L = db.Column(db.Integer)              # Losses
+    WIN_PCT = db.Column(db.Float)          # Win Percentage
+    Min = db.Column(db.Float)              # Minutes
+    PTS = db.Column(db.Float)              # Points
+    FGM = db.Column(db.Float)              # Field Goals Made
+    FGA = db.Column(db.Float)              # Field Goals Attempted
+    FG_PCT = db.Column(db.Float)           # Field Goal %
+    THREE_PM = db.Column(db.Float)         # 3 Point Made (renamed from "3:00 PM")
+    THREE_PA = db.Column(db.Float)         # 3 Point Attempted
+    THREE_PCT = db.Column(db.Float)        # 3 Point %
+    FTM = db.Column(db.Float)              # Free Throws Made
+    FTA = db.Column(db.Float)              # Free Throws Attempted
+    FT_PCT = db.Column(db.Float)           # Free Throw %
+    OREB = db.Column(db.Float)             # Offensive Rebounds
+    DREB = db.Column(db.Float)             # Defensive Rebounds
+    REB = db.Column(db.Float)              # Total Rebounds
+    AST = db.Column(db.Float)              # Assists
+    TOV = db.Column(db.Float)              # Turnovers
+    STL = db.Column(db.Float)              # Steals
+    BLK = db.Column(db.Float)              # Blocks
+    BLKA = db.Column(db.Float)             # Blocks Against
+    PF = db.Column(db.Float)               # Personal Fouls
+    PFD = db.Column(db.Float)              # Personal Fouls Drawn
+    PLUS_MINUS = db.Column(db.Float)       # Plus/Minus
+
+    team = db.relationship('NBATeam', backref=db.backref('stats', lazy=True))
 
 
 class NBAGameLogs(db.Model):
@@ -248,8 +284,6 @@ class NBAGameIds(db.Model):
     #log = db.relationship('NBAGameLogs', back_populates='game')
 
     pred = db.relationship('NBAPredictions', back_populates='gameteams')
-
-
 
 class NFLTeam(db.Model):
     __tablename__ = 'nfl_teams'

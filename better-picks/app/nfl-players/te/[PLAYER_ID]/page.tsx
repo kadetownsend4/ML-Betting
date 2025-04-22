@@ -170,8 +170,6 @@ const TEPlayerStats = () => {
     <tr className="bg-gray-900 text-xs uppercase tracking-wider border-b border-gray-700">
       <th className="p-2">Week</th>
       <th className="p-2">Season</th>
-      <th className="p-2">Player</th>
-      <th className="p-2">Team</th>
       <th className="p-2">Opponent</th>
       <th className="p-2">Rec</th>
       <th className="p-2">Targets</th>
@@ -210,8 +208,6 @@ const TEPlayerStats = () => {
       <tr key={index} className="border-b border-gray-700 hover:bg-gray-700">
         <td className="p-2">{game.WEEK}</td>
         <td className="p-2">{game.SEASON}</td>
-        <td className="p-2">{game.PLAYER_NAME}</td>
-        <td className="p-2">{game.RECENT_TEAM}</td>
         <td className="p-2">{game.OPPONENT_TEAM}</td>
         <td className="p-2">{game.RECEPTIONS}</td>
         <td className="p-2">{game.TARGETS}</td>

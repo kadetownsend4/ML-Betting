@@ -4,7 +4,7 @@
 """
 
 from flask import Blueprint, render_template, jsonify, request, redirect, url_for, flash, Flask, session
-from .models import User, NFLTeam, NFLQuarterbackWeeklyStats, NBATeam, NBAGameIds, NBAGameLogs, NBAPredictions
+from .models import User, NFLTeam, NFLQuarterbackWeeklyStats, NBATeam, NBAGameIds, NBAGameLogs, NBAPredictions, NBATeamStats
 from .extensions import db
 from sqlalchemy.orm import aliased
 
@@ -46,6 +46,63 @@ def fetch_nba_teams():
         # loops through teams
     ]
     return jsonify(team_data)
+
+# https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e
+@main.route('/NBAStats/<string:season>')
+def fetch_nba_team_stats(season):
+    """Function for fetching all team stats information from the database, 
+       optionally filtered by season, along with the team logos.
+       It turns this data into JSON format for use by the frontend.
+
+       Return:
+       List of NBA team stats information in JSON format, optionally filtered by season.
+    """
+    # Fetch all team stats for the given season
+    team_stats = db.session.query(NBATeamStats).filter(NBATeamStats.SEASON == season).all()
+
+    # Create a dictionary for team logos for quick lookup
+    team_logos = {team.TEAM_ID: team.TEAM_LOGO for team in db.session.query(NBATeam).all()}
+
+    # Convert the data into a list of dictionaries, including logos
+    team_stats_data = [
+        {
+            "TEAM_ID": stat.TEAM_ID,
+            "TEAM": stat.TEAM,
+            "SEASON": stat.SEASON,
+            "GP": stat.GP,
+            "W": stat.W,
+            "L": stat.L,
+            "WIN_PCT": stat.WIN_PCT,
+            "MIN": stat.Min,
+            "PTS": stat.PTS,
+            "FGM": stat.FGM,
+            "FGA": stat.FGA,
+            "FG_PCT": stat.FG_PCT,
+            "THREE_PM": stat.THREE_PM,
+            "THREE_PA": stat.THREE_PA,
+            "THREE_PCT": stat.THREE_PCT,
+            "FTM": stat.FTM,
+            "FTA": stat.FTA,
+            "FT_PCT": stat.FT_PCT,
+            "OREB": stat.OREB,
+            "DREB": stat.DREB,
+            "REB": stat.REB,
+            "AST": stat.AST,
+            "TOV": stat.TOV,
+            "STL": stat.STL,
+            "BLK": stat.BLK,
+            "BLKA": stat.BLKA,
+            "PF": stat.PF,
+            "PFD": stat.PFD,
+            "PLUS_MINUS": stat.PLUS_MINUS,
+            "TEAM_LOGO": team_logos.get(stat.TEAM_ID, None)  # Add the team logo to the stats
+        }
+        for stat in team_stats
+    ]
+    
+    return jsonify(team_stats_data)
+
+
 
 
 @main.route('/NBAMatchups/<team>')
