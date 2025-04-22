@@ -11,12 +11,12 @@ import sqlalchemy_interact
 
 
 # Path to your team stats CSV
-CSV_PATH = "../NBA/TeamStats/TeamStats - NBA20.csv"
+CSV_PATH = "../NBA/TeamStats/TeamStats - NBA24.csv"
 
 # Load CSV
 df = pd.read_csv(CSV_PATH)
 
-df['SEASON'] = '2020'
+df['SEASON'] = '2024'
 
 # Rename columns: ALL CAPS + SQL FRIENDLY
 df.rename(columns={
