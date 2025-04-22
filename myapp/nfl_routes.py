@@ -120,6 +120,7 @@ def get_team_schedule(team_abbr):
     })
 
 
+# https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e
 @nfl_stats_bp.route('/nfl_teams/<string:team_abr>/game_stats', methods=['GET'])
 def get_team_game_stats(team_abr):
     # Check if team exists
@@ -178,6 +179,63 @@ def get_team_game_stats(team_abr):
         },
         'game_stats': results
     })
+
+@nfl_stats_bp.route('/nfl_teams/<string:team_abr>/season_avg', methods=['GET'])
+def get_team_season_averages(team_abr):
+    # Check if team exists
+    team = NFLTeam.query.filter_by(TEAM_ABR=team_abr.upper()).first()
+    if not team:
+        return jsonify({'error': 'Team not found'}), 404
+
+    # Get all game stats for that team
+    stats = NFLTeamGameStats.query.filter_by(TEAM=team_abr.upper()).all()
+    if not stats:
+        return jsonify({'error': 'No game stats found for team'}), 404
+
+    # Calculate average for each stat
+    total_games = len(stats)
+
+    def avg(attr):
+        return round(sum(getattr(s, attr) or 0 for s in stats) / total_games, 2)
+
+    season_avg = {
+        'TEAM': team.TEAM_ABR,
+        'TOTAL_GAMES': total_games,
+        'AVG_TOTAL_YARDS': avg('TOTAL_YARDS'),
+        'AVG_TOTAL_TDS': avg('TOTAL_TDS'),
+        'AVG_PASSING_TDS': avg('PASSING_TDS'),
+        'AVG_RUSHING_TDS': avg('RUSHING_TDS'),
+        'AVG_NUM_PLAYS': avg('NUM_PLAYS'),
+        'AVG_EPA': avg('AVG_EPA'),
+        'AVG_SUCCESS_RATE': avg('SUCCESS_RATE'),
+        'AVG_TOTAL_RUSH_YARDS': avg('TOTAL_RUSH_YARDS'),
+        'AVG_TOTAL_PASS_YARDS': avg('TOTAL_PASS_YARDS'),
+        'AVG_PASS_ATTEMPTS': avg('PASS_ATTEMPTS'),
+        'AVG_RUSH_ATTEMPTS': avg('RUSH_ATTEMPTS'),
+        'AVG_COMPLETE_PASSES': avg('COMPLETE_PASSES'),
+        'AVG_INCOMPLETE_PASSES': avg('INCOMPLETE_PASSES'),
+        'AVG_SACKS': avg('SACKS'),
+        'AVG_TOTAL_PENALTY_YARDS': avg('TOTAL_PENALTY_YARDS'),
+        'AVG_FUMBLES_LOST': avg('FUMBLES_LOST'),
+        'AVG_INTERCEPTIONS': avg('INTERCEPTIONS'),
+        'AVG_THIRD_DOWN_CONVERTED': avg('THIRD_DOWN_CONVERTED'),
+        'AVG_FOURTH_DOWN_CONVERTED': avg('FOURTH_DOWN_CONVERTED'),
+        'AVG_WP': avg('WP'),
+        'AVG_HOME_WP': avg('HOME_WP'),
+        'AVG_AWAY_WP': avg('AWAY_WP')
+    }
+
+    return jsonify({
+        'team': {
+            'TEAM_ID': team.TEAM_ID,
+            'TEAM_NAME': team.TEAM_NAME,
+            'TEAM_ABR': team.TEAM_ABR,
+            'TEAM_LOGO': team.TEAM_LOGO,
+            'TEAM_WORDMARK': team.TEAM_WORDMARK
+        },
+        'season_averages': season_avg
+    })
+
 
 @nfl_stats_bp.route('/nfl_games/<string:game_id>/team_stats', methods=['GET'])
 def get_game_team_stats(game_id):
