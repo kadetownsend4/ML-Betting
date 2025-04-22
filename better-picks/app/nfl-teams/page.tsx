@@ -44,7 +44,7 @@ function NFLTeams() {
 
     </Dashboard> 
 
-      <div className="mt-8">
+      <div className="space-y-8">
   {selectedOption && selectedOption !== 'AFC' && selectedOption !== 'NFC' && (
     <div>
       <h3 className="text-3xl text-center text-green-400">

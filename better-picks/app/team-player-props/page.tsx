@@ -59,8 +59,8 @@ export default function NFLPropPositionsPage() {
         
         {/* Header with Dropdown */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-purple-400 tracking-wide">
-            NFL Player Prop Positions
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-white-400 tracking-wide">
+            NFL Player Props By Team
           </h2>
 
           <select
@@ -69,7 +69,7 @@ export default function NFLPropPositionsPage() {
               console.log("Selected team:", e.target.value);
               setSelectedTeam(e.target.value);
             }}
-            className="w-full sm:w-72 p-3 rounded-md bg-gray-800 text-white border border-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full sm:w-72 p-3 rounded-md bg-gray-800 text-white text-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500"
           >
             <option value="" disabled>Select a Team</option>
             <option value="ARI">Cardinals</option>
@@ -117,7 +117,7 @@ export default function NFLPropPositionsPage() {
                 className="w-10 h-10"
               />
               <h3 className="text-2xl font-semibold">
-                Player Prop Positions: {teamData.team_name}
+                Player Props: {teamData.team_name}
               </h3>
             </div>
 

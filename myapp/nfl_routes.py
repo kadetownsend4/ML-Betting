@@ -588,6 +588,9 @@ def get_full_rb_stats(player_id):
             "GAME_ID": s.GAME_ID,
             "WEEK": s.WEEK,
             "RECENT_TEAM": s.RECENT_TEAM,
+            "OPPONENT_TEAM": s.OPPONENT_TEAM,
+            "SEASON": s.SEASON,
+            "SEASON_TYPE": s.SEASON_TYPE,
             "POSITION": s.POSITION,
             "HEADSHOT_URL": s.HEADSHOT_URL,
 
@@ -651,6 +654,9 @@ def get_rbs_by_game(game_id):
             "GAME_ID": s.GAME_ID,
             "WEEK": s.WEEK,
             "RECENT_TEAM": s.RECENT_TEAM,
+            "OPPONENT_TEAM": s.OPPONENT_TEAM,
+            "SEASON": s.SEASON,
+            "SEASON_TYPE": s.SEASON_TYPE,
             "POSITION": s.POSITION,
             "HEADSHOT_URL": s.HEADSHOT_URL,
 

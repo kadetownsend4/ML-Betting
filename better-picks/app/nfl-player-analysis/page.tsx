@@ -40,11 +40,16 @@ export default function PlayerAnalysis() {
   const uniqueTeams = [...new Set(playerData.map((p) => p.team))];
 
   return (
-    <Dashboard>
-      <div className="w-full max-w-6xl mt-20 bg-white/5 shadow-xl rounded-xl px-8 py-10 sm:px-12 sm:py-14 space-y-8 relative z-50 border border-white/20">
+
+
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans">
+              <Dashboard></Dashboard>
+        
+              <div className="space-y-8 mt-10">
         <h2 className="text-4xl sm:text-5xl font-extrabold text-white text-center drop-shadow-xl mb-6 tracking-wide font-['Rajdhani']">
           NFL Player Prop Analysis
         </h2>
+        </div>
 
         {/* Dropdowns */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
@@ -100,6 +105,5 @@ export default function PlayerAnalysis() {
           {/* Footer content if needed */}
         </footer>
       </div>
-    </Dashboard>
   );
 }

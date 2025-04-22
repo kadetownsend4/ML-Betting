@@ -50,7 +50,7 @@ export default function NFLPage() {
   }, [week]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-green-700 text-white p-8 font-sans">
+     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans">
 
       <Dashboard>
       </Dashboard>
