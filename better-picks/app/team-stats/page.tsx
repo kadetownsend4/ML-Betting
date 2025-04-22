@@ -60,7 +60,7 @@ export default function TeamStatsPage() {
           seasonData[season] = data;
         } catch (error) {
           console.error(`Error fetching stats for ${season}:`, error);
-          seasonData[season] = []; // fallback
+          seasonData[season] = [];
         }
       }
       setStatsBySeason(seasonData);
@@ -70,18 +70,32 @@ export default function TeamStatsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-900 text-white px-4 sm:px-10 py-10 font-sans">
       <Dashboard />
-      <div className="space-y-8 mt-10 w-full max-w-7xl">
-        <div className="flex justify-center space-x-4 mb-6">
+      <div className="max-w-6xl mx-auto">
+
+        {/* Header */}
+        <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10 px-4 py-6 border-b border-purple-600">
+          <div className="flex-1">
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-purple-300 tracking-wide uppercase">
+              NBA Team Stats
+            </h1>
+            <p className="text-sm text-purple-200 mt-2 sm:mt-1 leading-relaxed">
+              Select a season to view advanced team stats including efficiency, shooting, and more.
+            </p>
+          </div>
+        </div>
+
+        {/* Season Toggle */}
+        <div className="inline-flex mb-10 border border-purple-600 rounded-lg overflow-hidden">
           {seasons.map((season) => (
             <button
               key={season}
               onClick={() => setSelectedSeason(season)}
-              className={`px-4 py-2 rounded-lg font-semibold border transition ${
+              className={`px-5 py-2 font-medium transition-all ${
                 selectedSeason === season
-                  ? "bg-purple-500 text-white border-purple-400"
-                  : "bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600"
+                  ? "bg-purple-600 text-white"
+                  : "bg-gray-800 text-gray-300 hover:bg-gray-700"
               }`}
             >
               {season}
@@ -89,60 +103,63 @@ export default function TeamStatsPage() {
           ))}
         </div>
 
-        <div className="bg-white/10 shadow-xl rounded-2xl p-6 border border-white/20">
+        {/* Table Card */}
+        <div className="bg-gray-800/60 backdrop-blur-md p-6 rounded-xl shadow-inner border border-white/10">
           <h2 className="text-2xl sm:text-3xl font-bold text-purple-400 mb-6 text-center">
             Team Statistics for {selectedSeason}
           </h2>
 
           <div className="overflow-x-auto">
-            <table className="min-w-full border border-gray-700 text-sm sm:text-base">
-              <thead className="bg-gray-900 text-purple-300 sticky top-0 z-10">
-                <tr>
-                  {[
-                    "Team", "PTS", "AST", "BLK", "STL", "FT%", "FGA", "FGM",
-                    "Def Eff", "Off Eff", "REB", "Record", "Logo"
-                  ].map((heading, idx) => (
-                    <th key={idx} className="px-4 py-3 border border-gray-700 text-left whitespace-nowrap">
-                      {heading}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {(statsBySeason[selectedSeason] || []).map((team, index) => (
-                  <tr
-                    key={index}
-                    className={`border border-gray-700 ${
-                      index % 2 === 0 ? "bg-gray-800/50" : "bg-gray-800/30"
-                    } hover:bg-gray-700/60 transition`}
-                  >
-                    <td className="px-4 py-3">{team.TEAM}</td>
-                    <td className="px-4 py-3 text-center">{team.PTS}</td>
-                    <td className="px-4 py-3 text-center">{team.AST}</td>
-                    <td className="px-4 py-3 text-center">{team.BLK}</td>
-                    <td className="px-4 py-3 text-center">{team.STL}</td>
-                    <td className="px-4 py-3 text-center">{(team.FT_PCT * 100).toFixed(1)}%</td>
-                    <td className="px-4 py-3 text-center">{team.FGA}</td>
-                    <td className="px-4 py-3 text-center">{team.FGM}</td>
-                    <td className="px-4 py-3 text-center">{team.DEF_EFF}</td>
-                    <td className="px-4 py-3 text-center">{team.OFF_EFF}</td>
-                    <td className="px-4 py-3 text-center">{team.REB}</td>
-                    <td className="px-4 py-3 text-center">{team.W}-{team.L}</td>
-                    <td className="px-4 py-3 text-center">
-                      {team.TEAM_LOGO && (
-                        <img
-                          src={team.TEAM_LOGO}
-                          alt={`${team.TEAM} logo`}
-                          className="w-12 h-12 mx-auto"
-                        />
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <table className="min-w-full border border-gray-700 text-xs sm:text-sm">
+  <thead className="bg-gray-900 text-purple-300 sticky top-0 z-10">
+    <tr>
+      <th className="px-3 py-2 border border-gray-700 text-left">Logo</th>
+      {Object.keys(statsBySeason[selectedSeason]?.[0] || {})
+        .filter((key) => key !== "TEAM_LOGO") // We'll show this separately
+        .map((heading, idx) => (
+          <th
+            key={idx}
+            className="px-3 py-2 border border-gray-700 text-left whitespace-nowrap"
+          >
+            {heading}
+          </th>
+        ))}
+    </tr>
+  </thead>
+  <tbody>
+    {(statsBySeason[selectedSeason] || []).map((team, index) => (
+      <tr
+        key={index}
+        className={`border border-gray-700 ${
+          index % 2 === 0 ? "bg-gray-800/50" : "bg-gray-800/30"
+        } hover:bg-gray-700/60 transition`}
+      >
+        <td className="px-3 py-2">
+          {team.TEAM_LOGO ? (
+            <img
+              src={team.TEAM_LOGO}
+              alt={`${team.TEAM} logo`}
+              className="w-10 h-10 rounded-full"
+            />
+          ) : (
+            <span className="text-gray-500">N/A</span>
+          )}
+        </td>
+        {Object.entries(team)
+          .filter(([key]) => key !== "TEAM_LOGO")
+          .map(([key, value], idx) => (
+            <td key={idx} className="px-3 py-2 text-center">
+              {typeof value === "number" ? value.toFixed(2) : value}
+            </td>
+          ))}
+      </tr>
+    ))}
+  </tbody>
+</table>
+
           </div>
         </div>
+
       </div>
     </div>
   );
