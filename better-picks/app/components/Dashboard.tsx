@@ -51,7 +51,7 @@ const Dashboard = () => {
   return (
     <>
       {/* Header */}
-      <header className="flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
+      <header className="relative z-20 flex justify-between items-center w-full py-4 px-8 bg-white/10 backdrop-blur-md rounded-lg shadow-lg border border-white/15">
         <Link href="/" passHref>
           <span className="cursor-pointer text-4xl font-extrabold text-white drop-shadow-2xl border-b-4 border-purple-400 hover:text-purple-300 transition-colors duration-300">
             Better Picks

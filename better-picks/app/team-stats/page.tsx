@@ -41,9 +41,13 @@ export default function TeamStats() {
   }, []);
 
   return (
-    <Dashboard>
-      {/* <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white py-12 px-4 flex justify-center">
-        <div className="w-full max-w-7xl bg-white/10 shadow-xl rounded-2xl p-6 border border-white/20"> */}
+ 
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans">
+       <Dashboard></Dashboard>
+
+       <div className="space-y-8 mt-10">
+        <div className="w-full max-w-7xl bg-white/10 shadow-xl rounded-2xl p-6 border border-white/20"> 
+       
           <h2 className="text-2xl sm:text-3xl font-bold text-purple-400 mb-6 text-center">Team Statistics</h2>
           <div className="overflow-x-auto">
             <table className="min-w-full border border-gray-700 text-sm sm:text-base">
@@ -79,8 +83,8 @@ export default function TeamStats() {
               </tbody>
             </table>
           </div>
-        {/* </div>
-      </div> */}
-    </Dashboard>
+        </div>
+      </div> 
+      </div>
   );
 }

@@ -35,9 +35,11 @@ def insert_df_to_mysql_sqlalchemy(df, table_name):
     # establishes a connection engine to link with the database
     engine = create_engine(
         f"postgresql://{user}:{pw}@{host}:{port}/{name}")
-    # inserts df, this code replaces a table if it has the same name already in database
+    # inserts df, this code appends to a table if it has the same name already in database
+    # append ensures that the tables created by the flask models are not overridden by df insertion
     df.to_sql(name=table_name, con=engine, if_exists='append', index=False)
     print(f"DataFrame successfully inserted into table '{table_name}'")
+
 
 
 def get_df_from_mysql_sqlalchemy(table):
