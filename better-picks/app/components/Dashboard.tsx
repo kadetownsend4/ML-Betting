@@ -22,6 +22,7 @@ const menuItems = [
     links: [
       { name: "NFL Teams", path: "/nfl-teams" },
       { name: "NFL Schedule", path: "/nfl-schedule" },
+      { name: "NFL Season Stats", path: "/nfl-team-stats" },
       { name: "Team Based Player Props", path: "/team-player-props" },
       { name: "Player Prop Analysis", path: "/nfl-player-analysis" },
     ],
@@ -75,7 +76,7 @@ const Dashboard = () => {
                     animate={{ opacity: 1, y: 0, scale: 0.80 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="absolute left-1/8 mt-2 w-40 bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl shadow-xl p-3 z-50"
+                    className="absolute left-1/8 mt-2 w-40 z-50 bg-black/100 backdrop-blur-md border border-white/10 rounded-3xl shadow-xl p-3 z-50"
                   >
                     {item.links.map((link, idx) => (
                       <Link

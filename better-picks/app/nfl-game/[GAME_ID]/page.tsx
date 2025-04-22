@@ -290,7 +290,7 @@ type ReceiverGameStats = {
       return <div>{error}</div>;
     }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans ">
 
 
      <Dashboard>
@@ -299,7 +299,7 @@ type ReceiverGameStats = {
      <div className="space-y-8 mt-10">
         
      
-  <div className="flex flex-col items-center  mb-12 w-full">
+  <div className="flex flex-col items-center mb-12 ">
   <h2 className="text-4xl text-white font-extrabold tracking-widest mb-6 font-['Rajdhani'] uppercase">
     Week {gameData.WEEK}
   </h2>

@@ -71,7 +71,7 @@ function NBATeams() {
     <Dashboard></Dashboard>
       <div className="w-full max-w-6xl mt-20 bg-white/5 shadow-xl rounded-xl px-8 py-10 sm:px-12 sm:py-14 space-y-8 relative border border-white/20">
         <h2 className="text-4xl sm:text-5xl font-extrabold text-white text-center drop-shadow-xl mb-8 tracking-wide font-['Rajdhani']">
-          NBA Teams by Division
+          NBA Teams 
         </h2>
 
         {Object.entries(groupedByConference).map(([conference, divisions]) => (

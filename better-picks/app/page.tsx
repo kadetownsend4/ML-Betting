@@ -99,12 +99,12 @@ export default function Home() {
           {/* Footer Section*/}
           <footer className="mt-10 text-center text-white text-lg font-black drop-shadow-xl">
   <p>
-    <span className="text-red-400 uppercase">Disclaimer:</span> Please gamble responsibly. If you have a gambling problem, seek help from a professional organization such as  
+    <span className="text-red-600 uppercase">Disclaimer:</span> Please gamble responsibly. If you have a gambling problem, seek help from a professional organization such as   
     <a 
       href="https://www.ncpgambling.org/" 
       target="_blank" 
       rel="noopener noreferrer" 
-      className="text-purple-400 font-bold underline hover:text-purple-300 transition-colors duration-200"
+      className="text-red-600 font-bold underline hover:text-purple-300 transition-colors duration-200"
     >
       {" "}National Council on Problem Gambling
     </a>.

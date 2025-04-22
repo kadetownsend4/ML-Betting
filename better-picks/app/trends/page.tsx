@@ -17,8 +17,10 @@ export default function Trends() {
   const filteredProps = trendingProps.filter((prop) => prop.sport === selectedSport);
 
   return (
-    <Dashboard>
+
       <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
+
+        <Dashboard></Dashboard>
         {/* League Selection Dropdown */}
         <div className="mt-10 w-full max-w-5xl flex justify-end">
           <select
@@ -75,6 +77,6 @@ export default function Trends() {
           <p>&copy; 2025 Betting Trends. All rights reserved.</p>
         </footer>
       </div>
-    </Dashboard>
+
   );
 }

@@ -50,20 +50,23 @@ export default function NFLPage() {
   }, [week]);
 
   return (
-     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 space-y-8 font-sans">
 
       <Dashboard>
       </Dashboard>
 
-      {/* Main Content */}
-      <main className="flex-1 w-full max-w-6xl">
-      <div className="w-full max-w-6xl mt-20 bg-white/5 shadow-xl rounded-xl px-8 py-10 sm:px-12 sm:py-14 space-y-8 relative z-50 border border-white/20">
-          <div className="text-center mb-8">
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-white text-center drop-shadow-xl mb-8 tracking-wide font-['Rajdhani']">
-  NFL Schedule by Week
+
+      <div className="text-center">
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-white text-center drop-shadow-xl tracking-wide font-['Rajdhani']">
+  NFL Schedule
 </h2>
-            <div className="w-110 mx-auto h-1 bg-purple-500 rounded-full"></div>
+            <div className="w-110 mx-auto h-1 bg-purple-500 mt-8 rounded-full"></div>
           </div>
+
+      {/* Main Content */}
+      <main className="flex-1 items-center w-full max-w-8xl">
+      <div className="w-full max-w-8xl mt-8 bg-white/5 shadow-xl rounded-xl px-8 py-10 sm:px-12 sm:py-14 space-y-8 relative border border-white/20">
+         
 
                     <div className="flex justify-center mb-8">
             <div className="flex flex-col items-center gap-2">
@@ -74,7 +77,7 @@ export default function NFLPage() {
                 id="week"
                 value={week}
                 onChange={(e) => setWeek(parseInt(e.target.value))}
-                className="bg-gray-700 text-white px-4 py-2 rounded-md"
+                className="bg-gray-700 text-white px-8 py-4 rounded-md"
                 >
                 {Array.from({ length: 22 }, (_, i) => i + 1).map((w) => (
                     <option key={w} value={w}>
