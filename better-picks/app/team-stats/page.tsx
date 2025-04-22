@@ -36,8 +36,6 @@ type TeamStats = {
   PF: number;
   PFD: number;
   PLUS_MINUS: number;
-  DEF_EFF: number;
-  OFF_EFF: number;
   TEAM_LOGO: string | null;
 };
 
@@ -73,8 +71,12 @@ export default function TeamStatsPage() {
   const currentStats = statsBySeason[selectedSeason] || [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black space-y-8 to-purple-800 text-white p-10 font-sans">
       <Dashboard />
+      <h1 className="text-5xl sm:text-5xl font-extrabold text-white text-center drop-shadow-xl mb-8 tracking-wide font-['Rajdhani']">NBA Teams Season Statistics</h1>
+      <div className="w-110 mx-auto h-1 bg-purple-500 rounded-full"></div>
+
+      
       <div className="max-w-7xl mx-auto mt-10 space-y-10">
 
         {/* Season Select */}
@@ -97,13 +99,13 @@ export default function TeamStatsPage() {
           <div className="inline-flex border border-purple-500 rounded-lg overflow-hidden">
             <button
               onClick={() => setViewMode("core")}
-              className={`px-4 py-2 font-medium transition-all ${viewMode === "core" ? "bg-purple-600 text-white" : "bg-gray-800 text-gray-300 hover:bg-gray-700"}`}
+              className={`px-4 py-2 font-medium transition-all ${viewMode === "core" ? "bg-purple-600 text-white" : "bg-gray-800 text-white-300 hover:bg-gray-700"}`}
             >
               Core Stats
             </button>
             <button
               onClick={() => setViewMode("full")}
-              className={`px-4 py-2 font-medium transition-all ${viewMode === "full" ? "bg-purple-600 text-white" : "bg-gray-800 text-gray-300 hover:bg-gray-700"}`}
+              className={`px-4 py-2 font-medium transition-all ${viewMode === "full" ? "bg-purple-600 text-white" : "bg-gray-800 text-white-300 hover:bg-gray-700"}`}
             >
               Full Stats
             </button>
@@ -112,14 +114,14 @@ export default function TeamStatsPage() {
 
         {/* Table */}
         <div className="overflow-x-auto bg-white/10 shadow-xl rounded-2xl p-6 border border-white/20">
-          <h2 className="text-2xl sm:text-3xl font-bold text-purple-400 mb-6 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white-400 mb-6 text-center">
             Team Statistics ({viewMode === "core" ? "Core View" : "Full View"}) for {selectedSeason}
           </h2>
           <table className="min-w-full border border-gray-700 text-sm sm:text-base">
-            <thead className="bg-gray-900 text-purple-300 sticky top-0 z-10">
+            <thead className="bg-gray-900 text-white-300 sticky top-0 z-10">
               <tr>
                 <th className="px-4 py-3 border border-gray-700">Logo</th>
-                <th className="px-4 py-3 border border-gray-700">Team</th>
+                <th className="px-4 py-3 text-white whitespace-nowrap font-semibold min-w-[8rem] max-w-[12rem] truncate">Team</th>
                 {viewMode === "core" ? (
                   <>
                     <th className="px-4 py-3 border border-gray-700">W-L</th>
@@ -134,10 +136,9 @@ export default function TeamStatsPage() {
                     <th className="px-4 py-3 border border-gray-700">TOV</th>
                     <th className="px-4 py-3 border border-gray-700">STL</th>
                     <th className="px-4 py-3 border border-gray-700">BLK</th>
-                    <th className="px-4 py-3 border border-gray-700">Def Eff</th>
                   </>
                 ) : (
-                  Object.keys(currentStats[0] || {}).filter(key => key !== "TEAM_LOGO" && key !== "TEAM_ID").map((col) => (
+                  Object.keys(currentStats[0] || {}).filter(key => key !== "TEAM_LOGO" && key !== "TEAM_ID" && key !== "TEAM").map((col) => (
                     <th key={col} className="px-4 py-3 border border-gray-700">{col}</th>
                   ))
                 )}
@@ -158,19 +159,18 @@ export default function TeamStatsPage() {
                       <td className="px-4 py-3 text-center">{(team.WIN_PCT * 100).toFixed(1)}%</td>
                       <td className="px-4 py-3 text-center">{team.PLUS_MINUS.toFixed(1)}</td>
                       <td className="px-4 py-3 text-center font-bold text-green-300">{team.PTS}</td>
-                      <td className="px-4 py-3 text-center">{(team.FG_PCT * 100).toFixed(1)}%</td>
-                      <td className="px-4 py-3 text-center">{(team.THREE_PCT * 100).toFixed(1)}%</td>
-                      <td className="px-4 py-3 text-center">{(team.FT_PCT * 100).toFixed(1)}%</td>
+                      <td className="px-4 py-3 text-center">{(team.FG_PCT).toFixed(1)}%</td>
+                      <td className="px-4 py-3 text-center">{(team.THREE_PCT).toFixed(1)}%</td>
+                      <td className="px-4 py-3 text-center">{(team.FT_PCT).toFixed(1)}%</td>
                       <td className="px-4 py-3 text-center">{team.REB}</td>
                       <td className="px-4 py-3 text-center">{team.AST}</td>
                       <td className="px-4 py-3 text-center">{team.TOV}</td>
                       <td className="px-4 py-3 text-center">{team.STL}</td>
                       <td className="px-4 py-3 text-center">{team.BLK}</td>
-                      <td className="px-4 py-3 text-center">{team.DEF_EFF}</td>
                     </>
                   ) : (
-                    Object.keys(team).filter(key => key !== "TEAM_LOGO" && key !== "TEAM_ID").map((col) => (
-                      <td key={col} className="px-4 py-3 text-center">
+                    Object.keys(team).filter(key => key !== "TEAM_LOGO" && key !== "TEAM_ID" && key !== "TEAM").map((col) => (
+                      <td key={col} className="px-4 py-3 text-white break-words whitespace-normal text-left max-w-[10rem]">
                         {typeof team[col as keyof TeamStats] === "number"
                           ? Number(team[col as keyof TeamStats]).toFixed(1)
                           : team[col as keyof TeamStats]}
