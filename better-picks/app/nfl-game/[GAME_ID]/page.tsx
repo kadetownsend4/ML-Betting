@@ -683,7 +683,7 @@ type ReceiverGameStats = {
   
     {/* Quarterbacks - Away Team */}
     <div className="flex flex-col items-center">
-      <h2 className="text-2xl font-bold text-center mb-4">Quarterbacks — {gameData.AWAY_TEAM}</h2>
+      <h2 className="text-2xl font-bold text-center mb-4">Quarterbacks</h2>
       <div className="overflow-x-auto w-full max-w-5xl">
         <table className="w-full text-sm text-left border-collapse bg-gray-800 text-gray-100">
           <thead>
@@ -765,7 +765,7 @@ type ReceiverGameStats = {
 
     {/* Running Backs - Away Team */}
     <div className="flex flex-col items-center">
-      <h2 className="text-2xl font-bold text-center mb-4">Running Backs — {gameData.AWAY_TEAM}</h2>
+      <h2 className="text-2xl font-bold text-center mb-4">Running Backs </h2>
       <div className="overflow-x-auto w-full max-w-5xl">
         <table className="w-3/4 text-sm text-left border-collapse bg-gray-800 text-gray-100">
           <thead>
@@ -846,7 +846,7 @@ type ReceiverGameStats = {
     </div>
 
     {/* Receivers */}
-<h2 className="text-2xl font-bold text-center mb-4">Receivers — {gameData.AWAY_TEAM}</h2>
+<h2 className="text-2xl font-bold text-center mb-4">Receivers</h2>
 
 {/* Wrap the table with overflow-x-auto */}
 <div className="overflow-x-auto w-full max-w-5xl">
