@@ -18,6 +18,7 @@ type PredictionGame = {
   HOME_LOGO: string;
   AWAY_LOGO: string;
   TEAM_W?: number;
+  TEAM_W_LOOK?: string;
 };
 
 const features = ["OG", "OG3", "REG", "FE", "CF"];
@@ -204,6 +205,12 @@ export default function TeamPredictionsPage() {
           <ul className="space-y-6">
           {predictions.map((game) => {
             const predictedWinner = game.HOME_W_PROB > game.AWAY_W_PROB ? "HOME" : "AWAY";
+
+            const actualWinner = game.TEAM_W === 1
+            ? game.TEAM_W_LOOK
+
+            : (game.TEAM_W_LOOK === game.HOME_TEAM ? game.AWAY_TEAM : game.HOME_TEAM);
+
             return (
               <li
                 key={game.GAME_ID}
@@ -241,14 +248,14 @@ export default function TeamPredictionsPage() {
                     </p>
                   </div>
 
-                  {game.TEAM_W !== undefined && (
-                    <div className="col-span-2 sm:col-span-1">
-                      <p className="text-purple-300">Actual Winner</p>
-                      <p className={`text-white font-semibold ${game.TEAM_W === 1 ? "text-green-300" : "text-red-400"}`}>
-                        {game.TEAM_W === 1 ? game.HOME_TEAM : game.AWAY_TEAM}
-                      </p>
-                    </div>
-                  )}
+                  {actualWinner && (
+              <div className="col-span-2 sm:col-span-1">
+                <p className="text-purple-300">Actual Winner</p>
+                <p className={`text-white font-semibold ${actualWinner === game.HOME_TEAM ? "text-green-300" : "text-blue-300"}`}>
+                  {actualWinner}
+                </p>
+              </div>
+            )}
                 </div>
               </li>
             );

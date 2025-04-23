@@ -75,9 +75,9 @@ const NFLTeamStats: React.FC = () => {
     fetchTeamsData();
   }, []);
 
-  if (loading) {
-    return <div>Loading NFL Team Statistics...</div>;
-  }
+//   if (loading) {
+//     return <div>Loading NFL Team Statistics...</div>;
+//   }
 
   return (
 

@@ -519,7 +519,7 @@ type ReceiverGameStats = {
   <div className="overflow-x-auto w-full max-w-5xl">
     <table className="w-3/4 text-sm text-left border-collapse bg-gray-800 text-gray-100">
       <thead>
-        <tr className="bg-gray-900 text-xs uppercase tracking-wider border-b border-gray-700">
+      <tr className="bg-gray-900 text-xs uppercase tracking-wider border-b border-gray-700">
           <th className="p-3">Player</th>
           <th className="p-3">Carries</th>
           <th className="p-3">Rush Yds</th>
