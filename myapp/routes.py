@@ -14,6 +14,11 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
+    """Function as a home page route.
+       
+       Return:
+       List of users in the database
+    """
     users = User.query.all()
     users_list_html = [f"<li>{user.username}</li>" for user in users]
     return f"<ul>{''.join(users_list_html)}</ul>"
@@ -104,7 +109,7 @@ def fetch_nba_team_stats(season):
 
 
 
-
+# https://chatgpt.com/share/67f1def5-5fec-8011-a277-13d1807abb6a
 @main.route('/NBAMatchups/<team>')
 def fetch_matchups(team):
     """Function to fetch matchups for each NBA team from the database.
@@ -163,7 +168,7 @@ def fetch_matchups(team):
     ]
     return jsonify(matchup_data)
 
-
+# https://chatgpt.com/share/67f32d2e-a9ec-8011-9514-5bafa1f0b555
 @main.route('/NBAMatchups/<awayteam>/<hometeam>/<gameid>')
 def fetch_matchup_stats(awayteam, hometeam, gameid):
     """Function for featching stats for specific nba matchups.
@@ -255,7 +260,8 @@ def fetch_matchup_stats(awayteam, hometeam, gameid):
     }
     return jsonify(stats_data)
 
-
+# https://chatgpt.com/share/67f71594-5774-8011-90fc-d177cb2c83e0
+# for getattr()
 @main.route('/NBAPredictions/date/<date>/<feature>/<model>')
 def fetch_predictions_by_date(date, feature, model):
     """Function for getting JSON-formatted predictions for a
@@ -324,6 +330,8 @@ def fetch_predictions_by_date(date, feature, model):
         # loops through each section in predictions
     ]
 
+    # loops through dictionaries within the predictions_data list
+    # and filters for the first game log with that specific game id
     for prediction in predictions_data:
         pred = db.session.query(
             NBAGameLogs
@@ -331,6 +339,11 @@ def fetch_predictions_by_date(date, feature, model):
             NBAGameLogs.GAME_ID == prediction["GAME_ID"]
         ).first()
 
+        # checks to see if the team nickname of the queried game log 
+        # is a the home team of the current prediction dict.
+        # If it is, then it adds TEAM_W_LOOK and TEAM_W to determine which team
+        # won. TEAM_W_LOOK is associated with TEAM_W. If not,
+        # it is the away team, so that is added.
         if pred.NICKNAME in prediction["HOME_TEAM"]:
             prediction.update({"TEAM_W_LOOK": prediction["HOME_TEAM"], "TEAM_W": pred.W}) 
         else:
@@ -411,7 +424,12 @@ def fetch_predictions_by_team(team, feature, model):
         # looping through sections in predictions
     ]
 
+    # loops through prediction dicts in the predictions_data list
     for prediction in predictions_data:
+        # checks to see selected team is the home team or away team of the
+        # current dict. Depending on which one, it adds that team under
+        # a new key "TEAM_W_LOOK". This allows for "TEAM_W" to be associated
+        # with a specific team, so the frontend can know who won.
         if team_norm in prediction["HOME_TEAM"]:
             prediction.update({"TEAM_W_LOOK": prediction["HOME_TEAM"]})
         else:
@@ -425,6 +443,12 @@ def fetch_predictions_by_team(team, feature, model):
 
 @main.route('/add', methods=['GET', 'POST'])
 def add_user():
+    """Function to add a user to the database
+       
+       Return:
+       register page html template as a static element or a redirect to the main page
+       once added
+    """
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
@@ -444,6 +468,11 @@ def add_user():
 
 @main.route('/login', methods=['POST'])
 def login():
+    """Function to login user that is already in the database.
+       
+       Return:
+       JSONed message or error based on if login was successful
+    """
     data = request.get_json()  
     username = data.get('username')
     password = data.get('password')
@@ -459,6 +488,11 @@ def login():
 
 @main.route('/user', methods=['GET'])
 def get_current_user():
+    """Function to get data of current user
+       
+       Reutrn:
+       JSONed file of current user data
+    """
     user_id = session.get('user_id')
     
     if not user_id:
