@@ -410,6 +410,13 @@ def fetch_predictions_by_team(team, feature, model):
         for ID, HOME_PROB, AWAY_PROB, game, log, HOME_NAME, AWAY_NAME, HOME_LOGO, AWAY_LOGO in predictions
         # looping through sections in predictions
     ]
+
+    for prediction in predictions_data:
+        if team_norm in prediction["HOME_TEAM"]:
+            prediction.update({"TEAM_W_LOOK": prediction["HOME_TEAM"]})
+        else:
+            prediction.update({"TEAM_W_LOOK": prediction["AWAY_TEAM"]})
+
     return jsonify(predictions_data)
 
 # I referenced chatgpt for help creating methods for adding users, login, and fetching data.
