@@ -487,13 +487,13 @@ def get_full_qb_stats(player_id):
 
 @nfl_stats_bp.route('/qb/stats/game/<game_id>', methods=['GET'])
 def get_qbs_by_game(game_id):
-    """Function to fetch all players for a specific nfl team
+    """Function to fetch qbs and qb stats game
 
        Parameters:
-       team_abr -- team to search players for
+       game_id -- game to search by
 
        Return:
-       JSONified data of all nfl players on a team
+       JSONified data of all qbs and their stats for a specific game
     """
     stats = NFLQuarterbackWeeklyStats.query.filter_by(GAME_ID=game_id).all()
 
@@ -577,6 +577,15 @@ def get_qbs_by_game(game_id):
 
 @nfl_stats_bp.route('/receiving/stats/<player_id>', methods=['GET'])
 def get_receiving_stats_for_player(player_id):
+    """Function to fetch all stats for a receiver
+
+       Parameters:
+       player_id -- player to pull stats for
+
+       Return:
+       JSONified data of all stats for a receiver
+    """
+
     # Fetch all receiving stats for the player
     stats = NFLReceivingWeeklyStats.query.filter_by(PLAYER_ID=player_id).all()
     
@@ -642,6 +651,14 @@ def get_receiving_stats_for_player(player_id):
 
 @nfl_stats_bp.route('/rec/stats/game/<game_id>', methods=['GET'])
 def get_receivers_by_game(game_id):
+    """Function to fetch all recievers and stats for a specific game
+
+       Parameters:
+       game_id -- game to pull receivers for
+
+       Return:
+       JSONified data of all receivers and stats for a game
+    """
     stats = NFLReceivingWeeklyStats.query.filter_by(GAME_ID=game_id).all()
 
     if not stats:
@@ -713,6 +730,15 @@ def get_receivers_by_game(game_id):
 # --- MERGED RB STATS ROUTE ---
 @nfl_stats_bp.route('/rb/stats/<player_id>', methods=['GET'])
 def get_full_rb_stats(player_id):
+    """Function to fetch all stats for a specific running back
+
+       Parameters:
+       player_id -- player to return stats for
+
+       Return:
+       JSONified data of all stats for a specific running back
+    """
+
     stats = NFLRBWeeklyStats.query.filter_by(PLAYER_ID=player_id).all()
     
     data = []
@@ -776,6 +802,15 @@ def get_full_rb_stats(player_id):
 
 @nfl_stats_bp.route('/rb/stats/game/<game_id>', methods=['GET'])
 def get_rbs_by_game(game_id):
+    """Function to fetch all rbs and their stats for a specific game
+
+       Parameters:
+       game_id -- game to pull stats for
+
+       Return:
+       JSONified data of all stats for rbs in a game
+    """
+
     stats = NFLRBWeeklyStats.query.filter_by(GAME_ID=game_id).all()
 
     if not stats:
