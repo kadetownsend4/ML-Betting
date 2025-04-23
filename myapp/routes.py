@@ -1,4 +1,4 @@
-"""File that holds all the routes for acessing data from the database. 
+"""File that holds all the routes for acessing data from the database (NBA, USER). 
 
    authors = Timothy Berlanga, Kade Townsend
 """

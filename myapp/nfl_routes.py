@@ -1,3 +1,8 @@
+"""File that holds all routes for accessing NFL data
+
+   authors = Timothy Berlanga
+"""
+
 # I asked chatgpt for help creating routes for our data based on the nfl models and how to set up a file for it 
 # https://chatgpt.com/share/68000cf1-1714-800f-a0b5-4afc3d924474 
 
