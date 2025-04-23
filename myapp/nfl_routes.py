@@ -16,7 +16,12 @@ nfl_stats_bp = Blueprint('nfl_stats', __name__)
 # --- TEAM ROUTES ---
 @nfl_stats_bp.route('/nfl_teams', methods=['GET'])
 def fetch_teams():
-    # Fetch all teams from the NFLTeam table with only the required columns
+    """Function to fetch all teams from the NFLTeam table with only the required columns
+
+       Return:
+       JSONified data of all nfl teams
+    """
+    
     # Changes to commit
     teams = NFLTeam.query.with_entities(
         NFLTeam.TEAM_ID,
@@ -46,6 +51,15 @@ def fetch_teams():
 
 @nfl_stats_bp.route('/nfl_teams/<string:team_abr>/players', methods=['GET'])
 def get_players_for_team(team_abr):
+    """Function to fetch all players for a specific nfl team
+
+       Parameters:
+       team_abr -- team to search players for
+
+       Return:
+       JSONified data of all nfl players on a team
+    """
+
     team = NFLTeam.query.filter_by(TEAM_ABR=team_abr.upper()).first()
     if not team:
         return jsonify({'error': 'Team not found'}), 404
@@ -75,6 +89,15 @@ def get_players_for_team(team_abr):
     })
 
 def _get_result(game, is_home):
+    """Function to get results of games
+
+       Parameters:
+       game -- game to search for
+       is_home -- boolean telling if current team being searched is home
+
+       Return:
+       String showcasing if a team won, loss, tied, or hasnt played yet
+    """
     if game.HOME_SCORE is None or game.AWAY_SCORE is None:
         return "Scheduled"
     
@@ -90,6 +113,14 @@ def _get_result(game, is_home):
 
 @nfl_stats_bp.route('/nfl_teams/<string:team_abbr>/schedule', methods=['GET'])
 def get_team_schedule(team_abbr):
+    """Function to fetch team schedule for a specific team
+
+       Parameters:
+       team_abr -- team to search schedule for
+
+       Return:
+       JSONified data of schedule for a team
+    """
     team = NFLTeam.query.filter_by(TEAM_ABR=team_abbr.upper()).first()
     if not team:
         return jsonify({'error': 'Team not found'}), 404
@@ -128,6 +159,15 @@ def get_team_schedule(team_abbr):
 # https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e
 @nfl_stats_bp.route('/nfl_teams/<string:team_abr>/game_stats', methods=['GET'])
 def get_team_game_stats(team_abr):
+    """Function to fetch all game stats for a specific team
+
+       Parameters:
+       team_abr -- team to search game stats for
+
+       Return:
+       JSONified data of all game stats on a team
+    """
+
     # Check if team exists
     team = NFLTeam.query.filter_by(TEAM_ABR=team_abr.upper()).first()
     if not team:
@@ -187,6 +227,14 @@ def get_team_game_stats(team_abr):
 
 @nfl_stats_bp.route('/nfl_teams/<string:team_abr>/season_avg', methods=['GET'])
 def get_team_season_averages(team_abr):
+    """Function to fetch season stats averages for a specific team
+
+       Parameters:
+       team_abr -- team to search averages for
+
+       Return:
+       JSONified data of all averaged season stats on a team
+    """
     # Check if team exists
     team = NFLTeam.query.filter_by(TEAM_ABR=team_abr.upper()).first()
     if not team:
@@ -244,6 +292,14 @@ def get_team_season_averages(team_abr):
 
 @nfl_stats_bp.route('/nfl_games/<string:game_id>/team_stats', methods=['GET'])
 def get_game_team_stats(game_id):
+    """Function to fetch game stats for both teams for a game
+
+       Parameters:
+       game_id -- game to pull stats for
+
+       Return:
+       JSONified data of all stats for a game
+    """
     # Get the game info
     game = NFLGames.query.filter_by(GAME_ID=game_id).first()
     if not game:
@@ -344,6 +400,15 @@ def get_all_games():
 # --- WEEKLY PLAYER POSITION ROUTES ---
 @nfl_stats_bp.route('/qb/stats/<player_id>', methods=['GET'])
 def get_full_qb_stats(player_id):
+    """Function to fetch full qb stats for a player
+
+       Parameters:
+       player_id -- player to search for
+
+       Return:
+       JSONified data of qb stats for a player
+    """
+
     stats = NFLQuarterbackWeeklyStats.query.filter_by(PLAYER_ID=player_id).all()
     
     data = []
@@ -422,6 +487,14 @@ def get_full_qb_stats(player_id):
 
 @nfl_stats_bp.route('/qb/stats/game/<game_id>', methods=['GET'])
 def get_qbs_by_game(game_id):
+    """Function to fetch all players for a specific nfl team
+
+       Parameters:
+       team_abr -- team to search players for
+
+       Return:
+       JSONified data of all nfl players on a team
+    """
     stats = NFLQuarterbackWeeklyStats.query.filter_by(GAME_ID=game_id).all()
 
     if not stats:

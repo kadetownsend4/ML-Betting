@@ -32,7 +32,7 @@ def fetch_nba_teams():
        Return:
        List of NBA team information in JSON format
     """
-    # cals the nbateams table from the db
+    # calls the nbateams table from the db
     teams = db.session.query(NBATeam).all()
 
     # turns the table into JSON
