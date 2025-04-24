@@ -1,13 +1,47 @@
+"""
+    File responsible for the intialization and creation of our database models. This file 
+    contains all of the classes which define the constraints of our database tables. Whenever 
+    we needed to change the models, we changed the code in these classes and intialized a migration
+    to update the SQL tables
+
+    The video below discussed how to intialize and deploy a Flask app connected to a 
+    PostgreSQL database and laid the foundation for the set up of our flask application
+    and database intialization. This was one of the foundational files for the application.
+
+    Video reference: https://www.youtube.com/watch?v=IBfj_0Zf2Mo 
+
+    Tim: 
+    I got help from ChatGPT for setting up this model. My process for speeding up model creation
+    was providing ChatGPT with my csv headers to give it an understanding of the data which will be imported.
+    I told it to make a model using these columns as the fields of the model. It typically made a few mistakes, 
+    with setting up the key's and constraints but I would go back in and edit those. These saved me lots of 
+    time when creating the models. These conversations occured over different chats. The links are within the 
+    header comments under the class. 
+
+    authors = Timothy Berlanga and Kade Townsend 
+""" 
+
 from datetime import datetime
 from .extensions import db 
 from sqlalchemy import PrimaryKeyConstraint
 
+# Necessary security imports for user password management 
 from werkzeug.security import generate_password_hash, check_password_hash
 
-# ChatGPT has been helpful to create these models by simply telling it the columns and what
-# relationships they have to the other tables
-# https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
 class User(db.Model):
+    """
+    User model for storing user data, including username, email, and password hash.
+    
+    I got help from ChatGPT for setting up this model. This was the original model which I made to 
+    test the flask application's functionality and how it works. I created login and registration forms 
+    in the templates to test our this model and how our application interacted with the DB.
+
+    Chat Link: https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
+
+    Methods:
+    - set_password(password): Hashes and stores the password.
+    - check_password(password): Verifies the hashed password.
+    """
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
@@ -21,17 +55,7 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
-    # # Optional relationships
-    # picks = db.relationship('Pick', backref='user', lazy=True)
-    # bet_history = db.relationship('BetHistory', backref='user', lazy=True)
 
-    def __repr__(self):
-        return f'<User {self.username}>'
-
-    def __init__(self, username, email):
-        self.username = username
-        self.email = email
 
 class NBATeam(db.Model):
     __tablename__ = 'nbateams'
@@ -252,6 +276,9 @@ class NBAPredictions(db.Model):
     gameteams = db.relationship('NBAGameIds', back_populates='pred')
 
 
+# ChatGPT has been helpful to create these models by simply telling it the columns and what
+# relationships they have to the other tables
+# https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
 class NBAGameIds(db.Model):
     __tablename__ = 'nbagameids'
     GAME_ID = db.Column(db.Integer, primary_key=True)
@@ -286,6 +313,14 @@ class NBAGameIds(db.Model):
     pred = db.relationship('NBAPredictions', back_populates='gameteams')
 
 class NFLTeam(db.Model):
+    """
+        NFL Team model which stores basic information about the team such as the 
+        team id, name, logo, etc. Utilized by the nfl teams route and many of the routes
+        returning team data to make access of their information to display easier when 
+        returning their schedule or players. 
+        
+        Chat Link: https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
+    """
     __tablename__ = 'nfl_teams'
     TEAM_ID = db.Column(db.Integer, primary_key=True)
     TEAM_NAME = db.Column(db.String(50), unique=True, nullable=False)
@@ -295,12 +330,16 @@ class NFLTeam(db.Model):
     TEAM_DIVISION = db.Column(db.String(50), nullable=False)
     TEAM_LOGO = db.Column(db.String(128), nullable=False)
     TEAM_WORDMARK = db.Column(db.String(128), nullable=False)
-
-    def __repr__(self):
-        return f"<NFLTeam {self.TEAM_NAME} ({self.TEAM_ABR})>"
     
 
 class NFLGames(db.Model):
+    """
+       NFL Game model which stores the bare minimum information associated with an NFL games, 
+       being the game id, teams, home and away score, and week. It contains references to the home 
+       and away team. 
+
+        Chat Link: https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
+    """
     __tablename__ = "nfl_game_schedule"
 
     GAME_ID = db.Column(db.String(25), primary_key=True)
@@ -317,6 +356,11 @@ class NFLGames(db.Model):
     away_team_ref = db.relationship('NFLTeam', foreign_keys=[AWAY_TEAM], backref='away_games')
 
 class NFLTeamGameStats(db.Model):
+    """
+        User model for storing user data, including username, email, and password hash.
+    
+        Chat Link: https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
+    """
     __tablename__ = 'nfl_team_game_stats'
 
     STAT_ID = db.Column(db.Integer, primary_key=True)
@@ -354,12 +398,15 @@ class NFLTeamGameStats(db.Model):
     team = db.relationship('NFLTeam', backref='team_stats', lazy=True)
     game = db.relationship('NFLGames', backref='game_stats', lazy=True)
 
-    def __repr__(self):
-        return f"<NFLTeamGameStats TEAM={self.TEAM}, GAME_ID={self.GAME_ID}>"
 
 
 
 class NFLPlayer(db.Model):
+    """
+        User model for storing user data, including username, email, and password hash.
+
+        Chat Link: https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
+    """
     __tablename__ = 'nfl_players'
     # Primary key and foreign key
     PLAYER_ID = db.Column(db.String(25), primary_key=True) 
@@ -398,12 +445,11 @@ class NFLPlayer(db.Model):
         back_populates='PLAYER',
         cascade='all, delete-orphan'
     )
-
-
-    def __repr__(self):
-        return f"<Player {self.PLAYER_NAME} ({self.TEAM.team_name})>"
     
 class NFLQuarterbackWeeklyStats(db.Model):
+     """
+
+    """
     __tablename__ = 'nfl_qb_weekly_stats'
 
     STAT_ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -498,10 +544,11 @@ class NFLQuarterbackWeeklyStats(db.Model):
     AVG_AIR_DISTANCE = db.Column(db.Float, nullable=True)
     MAX_AIR_DISTANCE = db.Column(db.Float, nullable=True)
 
-    def __repr__(self):
-        return f"<QBStats {self.PLAYER_NAME} - Week {self.WEEK}, Season {self.SEASON}>"
 
 class NFLReceivingWeeklyStats(db.Model):
+     """
+
+    """
     __tablename__ = 'nfl_receiving_weekly_stats'
 
     STAT_ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -562,10 +609,10 @@ class NFLReceivingWeeklyStats(db.Model):
     AVG_EXPECTED_YAC = db.Column(db.Float, nullable=True)
     AVG_YAC_ABOVE_EXPECTATION = db.Column(db.Float, nullable=True)
 
-    def __repr__(self):
-        return f"<ReceivingStats {self.PLAYER_NAME} - Week {self.WEEK}, Season {self.SEASON}>"
-
 class NFLRBWeeklyStats(db.Model):
+     """
+
+    """
     __tablename__ = 'nfl_rb_weekly_stats'
 
     STAT_ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -625,7 +672,5 @@ class NFLRBWeeklyStats(db.Model):
     RUSH_YARDS_OVER_EXPECTED_PER_ATT = db.Column(db.Float, nullable=True)
     RUSH_PCT_OVER_EXPECTED = db.Column(db.Float, nullable=True)
 
-    def __repr__(self):
-        return f"<NFLRBWeeklyStats {self.PLAYER_NAME} - Week {self.WEEK}, Season {self.SEASON}>"
 
 

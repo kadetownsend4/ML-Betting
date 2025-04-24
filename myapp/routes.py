@@ -4,6 +4,8 @@
 """
 
 from flask import Blueprint, render_template, jsonify, request, redirect, url_for, flash, Flask, session
+
+# Must import the database models to be able to access them in the queries 
 from .models import User, NFLTeam, NFLQuarterbackWeeklyStats, NBATeam, NBAGameIds, NBAGameLogs, NBAPredictions, NBATeamStats
 from .extensions import db
 from sqlalchemy.orm import aliased
@@ -15,6 +17,14 @@ main = Blueprint('main', __name__)
 @main.route('/')
 def index():
     """Function as a home page route.
+       
+       This is the route which I intially used to get an understanding of flask and the database. It is strictly a backend
+       route for testing at the moment, it is not utilized by our frontend.
+
+       This was the conversation in which I made initial model for the user and created a route to easily see the user's
+       registered in the db. 
+
+       Chat Link: https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
        
        Return:
        List of users in the database
@@ -491,7 +501,7 @@ def get_current_user():
     """Function to get data of current user
        
        Reutrn:
-       JSONed file of current user data
+       JSON resonse message indicating the current user
     """
     user_id = session.get('user_id')
     
