@@ -1,4 +1,5 @@
-"""Class file to define person within the application.
+"""
+   Class file to define person within the application.
 
    author = Kade Townsend
 """
