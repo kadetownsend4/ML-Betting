@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaFootballBall } from "react-icons/fa";
 import axios from "axios";
-import PostList from "../components/PostList";
 import Dashboard from "../components/Dashboard";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
