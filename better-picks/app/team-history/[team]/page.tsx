@@ -6,6 +6,9 @@ import axios from "axios";
 import Image from "next/image";
 
 
+// Used this link to help get this page created. Spent a lot of time going back and forth to help understand what we really wanted. 
+// https://chatgpt.com/share/67f94e3c-40b8-8004-b6e5-ef6286f74945
+
 
 type Game = {
   GAME_ID: number;

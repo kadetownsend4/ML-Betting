@@ -5,8 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import Dashboard from "../components/Dashboard";
 
-// Used ChatGPT to help me structure this page with the link below.
+// Used ChatGPT to help me structure this page with these links below.
+// https://chatgpt.com/share/6801552c-89f8-8004-9875-e4db021f4355
 // https://chatgpt.com/share/680543c5-7134-8004-9b5a-e73cd2e032d5
+
+
+
+
 
 type PredictionGame = {
   GAME_ID: number;

@@ -5,6 +5,9 @@ import Dashboard from "../components/Dashboard";
 // Using this link to help generate code for clean looking columns for the statistics. 
 //https://chatgpt.com/share/680543c5-7134-8004-9b5a-e73cd2e032d5
 
+// Used this link to help create this page
+// https://chatgpt.com/c/67c49e05-f0f0-8004-9d0b-afc1a5311569
+
 
 type TeamStats = {
   TEAM_ID: string;
