@@ -1,3 +1,5 @@
+// Used the following link to help me generate a starting page for player prop trends.
+// https://chatgpt.com/share/680bde8c-4c40-8012-ab5e-a17f007778e2
 "use client";
 import { useState } from "react";
 import { FaChartLine } from "react-icons/fa";
@@ -11,7 +13,10 @@ const trendingProps = [
   { player: "Josh Allen", team: "Bills", betType: "Rushing Yards Over 40.5", odds: "-102", sport: "NFL" },
 ];
 
+// Used the followig link to modify components within the page.
+// https://chatgpt.com/share/680be84c-d5dc-8012-a330-c5908441595d
 export default function Trends() {
+  // Initalize variable 'selectedSport' to keep track of the sport that the user selects on the application.
   const [selectedSport, setSelectedSport] = useState("");
 
   const filteredProps = trendingProps.filter((prop) => prop.sport === selectedSport);
@@ -73,6 +78,7 @@ export default function Trends() {
           </div>
         )}
 
+        {/* Footer for Betting Trends */}
         <footer className="mt-auto py-6 text-gray-400">
           <p>&copy; 2025 Betting Trends. All rights reserved.</p>
         </footer>

@@ -1,3 +1,7 @@
+// Used the following link to help me generate a starting page for the "Dashboard" component.
+// https://chatgpt.com/share/680bbc72-c5a8-8012-ad81-103dff7f2367
+// Used the following link to help me with styling Dashboard.
+// https://chatgpt.com/share/680be84c-d5dc-8012-a330-c5908441595d
 "use client";
 import { useState, ReactNode } from "react";
 import Link from "next/link";

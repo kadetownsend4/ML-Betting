@@ -1,9 +1,14 @@
+// Used the following link to generate a starting page for the "Settings" feature on our application.
+// https://chatgpt.com/share/680bb56e-3f84-8012-b33c-929ea63b8a94
 "use client";
 import { useState } from "react";
 
 export default function SettingsPage() {
+  // Declares a useState to track if the user wants email notifications enabled.
   const [emailNotifications, setEmailNotifications] = useState(true);
+  // Declares a useState to track if the user wants dark mode enabled.
   const [darkMode, setDarkMode] = useState(false);
+  // Declares a useState to store the users favorite sport.
   const [favoriteSport, setFavoriteSport] = useState("NBA");
 
   return (

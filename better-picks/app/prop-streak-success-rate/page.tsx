@@ -1,3 +1,5 @@
+// Used the following link to generate help for the dropdowns on NBA and NFL.
+// https://chatgpt.com/share/680be2d7-3e8c-8012-856d-9b8308d9c7bd
 "use client";
 import { useState } from "react";
 import { FaChartLine } from "react-icons/fa";
@@ -15,7 +17,9 @@ const trendingProps = [
 const uniquePropTypes = [...new Set(trendingProps.map((prop) => prop.betType.split(" ")[0]))];
 
 export default function PropStreaks() {
+  // UseState tracks the selected sport starting as an empty string.
   const [selectedSport, setSelectedSport] = useState("");
+  // UseState tracks the selected prop type starting as an empty string.
   const [selectedPropType, setSelectedPropType] = useState("");
 
   const filteredProps = trendingProps.filter(

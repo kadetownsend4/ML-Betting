@@ -1,3 +1,5 @@
+// Used the following link to help me style the player cards.
+// https://chatgpt.com/share/680bba06-5cc0-8012-a00a-92429b5bd4a0
 "use client";
 
 import { useState } from "react";
