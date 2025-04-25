@@ -5,13 +5,17 @@ import axios from "axios";
 import Dashboard from "../components/Dashboard";
 import Link from "next/link";
 
-// Used this conversation to help me get started with the latest games page.
+// Used these conversations to help me get started with the latest games page. 
+// There is multiple links as I worked on this file throughout the semester and different conversations were started throughout this time. 
 // https://chatgpt.com/c/67bb9730-9408-8009-88d7-3f78d70fbfaf
 // https://chatgpt.com/c/67d34f72-04b4-8009-ab07-3a3dbae0b825
 // https://chatgpt.com/c/67d4332c-65e4-8009-9bfe-ff70c1bc806d
 // https://chatgpt.com/c/67c49e05-f0f0-8004-9d0b-afc1a5311569
+// https://chatgpt.com/c/67f94023-b218-8004-b933-ee59b2f8bf75
+// https://chatgpt.com/c/67fb021a-8610-8004-9ea2-7caf90762f32
 
 
+// Map NBA teams to their respective conferences and teams
 const divisionMap: Record<string, { conference: string; teams: string[] }> = {
   Atlantic: {
     conference: "Eastern",
@@ -39,6 +43,8 @@ const divisionMap: Record<string, { conference: string; teams: string[] }> = {
   },
 };
 
+
+// Type definition for a team object
 type Team = {
   TEAM_ID: number;
   TEAM_NAME: string;
@@ -50,8 +56,11 @@ type Team = {
   TEAM_LOGO: string;
 };
 
+// Main component for displaying all NBA teams 
 function NBATeams() {
-  const [teams, setTeams] = useState<Team[]>([]);
+  const [teams, setTeams] = useState<Team[]>([]); // State to store the fetched teams 
+
+  // Fetch the NBA teams from the backend 
   useEffect(() => {
     axios
       .get("https://betterpicks-demo.onrender.com/NBATeams")
@@ -65,6 +74,7 @@ function NBATeams() {
     if (!groupedByConference[conference]) groupedByConference[conference] = {};
     groupedByConference[conference][division] = [];
 
+    // Matches the backend data based on the team nickname
     nicknames.forEach((nickname) => {
       const team = teams.find((t) => t.TEAM_NICKNAME === nickname);
       if (team) groupedByConference[conference][division].push(team);
@@ -74,22 +84,28 @@ function NBATeams() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans">
     <Dashboard></Dashboard>
+      
+      {/* Main Card Container */}
       <div className="w-full max-w-6xl mt-20 bg-white/5 shadow-xl rounded-xl px-8 py-10 sm:px-12 sm:py-14 space-y-8 relative border border-white/20">
+        {/* Main Header */}
         <h2 className="text-4xl sm:text-5xl font-extrabold text-white text-center drop-shadow-xl mb-8 tracking-wide font-['Rajdhani']">
           NBA Teams 
         </h2>
 
+        {/* Loops through the conferences */}
         {Object.entries(groupedByConference).map(([conference, divisions]) => (
           <div key={conference} className="mb-12">
             <h2 className="text-4xl font-extrabold text-center text-purple-300 mb-12 border-b-2 border-purple-400 pb-2 tracking-wide uppercase">
               {conference} Conference
             </h2>
-
+            {/* Loops through the divisions */}
             {Object.entries(divisions).map(([division, teams]) => (
               <div key={division} className="mb-10">
                 <h3 className="text-2xl sm:text-3xl font-bold text-center text-white bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl shadow-inner border border-white/10 mb-6 uppercase tracking-wide">
                   {division} Division
                 </h3>
+
+                {/* Teams Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                   {teams.map((team) => (
                     <Link
@@ -100,6 +116,7 @@ function NBATeams() {
                       <h2 className="text-xl font-bold text-white text-center tracking-wide mb-2">
                           {team.TEAM_NAME}
                         </h2>
+                        {/* Team Logos */}
                         <Image
                           src={team.TEAM_LOGO}
                           alt={`${team.TEAM_NAME} logo`}
@@ -118,17 +135,8 @@ function NBATeams() {
           </div>
         ))}
       </div>
-      
-      
 
-
-      {/* <div className="mt-20 sm:mt-28">
-        <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-6">
-          Latest NBA Posts
-        </h2>
-        <PostList />
-      </div> */}
-
+      {/* Footer Section */}
       <footer className="mt-10 py-6 text-gray-400 text-sm">
         <div className="flex justify-center gap-6 mb-4">
           <a href="/privacy-policy" className="hover:text-green-400 transition-colors">
@@ -138,6 +146,7 @@ function NBATeams() {
             Terms of Service
           </a>
         </div>
+        {/* Disclaimer */}
         <p>
           <span className="text-red-400 uppercase">Disclaimer:</span> Please gamble responsibly. If you have a gambling problem, seek help from a professional organization such as{" "}
           <a

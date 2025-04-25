@@ -12,7 +12,6 @@ import Dashboard from "../components/Dashboard";
 
 
 
-
 type PredictionGame = {
   GAME_ID: number;
   GAME_DATE: string;

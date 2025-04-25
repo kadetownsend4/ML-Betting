@@ -8,6 +8,7 @@ import Image from "next/image";
 
 // Used this link to help get this page created. Spent a lot of time going back and forth to help understand what we really wanted. 
 // https://chatgpt.com/share/67f94e3c-40b8-8004-b6e5-ef6286f74945
+// https://chatgpt.com/c/67fb021a-8610-8004-9ea2-7caf90762f32
 
 
 type Game = {

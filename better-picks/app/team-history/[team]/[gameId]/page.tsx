@@ -4,6 +4,10 @@ import { useParams } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
 
+
+// Used this link to help me create this page after struggling for awhile to display the individual matchups.
+// https://chatgpt.com/c/67fb021a-8610-8004-9ea2-7caf90762f32
+
 type GameDetail = {
   GAME_ID: number;
   GAME_DATE: string;
