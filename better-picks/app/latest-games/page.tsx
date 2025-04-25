@@ -116,12 +116,12 @@ function NBATeams() {
       
 
 
-      <div className="mt-20 sm:mt-28">
+      {/* <div className="mt-20 sm:mt-28">
         <h2 className="text-4xl font-bold text-green-400 text-center sm:text-left mb-6">
           Latest NBA Posts
         </h2>
         <PostList />
-      </div>
+      </div> */}
 
       <footer className="mt-10 py-6 text-gray-400 text-sm">
         <div className="flex justify-center gap-6 mb-4">
