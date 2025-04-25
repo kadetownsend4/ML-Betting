@@ -13,9 +13,12 @@ import Image from "next/image";
 
 
 /**
+ * NBA Team Matchup History Page
+ * 
  * This page displays the full matchup history for a specific NBA team. It dynamically reads a
  * team nickname from the URL and gets the basic team information from the backend and 
  * then gets a list of all the previous matchups that the team played 
+ * 
  */
 
 type Game = {
