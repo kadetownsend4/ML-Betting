@@ -3,7 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 
-
+// Used ChatGPT to help with documentation for this page
+// https://chatgpt.com/share/67d42d0e-eed8-8009-b1f4-79a512af5337
 
 /**
  * Load Google Fonts using Next.Js for optimization. 
