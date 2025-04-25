@@ -11,16 +11,17 @@
 """
 
 import pandas as pd
-import sqlalchemy_interact  # Assuming this handles database interactions
+# Handles database upload
+import sqlalchemy_interact 
 
 # Load WR/TE/RB weekly receiving stats data from CSV
 df = pd.read_csv("NFL/weekly_nfl_stats_season/complete_wr_df.csv")
 
-# Optional: Clean/strip string fields
+# Clean/strip string fields
 string_cols = df.select_dtypes(include='object').columns
 df[string_cols] = df[string_cols].apply(lambda x: x.str.strip())
 
-# Rename columns to match your SQLAlchemy model
+# Rename columns to match the model
 column_rename_dict = {
     'player_id': 'PLAYER_ID',
     'player_name': 'PLAYER_NAME',

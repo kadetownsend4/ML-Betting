@@ -1,9 +1,10 @@
-"""Static file that initially loads team ids for every matchup along with game ids and game dates.
+"""
+   Static file that initially loads team ids for every matchup along with game ids and game dates.
    This data is loaded to the database.
 
    author = Kade Townsend
 """
-
+# Handles database upload
 import sqlalchemy_interact
 import pandas as pd
 

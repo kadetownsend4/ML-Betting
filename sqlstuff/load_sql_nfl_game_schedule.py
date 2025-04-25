@@ -4,7 +4,8 @@
 
    Author: Timothy Berlanga
 
-   I used ChatGPT for help generating the script to upload my data based on the csv file
+    I used ChatGPT for help generating the script to upload my data based on the csv file and my other upload scripts. 
+    I typically had to edit the rows and path but it gave me a good starting point. 
    
    Chat Link: https://chatgpt.com/share/68000cf1-1714-800f-a0b5-4afc3d924474
 """
@@ -24,7 +25,6 @@ string_cols = df.select_dtypes(include='object').columns
 df[string_cols] = df[string_cols].apply(lambda x: x.str.strip())
 
 # Rename columns 
-# For example, you can map the old column names to the new ones
 column_rename_dict = {
     'game_id': 'GAME_ID',
     'home_team': 'HOME_TEAM',

@@ -7,20 +7,20 @@
     I used ChatGPT for help generating the script to upload my data based on the csv file and my other upload scripts. 
     I typically had to edit the rows and path but it gave me a good starting point. 
     
-    Chat Link:
+    Chat Link: https://chatgpt.com/share/680bc023-a7f4-800f-ad6f-91c87a88a1f5
 """
-
 import pandas as pd
-import sqlalchemy_interact  # Assuming this handles database interactions
+# Handles database upload
+import sqlalchemy_interact  
 
 # Load RB weekly stats data from CSV
 df = pd.read_csv("NFL/weekly_nfl_stats_season/complete_rb_df.csv")
 
-# Optional: Clean/strip string fields
+# Clean/strip string fields
 string_cols = df.select_dtypes(include='object').columns
 df[string_cols] = df[string_cols].apply(lambda x: x.str.strip())
 
-# Rename columns to match your SQLAlchemy model
+# Rename columns to match the model
 column_rename_dict = {
     'player_id': 'PLAYER_ID',
     'player_name': 'PLAYER_NAME',

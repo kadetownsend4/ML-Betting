@@ -1,9 +1,14 @@
 """
-Script to upload NBA team stats from CSV into the database.
+   Static file that initially loads NBA team game statistics data to the database for use within the application.
+   This file only needs to run once. I switched the season to be the season corresponding to the file that I wanted
+   to upload. 
 
-Run this once to seed your 'nba_team_stats' table.
+   Author: Timothy Berlanga
 
-Author: Kade Townsend & Timothy Berlanga
+   I used ChatGPT for help generating the script to upload my data based on the csv file and my other upload scripts. 
+   I typically had to edit the rows and path but it gave me a good starting point. 
+   
+   Chat Link: https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e 
 """
 
 import pandas as pd
@@ -18,7 +23,7 @@ df = pd.read_csv(CSV_PATH)
 
 df['SEASON'] = '2024'
 
-# Rename columns: ALL CAPS + SQL FRIENDLY
+# Rename columns
 df.rename(columns={
     'TeamID': 'TEAM_ID',
     'Team': 'TEAM',
@@ -50,9 +55,8 @@ df.rename(columns={
     'Plus/Minus': 'PLUS_MINUS'
 }, inplace=True)
 
-# 🔍 Preview the cleaned DataFrame
+# Preview the cleaned DataFrame
 print(df.head())
 
-
-# 🚀 Push to DB
+# Push to DB
 sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(df, "nbateamstats")
