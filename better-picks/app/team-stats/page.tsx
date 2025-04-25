@@ -14,7 +14,6 @@ import Dashboard from "../components/Dashboard";
  * allowing users to switch between seasons and toggle between core stats and full stats
  */
 
-
 // Defines the structure for the team stats while matching the backend
 type TeamStats = {
   TEAM_ID: string;

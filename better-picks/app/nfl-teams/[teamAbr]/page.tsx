@@ -1,3 +1,21 @@
+/**
+ * TeamDetailsPage Component
+ * 
+ * This page displays detailed information about an NFL team, including the team roster
+ * and schedule. It fetches the team data based on the team abbreviation from the URL
+ * and organizes the players by position. It also provides a clickable link to each player's
+ * detailed page and displays the team's upcoming games.
+ * 
+ * Data is fetched from a backend API and displayed in a structured layout with loading 
+ * and error states managed throughout the process.
+ * 
+ * I started with the idea of showing the team’s data in an organized way, and once that was working, 
+ * I began tweaking the styling to make it look better. The original concept and structure came from a 
+ * ChatGPT conversation, which helped me get the basics in place before I added my own touch. 
+ * 
+ * Chat Link: https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a
+ */
+
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
