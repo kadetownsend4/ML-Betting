@@ -1,4 +1,5 @@
-"""File that holds all the routes for acessing data from the database (NBA, USER). 
+"""
+    File that holds all the routes for acessing data from the database (NBA, USER). 
 
    authors = Timothy Berlanga, Kade Townsend
 """
@@ -16,7 +17,8 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    """Function as a home page route.
+    """
+       Function as a home page route.
        
        This is the route which I intially used to get an understanding of flask and the database. It is strictly a backend
        route for testing at the moment, it is not utilized by our frontend.
@@ -36,7 +38,8 @@ def index():
 
 @main.route('/NBATeams')
 def fetch_nba_teams():
-    """Function for featching all the information for each NBA team from the database.
+    """
+       Function for fetching all the information for each NBA team from the database.
        It then turns this data into JSON format for use by the frontend.
 
        Return:
@@ -62,15 +65,17 @@ def fetch_nba_teams():
     ]
     return jsonify(team_data)
 
-# https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e
 @main.route('/NBAStats/<string:season>')
 def fetch_nba_team_stats(season):
-    """Function for fetching all team stats information from the database, 
+    """
+       Function for fetching all team stats information from the database, 
        optionally filtered by season, along with the team logos.
        It turns this data into JSON format for use by the frontend.
 
        Return:
        List of NBA team stats information in JSON format, optionally filtered by season.
+
+       Chat Link: https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e
     """
     # Fetch all team stats for the given season
     team_stats = db.session.query(NBATeamStats).filter(NBATeamStats.SEASON == season).all()
@@ -118,17 +123,18 @@ def fetch_nba_team_stats(season):
     return jsonify(team_stats_data)
 
 
-
-# https://chatgpt.com/share/67f1def5-5fec-8011-a277-13d1807abb6a
 @main.route('/NBAMatchups/<team>')
 def fetch_matchups(team):
-    """Function to fetch matchups for each NBA team from the database.
+    """
+       Function to fetch matchups for each NBA team from the database.
 
        Parameters:
        team -- team to pull matchups for
 
        Return:
        List of matchups for a specific NBA team in JSON format
+
+       Chat Link: https://chatgpt.com/share/67f1def5-5fec-8011-a277-13d1807abb6a
     """
 
     # normalizes teams with spaces in their nicknames, so they can be parameterized correctly
@@ -178,10 +184,10 @@ def fetch_matchups(team):
     ]
     return jsonify(matchup_data)
 
-# https://chatgpt.com/share/67f32d2e-a9ec-8011-9514-5bafa1f0b555
 @main.route('/NBAMatchups/<awayteam>/<hometeam>/<gameid>')
 def fetch_matchup_stats(awayteam, hometeam, gameid):
-    """Function for featching stats for specific nba matchups.
+    """
+       Function for featching stats for specific nba matchups.
 
        Parameters:
        awayteam -- away team nickname in the specific matchup
@@ -190,6 +196,8 @@ def fetch_matchup_stats(awayteam, hometeam, gameid):
 
        Return:
        Matchup stats for each team in JSON format
+
+       Chat Link: https://chatgpt.com/share/67f32d2e-a9ec-8011-9514-5bafa1f0b555
     """
     # normalizes teams with spaces in their nicknames, so they can be parameterized correctly
     away_team_norm = awayteam.replace('-', ' ')
@@ -270,11 +278,11 @@ def fetch_matchup_stats(awayteam, hometeam, gameid):
     }
     return jsonify(stats_data)
 
-# https://chatgpt.com/share/67f71594-5774-8011-90fc-d177cb2c83e0
 # for getattr()
 @main.route('/NBAPredictions/date/<date>/<feature>/<model>')
 def fetch_predictions_by_date(date, feature, model):
-    """Function for getting JSON-formatted predictions for a
+    """
+       Function for getting JSON-formatted predictions for a
        specific date of game and a specific set of features and
        ML model
 
@@ -285,6 +293,8 @@ def fetch_predictions_by_date(date, feature, model):
 
        Return:
        List of predictions in JSON format
+
+       Chat Link: https://chatgpt.com/share/67f71594-5774-8011-90fc-d177cb2c83e0
     """
 
     # calls an alias of the nbateams table as the home team
@@ -364,7 +374,8 @@ def fetch_predictions_by_date(date, feature, model):
 
 @main.route('/NBAPredictions/team/<team>/<feature>/<model>')
 def fetch_predictions_by_team(team, feature, model):
-    """Function to grab predictions from db based on team and set of features and ML model
+    """
+       Function to grab predictions from db based on team and set of features and ML model
 
        Parameters:
        team -- team name to pull for
@@ -447,8 +458,17 @@ def fetch_predictions_by_team(team, feature, model):
 
     return jsonify(predictions_data)
 
-# I referenced chatgpt for help creating methods for adding users, login, and fetching data.
-# https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48
+'''
+    I referenced chatgpt for help creating methods for adding users and login 
+    Chat Link: https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48
+    
+    I later changed these methods to accept JSON code as I was implemented the flask pages. 
+    This is the conversation where I was getting help making the registration page where it told 
+    me that it is necessary to accept the POST request as JSON for my register and login methods 
+    on the backend. 
+
+    Chat Link: https://chatgpt.com/share/680bdac0-d934-800f-9df0-5c9aa2011ecc 
+'''
 
 
 @main.route('/add', methods=['GET', 'POST'])
@@ -474,8 +494,6 @@ def add_user():
 
     return render_template('register.html')
 
-# I referenced ChatGPT for help connecting to react and fetching the user's login details
-
 @main.route('/login', methods=['POST'])
 def login():
     """Function to login user that is already in the database.
@@ -496,11 +514,24 @@ def login():
     else:
         return jsonify({"error": "Invalid username or password"}), 401
 
+
+'''
+    I did not implement the login page on the front end for a while until I eventually worked on the login 
+    and registration pages in react. I had to change this methods to accept JSON POST requests and
+    accept JSON Data. At this point, I learned more about Flask sessions and user management. We do have
+    not currently implemented get current user and integrated it on the frontend as it would have required 
+    adding checkLogin() on each page in react and we had no reason to do that at this point in the project. 
+    These methods give us a base to go off of when we revisit implementation of users. The discussion in which 
+    I made the login page and and began to implement get current user before discovering how much work it would
+    be on the frontend. 
+
+    Chat Link: https://chatgpt.com/c/6802f43c-9a8c-800f-96ab-6bbfe82176a0
+'''
 @main.route('/user', methods=['GET'])
 def get_current_user():
     """Function to get data of current user
        
-       Reutrn:
+       Return:
        JSON resonse message indicating the current user
     """
     user_id = session.get('user_id')

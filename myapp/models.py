@@ -497,7 +497,7 @@ class NFLQuarterbackWeeklyStats(db.Model):
             - Air Yards and Aggressiveness
             - Completion and efficiency 
 
-        Chat Link:
+        Chat Link: https://chatgpt.com/share/67f2ff4f-8674-800f-a8d8-a860adcabf77
     """
     __tablename__ = 'nfl_qb_weekly_stats'
 
@@ -683,7 +683,7 @@ class NFLRBWeeklyStats(db.Model):
             - Fantasy 
             - Advanced Rushing Metrics 
 
-        Chat Link:
+        Chat Link: https://chatgpt.com/share/67f2ff4f-8674-800f-a8d8-a860adcabf77
     """
     __tablename__ = 'nfl_rb_weekly_stats'
 

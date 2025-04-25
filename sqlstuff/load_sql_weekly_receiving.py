@@ -1,10 +1,13 @@
 """
-Static file that loads NFL receiving weekly stats data to the database for use within the application.
-This file only needs to run once.
+    Static file that loads NFL receiving weekly stats data to the database for use within the application.
+    This file only needs to run once.
 
-author = Timothy Berlanga
+    author = Timothy Berlanga
+   
+    I used ChatGPT for help generating the script to upload my data based on the csv file and my other upload scripts. 
+    I typically had to edit the rows and path but it gave me a good starting point. 
 
-I used ChatGPT for help generating the script to upload my data based on the csv file.
+    Chat Link: https://chatgpt.com/share/680bc023-a7f4-800f-ad6f-91c87a88a1f5
 """
 
 import pandas as pd
@@ -68,5 +71,5 @@ df.rename(columns=column_rename_dict, inplace=True)
 # Upload DataFrame to database
 sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(df, "nfl_receiving_weekly_stats")
 
-print("✅ NFL receiving weekly stats data uploaded successfully!")
+print("NFL receiving weekly stats data uploaded successfully!")
 

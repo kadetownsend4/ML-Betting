@@ -1,8 +1,9 @@
 """File that holds all routes for accessing NFL data
 
-    I asked chatgpt for help creating routes for our data based on the nfl models and how to set up a file for it 
+    I asked chatgpt for help creating routes for our data based on the nfl models and how to set up a file for it.
+    It told me that I could set up another routes file to keep things more organized and helped me get started with fetch teams
     https://chatgpt.com/share/68000cf1-1714-800f-a0b5-4afc3d924474 
-    
+
    authors = Timothy Berlanga
 """ 
 
@@ -12,14 +13,14 @@ from .models import NFLQuarterbackWeeklyStats, NFLReceivingWeeklyStats, NFLRBWee
 
 nfl_stats_bp = Blueprint('nfl_stats', __name__)
 
-
-# --- TEAM ROUTES ---
 @nfl_stats_bp.route('/nfl_teams', methods=['GET'])
 def fetch_teams():
     """Function to fetch all teams from the NFLTeam table with only the required columns
 
        Return:
        JSONified data of all nfl teams
+
+       Chat Link: https://chatgpt.com/share/68000cf1-1714-800f-a0b5-4afc3d924474 
     """
     
     # Changes to commit
@@ -58,6 +59,8 @@ def get_players_for_team(team_abr):
 
        Return:
        JSONified data of all nfl players on a team
+
+       Chat Link: https://chatgpt.com/c/6800013c-8e1c-800f-b07b-308257e09791
     """
 
     team = NFLTeam.query.filter_by(TEAM_ABR=team_abr.upper()).first()
@@ -89,7 +92,8 @@ def get_players_for_team(team_abr):
     })
 
 def _get_result(game, is_home):
-    """Function to get results of games
+    """
+       Function to get results of games. This is a helped method for get team schedule.
 
        Parameters:
        game -- game to search for
@@ -97,6 +101,8 @@ def _get_result(game, is_home):
 
        Return:
        String showcasing if a team won, loss, tied, or hasnt played yet
+
+       Chat Link: https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e
     """
     if game.HOME_SCORE is None or game.AWAY_SCORE is None:
         return "Scheduled"
@@ -120,6 +126,8 @@ def get_team_schedule(team_abbr):
 
        Return:
        JSONified data of schedule for a team
+
+       Chat Link: https://chatgpt.com/share/68000cf1-1714-800f-a0b5-4afc3d924474 
     """
     team = NFLTeam.query.filter_by(TEAM_ABR=team_abbr.upper()).first()
     if not team:
@@ -155,8 +163,6 @@ def get_team_schedule(team_abbr):
         'schedule': schedule
     })
 
-
-# https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e
 @nfl_stats_bp.route('/nfl_teams/<string:team_abr>/game_stats', methods=['GET'])
 def get_team_game_stats(team_abr):
     """Function to fetch all game stats for a specific team
@@ -166,6 +172,8 @@ def get_team_game_stats(team_abr):
 
        Return:
        JSONified data of all game stats on a team
+
+       Chat Link: https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e
     """
 
     # Check if team exists
@@ -180,6 +188,7 @@ def get_team_game_stats(team_abr):
         .add_entity(NFLGames) \
         .all()
 
+    # Create a dictionary to store each game of the season and all the stats for the game
     results = []
     for stat, game in stats:
         results.append({
@@ -225,6 +234,7 @@ def get_team_game_stats(team_abr):
         'game_stats': results
     })
 
+
 @nfl_stats_bp.route('/nfl_teams/<string:team_abr>/season_avg', methods=['GET'])
 def get_team_season_averages(team_abr):
     """Function to fetch season stats averages for a specific team
@@ -234,6 +244,8 @@ def get_team_season_averages(team_abr):
 
        Return:
        JSONified data of all averaged season stats on a team
+
+       Chat Link: https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e
     """
     # Check if team exists
     team = NFLTeam.query.filter_by(TEAM_ABR=team_abr.upper()).first()
@@ -248,6 +260,7 @@ def get_team_season_averages(team_abr):
     # Calculate average for each stat
     total_games = len(stats)
 
+    # Function to calculate the average based on the number of total games
     def avg(attr):
         return round(sum(getattr(s, attr) or 0 for s in stats) / total_games, 2)
 
@@ -298,7 +311,9 @@ def get_game_team_stats(game_id):
        game_id -- game to pull stats for
 
        Return:
-       JSONified data of all stats for a game
+       JSONified data of all stats for a game 
+
+       Chat Link: https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e
     """
     # Get the game info
     game = NFLGames.query.filter_by(GAME_ID=game_id).first()
@@ -313,6 +328,7 @@ def get_game_team_stats(game_id):
     if not team_stats or len(team_stats) != 2:
         return jsonify({'error': 'Game stats not available for both teams'}), 404
 
+    # Create a dictionary to store each game of the season and all the stats for the game
     results = []
 
     for stat in team_stats:
@@ -367,6 +383,19 @@ def get_game_team_stats(game_id):
 
 @nfl_stats_bp.route('/nfl_games', methods=['GET'])
 def get_all_games():
+     """
+       Function to fetch the nfl games by week using an optional parameter
+
+       Parameters:
+       week -- week to search for
+
+       Return:
+       JSONified data of basic matchup data for games during the specified week 
+       or the season if no specification
+
+       Chat Link: https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e
+    """
+    
     week = request.args.get('week', type=int)  # optional query param ?week=1
 
     query = NFLGames.query
@@ -394,10 +423,6 @@ def get_all_games():
 
     return jsonify(game_data)
 
-
-
-
-# --- WEEKLY PLAYER POSITION ROUTES ---
 @nfl_stats_bp.route('/qb/stats/<player_id>', methods=['GET'])
 def get_full_qb_stats(player_id):
     """Function to fetch full qb stats for a player
@@ -407,10 +432,13 @@ def get_full_qb_stats(player_id):
 
        Return:
        JSONified data of qb stats for a player
+
+       Chat Link: https://chatgpt.com/share/67fc4720-e6b0-800f-897e-a7d0e96885c6
     """
 
     stats = NFLQuarterbackWeeklyStats.query.filter_by(PLAYER_ID=player_id).all()
     
+    # Create a dictionary to store each game of the season and all the stats for the game
     data = []
     for s in stats:
         game_data = {
@@ -494,12 +522,15 @@ def get_qbs_by_game(game_id):
 
        Return:
        JSONified data of all qbs and their stats for a specific game
+
     """
+    # Get the quarterback stats by game id provided in the route
     stats = NFLQuarterbackWeeklyStats.query.filter_by(GAME_ID=game_id).all()
 
     if not stats:
         return jsonify({"message": "No QB stats found for this game"}), 404
 
+    # Create a dictionary to store each game of the season and all the stats for the game
     results = []
     for s in stats:
         results.append({
@@ -584,11 +615,13 @@ def get_receiving_stats_for_player(player_id):
 
        Return:
        JSONified data of all stats for a receiver
-    """
 
+       Chat Link: https://chatgpt.com/share/67fc4720-e6b0-800f-897e-a7d0e96885c6
+    """
     # Fetch all receiving stats for the player
     stats = NFLReceivingWeeklyStats.query.filter_by(PLAYER_ID=player_id).all()
     
+    # Create a dictionary to store each game of the season and all the stats for the game
     data = []
     for s in stats:
         game_data = {
@@ -658,12 +691,16 @@ def get_receivers_by_game(game_id):
 
        Return:
        JSONified data of all receivers and stats for a game
+
+
     """
+    # Get the recieving stats by game id provided in the route
     stats = NFLReceivingWeeklyStats.query.filter_by(GAME_ID=game_id).all()
 
     if not stats:
         return jsonify({"message": "No receiving stats found for this game"}), 404
 
+    # Create a dictionary to store each game of the season and all the stats for the game
     results = []
     for s in stats:
         results.append({
@@ -722,12 +759,6 @@ def get_receivers_by_game(game_id):
 
     return jsonify(results)
 
-
-
-
-
-
-# --- MERGED RB STATS ROUTE ---
 @nfl_stats_bp.route('/rb/stats/<player_id>', methods=['GET'])
 def get_full_rb_stats(player_id):
     """Function to fetch all stats for a specific running back
@@ -737,8 +768,10 @@ def get_full_rb_stats(player_id):
 
        Return:
        JSONified data of all stats for a specific running back
-    """
 
+       Chat Link: https://chatgpt.com/share/67fc4720-e6b0-800f-897e-a7d0e96885c6
+    """
+    # Fetch all running back stats for the player
     stats = NFLRBWeeklyStats.query.filter_by(PLAYER_ID=player_id).all()
     
     data = []
@@ -809,8 +842,9 @@ def get_rbs_by_game(game_id):
 
        Return:
        JSONified data of all stats for rbs in a game
-    """
 
+    """
+    # Get the quarterback stats by game id provided in the route
     stats = NFLRBWeeklyStats.query.filter_by(GAME_ID=game_id).all()
 
     if not stats:

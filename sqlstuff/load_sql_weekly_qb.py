@@ -1,11 +1,13 @@
 """
-Static file that loads NFL quarterback weekly stats data to the database for use within the application.
-This file only needs to run once.
+    Static file that loads NFL quarterback weekly stats data to the database for use within the application.
+    This file only needs to run once.
 
-author = Timothy Berlanga
+    author = Timothy Berlanga
+ 
+    I used ChatGPT for help generating the script to upload my data based on the csv file and my other upload scripts. 
+    I typically had to edit the rows and path but it gave me a good starting point. 
 
-I used ChatGPT for help generating the script to upload my data based on the csv file
-https://chatgpt.com/share/67fae08f-148c-800f-bbeb-79064e423c39
+    Chat Link: https://chatgpt.com/share/67fae08f-148c-800f-bbeb-79064e423c39
 """
 
 import pandas as pd
@@ -95,4 +97,4 @@ df.rename(columns=column_rename_dict, inplace=True)
 # Insert the cleaned and renamed DataFrame into the database under the "nfl_qb_weekly_stats" table
 sqlalchemy_interact.insert_df_to_mysql_sqlalchemy(df, "nfl_qb_weekly_stats")
 
-print("✅ NFL quarterback weekly stats data uploaded successfully!")
+print("NFL quarterback weekly stats data uploaded successfully!")

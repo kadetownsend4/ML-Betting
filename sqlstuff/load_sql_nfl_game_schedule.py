@@ -5,7 +5,8 @@
    Author: Timothy Berlanga
 
    I used ChatGPT for help generating the script to upload my data based on the csv file
-   https://chatgpt.com/share/68000cf1-1714-800f-a0b5-4afc3d924474
+   
+   Chat Link: https://chatgpt.com/share/68000cf1-1714-800f-a0b5-4afc3d924474
 """
 
 import pandas as pd
