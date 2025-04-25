@@ -1,17 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "axios"; // Client for API Requests
 import Link from "next/link";
 import Image from "next/image";
-import Dashboard from "../components/Dashboard";
+import Dashboard from "../components/Dashboard"; // Custom Dashboard Component
 
-// Used ChatGPT to help me structure this page with these links below.
+// Used ChatGPT to help me structure this page with these links below. It was a long process as I was encountering lots of errors with displaying the correct data.
+// I was able to display everything correctly though with the help of these links and Tim and Kade. 
 // https://chatgpt.com/share/6801552c-89f8-8004-9875-e4db021f4355
 // https://chatgpt.com/share/680543c5-7134-8004-9b5a-e73cd2e032d5
 
 
 
-
+// Define the types that match the backend
 type PredictionGame = {
   GAME_ID: number;
   GAME_DATE: string;
@@ -25,6 +26,8 @@ type PredictionGame = {
   TEAM_W_LOOK?: string;
 };
 
+
+// Options for user selections
 const features = ["OG", "OG3", "REG", "FE", "CF"];
 const models = ["LR", "DT", "SVM", "GNB", "GB", "KNN", "MLP", "RF"];
 const teams = [
@@ -35,18 +38,21 @@ const teams = [
   "Jazz", "Wizards"
 ];
 
-
+// Main component which handles the NBA predictions
 export default function TeamPredictionsPage() {
-  const [selectedFeature, setSelectedFeature] = useState("");
-  const [selectedModel, setSelectedModel] = useState("");
-  const [selectedTeam, setSelectedTeam] = useState(""); // 👈 NEW internal team state
-  const [selectedDate, setSelectedDate] = useState("");
-  const [predictions, setPredictions] = useState<PredictionGame[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [mode, setMode] = useState<"team" | "date">("team");
-
+  // State hooks 
+  const [selectedFeature, setSelectedFeature] = useState(""); // Feature Sets
+  const [selectedModel, setSelectedModel] = useState(""); // Models
+  const [selectedTeam, setSelectedTeam] = useState(""); // Selected NBA team
+  const [selectedDate, setSelectedDate] = useState(""); // Selected date 
+  const [predictions, setPredictions] = useState<PredictionGame[]>([]); // List of predictions
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState<string | null>(null); // Error if API fails
+  const [mode, setMode] = useState<"team" | "date">("team"); //  Mode to search by team or date
+  
+  // Gets the predictions when the user changes the input of the selected options
   useEffect(() => {
+    // Fetches by team
     if (mode === "team" && selectedTeam && selectedFeature && selectedModel) {
       setLoading(true);
       setError(null);
@@ -67,6 +73,7 @@ export default function TeamPredictionsPage() {
         .finally(() => setLoading(false));
     }
 
+    // Fetches by date
     if (mode === "date" && selectedDate && selectedFeature && selectedModel) {
       setLoading(true);
       setError(null);
@@ -92,6 +99,7 @@ export default function TeamPredictionsPage() {
     
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-900 text-white px-4 sm:px-10 py-10 font-sans">
       <Dashboard></Dashboard>
+
       <div className="max-w-6xl mx-auto">
 
         {/* Header */}
@@ -109,6 +117,7 @@ export default function TeamPredictionsPage() {
           </div>
 
           <div className="shrink-0">
+          {/* Goes back to the NBA teams */}
           <Link
           href="/latest-games"
           className="text-green-400 hover:text-green-300 hover:underline text-sm sm:text-base"
@@ -118,7 +127,7 @@ export default function TeamPredictionsPage() {
   </div>
         </div>
 
-        {/* Mode Toggle */}
+        {/* Mode Toggle between Team and Date*/}
         <div className="flex gap-4 mb-8">
           <button
             onClick={() => setMode("team")}
@@ -137,7 +146,7 @@ export default function TeamPredictionsPage() {
             By Date
           </button>
         </div>
-
+        {/* Filters for Team/Date, Features, and Models */}
         <div className="bg-gray-800 py-4 px-6 rounded-lg shadow-md mb-8 flex flex-wrap justify-center gap-4">
   {mode === "team" && (
     <div className="w-full sm:w-[330px]">
@@ -167,6 +176,7 @@ export default function TeamPredictionsPage() {
     </div>
   )}
 
+  {/* Choose Feature */}
   <div className="w-full sm:w-[330px]">
     <label className="block mb-1 text-purple-200 font-medium">Select Feature</label>
     <select
@@ -181,6 +191,7 @@ export default function TeamPredictionsPage() {
     </select>
   </div>
 
+  {/* Choose Model */}
   <div className="w-full sm:w-[330px]">
     <label className="block mb-1 text-purple-200 font-medium">Select Model</label>
     <select
@@ -208,18 +219,24 @@ export default function TeamPredictionsPage() {
         {predictions.length > 0 && (
           <ul className="space-y-6">
           {predictions.map((game) => {
+            // Calculate which team is predicted to win
+            // If the home teams win probability is higher then the home team will be predicted to win, otherwise predict the away team. 
             const predictedWinner = game.HOME_W_PROB > game.AWAY_W_PROB ? "HOME" : "AWAY";
-
+            
+            // Determines the actual winner after the game. 
+            // If TEAM_W === 1 then the home team won
+            // Otherwise if TEAM_W_LOOK matches with the home team then that means the away team has won 
             const actualWinner = game.TEAM_W === 1
-            ? game.TEAM_W_LOOK
+            ? game.TEAM_W_LOOK // Home team won 
 
-            : (game.TEAM_W_LOOK === game.HOME_TEAM ? game.AWAY_TEAM : game.HOME_TEAM);
+            : (game.TEAM_W_LOOK === game.HOME_TEAM ? game.AWAY_TEAM : game.HOME_TEAM); // Away team won
 
             return (
               <li
                 key={game.GAME_ID}
                 className="bg-gray-900 p-6 rounded-xl shadow-lg border border-white/10 hover:border-purple-400 transition"
               >
+                {/* Game Title */}
                 <div className="flex items-center justify-between mb-4 flex-wrap gap-4">
                   <div className="flex items-center gap-4">
                     <Image src={game.AWAY_LOGO} alt={game.AWAY_TEAM} width={40} height={40} className="rounded" />
@@ -234,24 +251,27 @@ export default function TeamPredictionsPage() {
                   </div>
                   <p className="text-sm text-gray-400">Date: {game.GAME_DATE}</p>
                 </div>
-        
+                {/* Prediction Details */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 text-center gap-4 text-sm text-gray-200">
+                  {/* Away Win Probability */}
                   <div>
                     <p className="text-purple-300">Away Win %</p>
                     <p className="text-green-400 text-xl font-bold">{(game.AWAY_W_PROB * 100).toFixed(1)}%</p>
                   </div>
+                  {/* Home Win Probability */}
                   <div>
                     <p className="text-purple-300">Home Win %</p>
                     <p className="text-blue-400 text-xl font-bold">{(game.HOME_W_PROB * 100).toFixed(1)}%</p>
                   </div>
-        
+
+                  {/* Predicted Winner */}
                   <div className="col-span-2 sm:col-span-1">
                     <p className="text-purple-300">Predicted Winner</p>
                     <p className={`text-white font-semibold ${predictedWinner === "HOME" ? "text-green-300" : "text-blue-300"}`}>
                       {predictedWinner === "HOME" ? game.HOME_TEAM : game.AWAY_TEAM}
                     </p>
                   </div>
-
+                  {/* Actual Winner */}
                   {actualWinner && (
               <div className="col-span-2 sm:col-span-1">
                 <p className="text-purple-300">Actual Winner</p>
