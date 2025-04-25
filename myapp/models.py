@@ -305,7 +305,7 @@ class NBAPredictions(db.Model):
 
 
 class NBAGameIds(db.Model):
-     """
+    """
         NBA Game Ids models to store the game id with the associated game date and home/away team ids. It also contains relationships to
         the game logs and predictions.
 
