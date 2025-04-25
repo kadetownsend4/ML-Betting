@@ -11,6 +11,13 @@ import Image from "next/image";
 // https://chatgpt.com/c/67fb021a-8610-8004-9ea2-7caf90762f32
 
 
+
+/**
+ * This page displays the full matchup history for a specific NBA team. It dynamically reads a
+ * team nickname from the URL and gets the basic team information from the backend and 
+ * then gets a list of all the previous matchups that the team played 
+ */
+
 type Game = {
   GAME_ID: number;
   DATE: string;

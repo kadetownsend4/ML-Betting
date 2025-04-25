@@ -9,6 +9,12 @@ import Link from "next/link";
 // https://chatgpt.com/c/67fb021a-8610-8004-9ea2-7caf90762f32
 
 
+/**
+ * This page displays a box score for a specific NBA matchup between two teams
+ * It dynamically reads the team nickname and game ID from the URL and then gets 
+ * the teams full list of games to find the correct game ID. 
+ */
+
 // Displays the types associated with the box score 
 type GameDetail = {
   GAME_ID: number;

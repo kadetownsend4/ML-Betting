@@ -9,6 +9,13 @@ import Dashboard from "../components/Dashboard";
 // https://chatgpt.com/c/67c49e05-f0f0-8004-9d0b-afc1a5311569
 
 
+/**
+ * This page displays NBA team statistics for multple seasons (2020-2024),
+ * allowing users to switch between seasons and toggle between core stats and full stats
+ */
+
+
+// Defines the structure for the team stats while matching the backend
 type TeamStats = {
   TEAM_ID: string;
   TEAM: string;
@@ -42,6 +49,7 @@ type TeamStats = {
   TEAM_LOGO: string | null;
 };
 
+// Function to get the stats based on specific season
 async function fetchTeamStats(season: string): Promise<TeamStats[]> {
   const response = await fetch(`https://betterpicks-demo.onrender.com/NBAStats/${season}`);
   if (!response.ok) {
@@ -50,12 +58,14 @@ async function fetchTeamStats(season: string): Promise<TeamStats[]> {
   return response.json();
 }
 
+// Main component to display the NBA teams season stats 
 export default function TeamStatsPage() {
-  const seasons = ['2020', '2021', '2022', '2023', '2024'];
+  const seasons = ['2020', '2021', '2022', '2023', '2024']; 
   const [selectedSeason, setSelectedSeason] = useState('2023');
-  const [statsBySeason, setStatsBySeason] = useState<{ [season: string]: TeamStats[] }>({});
-  const [viewMode, setViewMode] = useState<"core" | "full">("core");
+  const [statsBySeason, setStatsBySeason] = useState<{ [season: string]: TeamStats[] }>({}); // Data for each season
+  const [viewMode, setViewMode] = useState<"core" | "full">("core"); // Toggle between core and full stats 
 
+  // Loads the team stats for all seasons 
   useEffect(() => {
     async function loadAllSeasons() {
       const data: { [season: string]: TeamStats[] } = {};
@@ -147,6 +157,8 @@ export default function TeamStatsPage() {
                 )}
               </tr>
             </thead>
+
+            {/* Table Body */}
             <tbody>
               {currentStats.map((team, idx) => (
                 <tr key={idx} className={`border border-gray-700 ${idx % 2 === 0 ? "bg-gray-800/50" : "bg-gray-800/30"} hover:bg-gray-700/60`}>
@@ -156,6 +168,8 @@ export default function TeamStatsPage() {
                     )}
                   </td>
                   <td className="px-4 py-3">{team.TEAM}</td>
+
+                  {/* Stats Columns */}
                   {viewMode === "core" ? (
                     <>
                       <td className="px-4 py-3 text-center">{team.W}-{team.L}</td>
