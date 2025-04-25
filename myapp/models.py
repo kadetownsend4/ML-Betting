@@ -58,6 +58,12 @@ class User(db.Model):
 
 
 class NBATeam(db.Model):
+     """
+        NBA Team model which stores basic information about the team such as the 
+        team id, name, logo, etc. Utilized by the nba teams route and many of the routes
+        returning team prediciton data to make access easier to team information easier. 
+
+    """
     __tablename__ = 'nbateams'
     TEAM_ID = db.Column(db.Integer, primary_key=True)
     TEAM_NAME = db.Column(db.String(50), nullable=False)
@@ -68,6 +74,10 @@ class NBATeam(db.Model):
     TEAM_YEAR_FOUNDED = db.Column(db.Integer, nullable=False)
     TEAM_LOGO = db.Column(db.String(75), nullable=False)
 
+
+    # I was having issues with the db due to the initial relationship contraints of this model. I asked ChatGPT for help understanding
+    # the error and fixing the relationship. - Tim
+    # Chat Link: https://chatgpt.com/share/680bc023-a7f4-800f-ad6f-91c87a88a1f5
     HOME_GAMES = db.relationship(
     'NBAGameIds',
     foreign_keys='NBAGameIds.HOME_TEAM_ID',
@@ -85,6 +95,11 @@ class NBATeam(db.Model):
     )
 
 class NBATeamStats(db.Model):
+     """
+        NBA Team Game Stats model which stores the performance statistics associated with a specific team and game. 
+        It contains a FK reference to team as the stats are associated with a specfic team.
+
+    """
     __tablename__ = 'nbateamstats'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -124,6 +139,12 @@ class NBATeamStats(db.Model):
 
 
 class NBAGameLogs(db.Model):
+    """
+        NBA Team Game Stats model which stores the performance statistics associated with a specific team and game. Each game id has
+        two teams associated with it. In the game logs table, one entry of a game id is for the home team and one entry of the game id 
+        is for the away team. 
+
+    """
     __tablename__ = 'nbagamelogs'
     
 
@@ -180,6 +201,8 @@ class NBAGameLogs(db.Model):
 
     #game = db.relationship('NBAGameIds', back_populates='log')
 
+    # Creates a primary key which is a combination of the game id and team id to obtain a primary key which would 
+    # be able to correctly identify all entries in this table 
     __table_args__ = (
         PrimaryKeyConstraint('GAME_ID', 'TEAM_ID', name='pk_game_team'),
     )
@@ -189,6 +212,11 @@ class NBAGameLogs(db.Model):
 
 
 class NBAPredictions(db.Model):
+    """
+        NBA Team Predictions model whcih stores the predictions associated with a particular game. It contains all possible 
+        predictions from all feature set and model combinations. It has a reference to game id as predicitions are made for specifics games.
+
+    """
     __tablename__ = 'nbapredictions'
     GAME_ID = db.Column(db.Integer, db.ForeignKey(
         'nbagameids.GAME_ID'), primary_key=True)
@@ -278,7 +306,6 @@ class NBAPredictions(db.Model):
 
 # ChatGPT has been helpful to create these models by simply telling it the columns and what
 # relationships they have to the other tables
-# https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
 class NBAGameIds(db.Model):
     __tablename__ = 'nbagameids'
     GAME_ID = db.Column(db.Integer, primary_key=True)
@@ -338,7 +365,7 @@ class NFLGames(db.Model):
        being the game id, teams, home and away score, and week. It contains references to the home 
        and away team. 
 
-        Chat Link: https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
+       Chat Link: https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
     """
     __tablename__ = "nfl_game_schedule"
 
@@ -357,17 +384,22 @@ class NFLGames(db.Model):
 
 class NFLTeamGameStats(db.Model):
     """
-        User model for storing user data, including username, email, and password hash.
+        NFL Team Game Stats model which stores a team's performance statistics associated with a specific 
+        game. Utilized to return specfic stats for a specfic game and team. This is used when displaying
+        the game page associated with the schedule. It contains a reference to the team on team abr and 
+        the game on game id.
     
-        Chat Link: https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
+        Chat Link: 
     """
     __tablename__ = 'nfl_team_game_stats'
 
+    # Columns used for identification of game, team, and week
     STAT_ID = db.Column(db.Integer, primary_key=True)
     TEAM = db.Column(db.String(25), db.ForeignKey('nfl_teams.TEAM_ABR'), nullable=False)
     GAME_ID = db.Column(db.String(25), db.ForeignKey('nfl_game_schedule.GAME_ID'), nullable=False)
     WEEK = db.Column(db.Integer, nullable=False)
     
+    # Statistics Columns
     TOTAL_YARDS = db.Column(db.Integer)
     TOTAL_TDS = db.Column(db.Integer)
     PASSING_TDS = db.Column(db.Integer)
@@ -400,10 +432,12 @@ class NFLTeamGameStats(db.Model):
 
 
 
-
 class NFLPlayer(db.Model):
     """
-        User model for storing user data, including username, email, and password hash.
+        NFL Player model which stores the basic information about a player such as the 
+        player id, team id, team, name, position, season, etc. This table was utilized to 
+        figure out which players are on each team based on team id. It contains a one to many relationship
+
 
         Chat Link: https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
     """
@@ -447,8 +481,23 @@ class NFLPlayer(db.Model):
     )
     
 class NFLQuarterbackWeeklyStats(db.Model):
-     """
+    """
+        NFL QB Weekly stats model which stores a QB's performance statistics associated with a specfic 
+        player, game, and week. It has references to the NFL players model as each player has many weekly stats.
+        It also has stores the game id column which can be used to get QB data from a specfic game.
 
+        This table the following data for each week a QB played and had sufficient data from the API's:
+            - General Info 
+            - Passing Stats 
+            - Rushing Stats 
+            - Fantasy Metrics 
+            - Advanced Passing Metrics
+            - Rushing Advanced 
+            - Snap Count 
+            - Air Yards and Aggressiveness
+            - Completion and efficiency 
+
+        Chat Link:
     """
     __tablename__ = 'nfl_qb_weekly_stats'
 
@@ -547,7 +596,19 @@ class NFLQuarterbackWeeklyStats(db.Model):
 
 class NFLReceivingWeeklyStats(db.Model):
      """
+        NFL Recieving Weekly stats model which stores a Reciever's performance statistic's associated with a specfic 
+        player, game, and week. It has references to the NFL players model as each player has many weekly stats.
+        It also has stores the game id column which can be used to get Recieving data from a specfic game. 
 
+        This table the following data for each week a WR and TE data for players who had sufficient data from the API's:
+            - General Info 
+            - Recieving Stats 
+            - Advanced Recieving Metrics
+            - Special Team & Fantasy
+            - Extra Advanced Metrics 
+            - Tracking Metrics
+            
+        Chat Link: https://chatgpt.com/share/680bc023-a7f4-800f-ad6f-91c87a88a1f5 
     """
     __tablename__ = 'nfl_receiving_weekly_stats'
 
@@ -611,7 +672,18 @@ class NFLReceivingWeeklyStats(db.Model):
 
 class NFLRBWeeklyStats(db.Model):
      """
+        NFL Runningback Weekly stats model which stores a Runningback's performance statistic's associated with a specfic 
+        player, game, and week. It has references to the NFL players model as each player has many weekly stats.
+        It also has stores the game id column which can be used to get Rushing data from a specfic game. 
 
+        This table the following data for each week a RB data for players who had sufficient data from the API's:
+            - General Info 
+            - Rushing Stats 
+            - Recieving Stats 
+            - Fantasy 
+            - Advanced Rushing Metrics 
+
+        Chat Link:
     """
     __tablename__ = 'nfl_rb_weekly_stats'
 
@@ -621,6 +693,7 @@ class NFLRBWeeklyStats(db.Model):
     PLAYER_ID = db.Column(db.String(25), db.ForeignKey('nfl_players.PLAYER_ID'), nullable=False)
     PLAYER = db.relationship('NFLPlayer', back_populates='running_stats')
 
+    # General Info
     PLAYER_NAME = db.Column(db.String(100), nullable=False)
     PLAYER_ABBR = db.Column(db.String(50), nullable=True)
     GAME_ID = db.Column(db.String(50), nullable=True)
