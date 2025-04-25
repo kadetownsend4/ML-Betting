@@ -60,8 +60,6 @@ const menuItems = [
  * main content, and a footer.
  */
 export default function Home() {
-    const [activeDropdown, setActiveDropdown] = useState<string | null>(null); // Fixed here
-  
     return (
       <>
         <div className="min-h-screen text-white p-8 sm:p-20 flex flex-col justify-between relative overflow-hidden bg-cover bg-center"
@@ -98,13 +96,6 @@ export default function Home() {
               </Link>
             </div>
           </main>
-
-          {/* Footer Section
-          <footer className="flex gap-8 flex-wrap font-extrabold items-center justify-center text-white text-base mt-auto py-6">
-            <a className="hover:text-green-400 transition-colors" href="/features">Features</a>
-            <a className="hover:text-green-400 transition-colors" href="/pricing">Pricing</a>
-            <a className="hover:text-green-400 transition-colors" href="/contact">Contact Us</a>
-          </footer> */}
 
           {/* Footer Section*/}
           <footer className="mt-10 text-center text-white text-lg font-black drop-shadow-xl">

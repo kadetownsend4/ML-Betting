@@ -127,20 +127,6 @@ function NFLTeams() {
         ))}
       </div>
 
-      <footer className="mt-10 py-6 text-gray-400 text-sm">
-  <p>
-    <span className="text-red-600 uppercase">Disclaimer:</span> Please gamble responsibly. If you have a gambling problem, seek help from a professional organization such as{" "}
-    <a
-      href="https://www.ncpgambling.org/"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-red-600 font-bold underline hover:text-green-300 transition-colors duration-200"
-    >
-      National Council on Problem Gambling
-    </a>.
-  </p>
-</footer>
-
 
     </div>
   );

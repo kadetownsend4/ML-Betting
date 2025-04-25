@@ -51,7 +51,7 @@ export default function learnMore() {
                     {/* Section: Get Started */}
                     <section className="text-center">
                         <a
-                        href="/register"
+                        href="/account/register"
                         className="jsx-7dd05aa38b830a2d rounded-full border border-transparent transition-all transform hover:scale-105 flex items-center justify-center bg-gradient-to-r from-green-400 to-green-600 text-black font-semibold gap-2 text-lg sm:text-xl h-12 sm:h-14 px-8 sm:px-10 shadow-md hover:shadow-xl"
                         >
                         Get Started
