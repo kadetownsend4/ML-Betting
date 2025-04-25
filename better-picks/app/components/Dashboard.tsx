@@ -31,7 +31,6 @@ const menuItems = [
     title: "Performance Analysis",
     links: [
       { name: "Trending Player Props", path: "/trends" },
-      { name: "NBA Defense vs Position", path: "/defense-vs-position" },
       { name: "Prop Streak & Success Rate", path: "/prop-streak-success-rate" },
       { name: "AI Insights", path: "/ai-insights" },
     ],
