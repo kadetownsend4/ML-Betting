@@ -11,6 +11,11 @@ import Dashboard from "../components/Dashboard"; // Custom Dashboard Component
 // https://chatgpt.com/share/680543c5-7134-8004-9b5a-e73cd2e032d5
 
 
+/**
+ * This page allows the user to filter through different NBA game predictions based on specific team or by specific date. 
+ * Feature sets and models are also filters that bring up different predictions based on different combinations. 
+ */
+
 
 // Define the types that match the backend
 type PredictionGame = {

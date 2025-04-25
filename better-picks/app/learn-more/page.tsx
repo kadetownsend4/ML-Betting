@@ -3,6 +3,12 @@ import Link from "next/link";
 // Used this chat conversation to help me create a Learn more page that helps give the user a better understanding of what our application does.
 // https://chatgpt.com/share/67ce0eab-497c-8004-908b-15400fe9373c
 
+
+/** 
+ * This page serves as a 'learn more' page for users to learn about our purpose and vision
+ * with Better Picks. 
+ */
+
 // Main component for the "Learn More" page. 
 export default function learnMore() {
     return (

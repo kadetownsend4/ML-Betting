@@ -14,6 +14,15 @@ import Link from "next/link";
 // https://chatgpt.com/c/67f94023-b218-8004-b933-ee59b2f8bf75
 // https://chatgpt.com/c/67fb021a-8610-8004-9ea2-7caf90762f32
 
+
+
+/**
+ * This page displays a view of all the NBA teams divided up by their conference and division. 
+ * Each of the team cards link to that teams full matchup history
+ */
+
+
+
 // Map NBA teams to their respective conferences and teams
 const divisionMap: Record<string, { conference: string; teams: string[] }> = {
   Atlantic: {
