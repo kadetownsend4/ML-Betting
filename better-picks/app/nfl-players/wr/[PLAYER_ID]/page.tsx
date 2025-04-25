@@ -1,5 +1,6 @@
 // ChatGPT helped me format this page and get it connected to my flask route
 // https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a 
+
 'use client';
 
 import { useEffect, useState } from 'react';

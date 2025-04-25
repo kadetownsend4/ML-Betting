@@ -28,6 +28,14 @@ export default function Login() {
    * Checks if the entered email and password match preset credentials. 
    * Displays an error message if authentication fails. 
    * 
+   * I got help from chat gpt to change this login form to be able to interact with our 
+   * original login form to post the content as JSON and wait for authetification. Rudy had already implemented a
+   * login page with the style it has now, so I mainly added functionaity to interact with the backend.
+   * Chat gave me help with adding lebron as a background, and change the email and password to be able to be required and
+   * retrieved when the user press submits. This discussion happens at the top of the below conversation.
+   * 
+   * Chat Link: https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a
+   * 
    * @param {React.FormEvent} e - Form event to prevent default submission behavior. 
    */
   const handleLogin = async (e: React.FormEvent) => {
@@ -47,9 +55,15 @@ export default function Login() {
       });
   
       const data = await response.json();
-  
+      
+      // Display login successful
       if (response.ok) {
-        alert(data.message);  // Login successful
+        alert(data.message);  
+        // Redirect to profile 
+        // Currently, upon redirection it will say user not logged in even if the login is successful
+        // This is due to the fact that we have not set up the check user function as we did not have time
+        // to worry about it during the semester. Our first priority was displaying the data. We will worry
+        // more about user functionality at a later time
         window.location.href = 'profile';
       } else {
         setError(data.error || 'Login failed');

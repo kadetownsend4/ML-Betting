@@ -304,9 +304,12 @@ class NBAPredictions(db.Model):
     gameteams = db.relationship('NBAGameIds', back_populates='pred')
 
 
-# ChatGPT has been helpful to create these models by simply telling it the columns and what
-# relationships they have to the other tables
 class NBAGameIds(db.Model):
+     """
+        NBA Game Ids models to store the game id with the associated game date and home/away team ids. It also contains relationships to
+        the game logs and predictions.
+
+    """
     __tablename__ = 'nbagameids'
     GAME_ID = db.Column(db.Integer, primary_key=True)
     GAME_DATE = db.Column(db.String(50), nullable=False)
@@ -315,6 +318,10 @@ class NBAGameIds(db.Model):
     AWAY_TEAM_ID = db.Column(db.Integer, db.ForeignKey(
         'nbateams.TEAM_ID'), nullable=False)
 
+
+    # I was having issues with the db due to the initial relationship contraints of this model. I asked ChatGPT for help understanding
+    # the error and fixing the relationship. - Tim
+    # Chat Link: https://chatgpt.com/share/680bc023-a7f4-800f-ad6f-91c87a88a1f5
     home_team = db.relationship(
     'NBATeam',
     foreign_keys=[HOME_TEAM_ID],
@@ -389,7 +396,7 @@ class NFLTeamGameStats(db.Model):
         the game page associated with the schedule. It contains a reference to the team on team abr and 
         the game on game id.
     
-        Chat Link: 
+        Chat Link: https://chatgpt.com/share/68000cf1-1714-800f-a0b5-4afc3d924474
     """
     __tablename__ = 'nfl_team_game_stats'
 

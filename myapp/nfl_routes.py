@@ -395,7 +395,7 @@ def get_all_games():
        JSONified data of basic matchup data for games during the specified week 
        or the season if no specification
 
-       Chat Link: https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e
+       Chat Link: https://chatgpt.com/share/68000cf1-1714-800f-a0b5-4afc3d924474
     """
     
     week = request.args.get('week', type=int)  # optional query param ?week=1
@@ -525,6 +525,7 @@ def get_qbs_by_game(game_id):
        Return:
        JSONified data of all qbs and their stats for a specific game
 
+       Chat Link: https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a
     """
     # Get the quarterback stats by game id provided in the route
     stats = NFLQuarterbackWeeklyStats.query.filter_by(GAME_ID=game_id).all()
@@ -694,7 +695,7 @@ def get_receivers_by_game(game_id):
        Return:
        JSONified data of all receivers and stats for a game
 
-
+       Chat Link: https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a
     """
     # Get the recieving stats by game id provided in the route
     stats = NFLReceivingWeeklyStats.query.filter_by(GAME_ID=game_id).all()
@@ -845,6 +846,7 @@ def get_rbs_by_game(game_id):
        Return:
        JSONified data of all stats for rbs in a game
 
+       Chat Link: https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a
     """
     # Get the quarterback stats by game id provided in the route
     stats = NFLRBWeeklyStats.query.filter_by(GAME_ID=game_id).all()
