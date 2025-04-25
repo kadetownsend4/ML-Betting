@@ -30,17 +30,17 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(db.Model):
     """
-    User model for storing user data, including username, email, and password hash.
-    
-    I got help from ChatGPT for setting up this model. This was the original model which I made to 
-    test the flask application's functionality and how it works. I created login and registration forms 
-    in the templates to test our this model and how our application interacted with the DB.
+        User model for storing user data, including username, email, and password hash.
+        
+        I got help from ChatGPT for setting up this model. This was the original model which I made to 
+        test the flask application's functionality and how it works. I created login and registration forms 
+        in the templates to test our this model and how our application interacted with the DB.
 
-    Chat Link: https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
+        Chat Link: https://chatgpt.com/share/67e49261-fcfc-800f-a302-03d2a6125d48 
 
-    Methods:
-    - set_password(password): Hashes and stores the password.
-    - check_password(password): Verifies the hashed password.
+        Methods:
+        - set_password(password): Hashes and stores the password.
+        - check_password(password): Verifies the hashed password.
     """
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -58,7 +58,7 @@ class User(db.Model):
 
 
 class NBATeam(db.Model):
-     """
+    """
         NBA Team model which stores basic information about the team such as the 
         team id, name, logo, etc. Utilized by the nba teams route and many of the routes
         returning team prediciton data to make access easier to team information easier. 
@@ -95,7 +95,7 @@ class NBATeam(db.Model):
     )
 
 class NBATeamStats(db.Model):
-     """
+    """
         NBA Team Game Stats model which stores the performance statistics associated with a specific team and game. 
         It contains a FK reference to team as the stats are associated with a specfic team.
 
@@ -595,7 +595,7 @@ class NFLQuarterbackWeeklyStats(db.Model):
 
 
 class NFLReceivingWeeklyStats(db.Model):
-     """
+    """
         NFL Recieving Weekly stats model which stores a Reciever's performance statistic's associated with a specfic 
         player, game, and week. It has references to the NFL players model as each player has many weekly stats.
         It also has stores the game id column which can be used to get Recieving data from a specfic game. 
@@ -671,7 +671,7 @@ class NFLReceivingWeeklyStats(db.Model):
     AVG_YAC_ABOVE_EXPECTATION = db.Column(db.Float, nullable=True)
 
 class NFLRBWeeklyStats(db.Model):
-     """
+    """
         NFL Runningback Weekly stats model which stores a Runningback's performance statistic's associated with a specfic 
         player, game, and week. It has references to the NFL players model as each player has many weekly stats.
         It also has stores the game id column which can be used to get Rushing data from a specfic game. 

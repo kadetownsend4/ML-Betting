@@ -305,7 +305,8 @@ def get_team_season_averages(team_abr):
 
 @nfl_stats_bp.route('/nfl_games/<string:game_id>/team_stats', methods=['GET'])
 def get_game_team_stats(game_id):
-    """Function to fetch game stats for both teams for a game
+    """
+       Function to fetch game stats for both teams for a game
 
        Parameters:
        game_id -- game to pull stats for
@@ -315,6 +316,7 @@ def get_game_team_stats(game_id):
 
        Chat Link: https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e
     """
+
     # Get the game info
     game = NFLGames.query.filter_by(GAME_ID=game_id).first()
     if not game:
@@ -383,7 +385,7 @@ def get_game_team_stats(game_id):
 
 @nfl_stats_bp.route('/nfl_games', methods=['GET'])
 def get_all_games():
-     """
+    """
        Function to fetch the nfl games by week using an optional parameter
 
        Parameters:
