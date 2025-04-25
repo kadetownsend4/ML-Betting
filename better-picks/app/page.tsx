@@ -4,6 +4,16 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Dashboard from "../app/components/Dashboard";
 
+// Used these conversations to help me get this home page started.
+// https://chatgpt.com/c/67ace34d-802c-8009-824a-a33daf4d2b46
+// https://chatgpt.com/c/67b7ac5f-99e0-8009-884b-0b7e9280b1bf
+// https://chatgpt.com/c/67b7af4b-9160-8009-bea7-1d7052bc9a8e
+// https://chatgpt.com/c/67bb9730-9408-8009-88d7-3f78d70fbfaf
+// https://chatgpt.com/c/67d34f72-04b4-8009-ab07-3a3dbae0b825
+// https://chatgpt.com/c/67eabf6a-8a74-8009-ae6d-301e291a8b41
+// https://chatgpt.com/c/67c498d1-a748-8004-bd75-eae3ccf526c8
+// https://chatgpt.com/c/67c88ce7-e964-8004-85c2-bb8bded6ab6b
+// https://chatgpt.com/c/67ca1312-9684-8004-a31f-13e186c3112b
 
 // Navigation menu structure containing categorized links.
 const menuItems = [

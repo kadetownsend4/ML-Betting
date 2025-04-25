@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+
+// https://chatgpt.com/share/680bdac0-d934-800f-9df0-5c9aa2011ecc
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -5,6 +5,12 @@ import axios from "axios";
 import Dashboard from "../components/Dashboard";
 import Link from "next/link";
 
+// Used this conversation to help me get started with the latest games page.
+// https://chatgpt.com/c/67bb9730-9408-8009-88d7-3f78d70fbfaf
+// https://chatgpt.com/c/67d34f72-04b4-8009-ab07-3a3dbae0b825
+// https://chatgpt.com/c/67d4332c-65e4-8009-9bfe-ff70c1bc806d
+// https://chatgpt.com/c/67c49e05-f0f0-8004-9d0b-afc1a5311569
+
 
 const divisionMap: Record<string, { conference: string; teams: string[] }> = {
   Atlantic: {
