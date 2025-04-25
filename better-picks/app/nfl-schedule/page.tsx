@@ -1,5 +1,14 @@
-// I used chat gpt to help generate the page based on the backend route and changed it according to certain specfications:
-// https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a 
+/*
+ * This component fetches and displays the NFL schedule for a selected week. It retrieves game data from an API, 
+ * handles loading and error states, and renders the games in a visually structured format. 
+ * Users can select a week from a dropdown, and the page will display the games for that week with team logos and scores.
+ *
+ * I used ChatGPT to help generate the initial version of this page based on the backend route and made further 
+ * customizations according to the specifications set by the other pages. 
+ * 
+ * Chat Link: https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a
+ */
+
 "use client";
 
 import { useEffect, useState } from "react";

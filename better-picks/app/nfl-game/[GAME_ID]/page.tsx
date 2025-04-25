@@ -1,14 +1,25 @@
-// I used chat gpt to help generate the page based on the backend route and changed it according to certain specfications:
-// https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a 
+/**
+ *
+ * This component renders a comprehensive view of an NFL game, displaying team statistics and individual player statistics for quarterbacks, running backs, 
+ * and receivers. It dynamically fetches data based on the provided GAME_ID parameter.
+ *
+ * 
+ * I developed this page based on my backend routes that I developed to return the team game stats and player game stats. I gave it my routes
+ * and other pages that we had done to get started. It was a long iterative process which was tedious as there were container issues and I was 
+ * having trouble figuring out exactly how to style the page in the way that I wanted it. I was struggling with displaying the player data in the correct
+ * manner. Eventually, I got it working for the qb for the home team and copied that framework over to all the other positions. Chat and I were going
+ * back and forth on this process for a while. Below is the link to the session:
+ *
+ * Chat Link: https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a
+ */
+
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { useRouter } from "next/router";
 import axios from 'axios';
-import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import Dashboard from "../../components/Dashboard";
+
 
 type TeamInfo = {
   TEAM_ID: number;
@@ -109,8 +120,6 @@ type QuarterbackGameStats = {
     TIMES_PRESSURED_PCT: number;
   };
   
-
-
 type RunningBackGameStats = {
     // Core Info
     PLAYER_NAME: string;
@@ -216,7 +225,8 @@ type ReceiverGameStats = {
     AVG_YAC_ABOVE_EXPECTATION: number;
   };
   
-
+// Function for displaying game page. It contains the game data, qb, rb, and rec stat types
+// along with the loading and error types
   export default function GamePage() {
     const { GAME_ID } = useParams();
     const gameId = GAME_ID as string;
@@ -227,7 +237,11 @@ type ReceiverGameStats = {
     const [receiverStats, setReceiverStats] = useState<ReceiverGameStats[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-
+    /**
+     * Fetches all necessary data for the game page based on the game ID.
+     * This includes team stats and individual stats for quarterbacks, running backs, and receivers.
+     * Handles loading and error states gracefully.
+     */
     useEffect(() => {
       if (gameId) {
         const fetchData = async () => {

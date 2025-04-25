@@ -77,7 +77,7 @@ function NFLTeams() {
                     team.TEAM_CONF?.toLowerCase().includes(conf.toLowerCase()) &&
                     team.TEAM_DIVISION?.toLowerCase().includes(div.toLowerCase())
                 );
-                 {/* ChatGPT helped me set up creating links for each of the teams: 
+                 {/* ChatGPT helped me set up links for each of the team to navigate to their team page: 
                   https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a */}
                 return (
                   <div key={div} className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl shadow-2xl border border-white/10">

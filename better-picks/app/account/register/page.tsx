@@ -4,12 +4,23 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-
-// https://chatgpt.com/share/680bdac0-d934-800f-9df0-5c9aa2011ecc
+/**
+ * 
+ * Register component 
+ * 
+ * This React component renders a user registration form. It handles user input, form submission, and communicates 
+ * with the Flask backend to register a new user account. Upon successful registration, the user is redirected
+ * to the login page. Error messages are displayed for failed registration attempts. I made this page by simply editing 
+ * the login page to be registration and changed the route. 
+ * 
+ * Reference: https://chatgpt.com/share/680bdac0-d934-800f-9df0-5c9aa2011ecc
+ */
 export default function Register() {
+  // Set email, password, and error to blank
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  // Set router to allow for the use of routes 
   const router = useRouter();
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -17,24 +28,26 @@ export default function Register() {
 
     setError(""); // reset error
 
+    // Post the registration details to the registration route of the backend
     try {
       const response = await fetch("https://betterpicks-demo.onrender.com/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include", // if your Flask server sets cookies
+        credentials: "include", //cookie credentials 
         body: JSON.stringify({
           username: email,
           password: password,
         }),
       });
-
+    
+      // capture the response
       const data = await response.json();
 
       if (response.ok) {
         // success - redirect to login or dashboard
-        router.push("/account/login"); // or "/dashboard"
+        router.push("/account/login"); 
       } else {
         setError(data?.error || "Registration failed");
       }

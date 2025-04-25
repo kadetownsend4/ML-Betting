@@ -1,6 +1,15 @@
-// ChatGPT helped me format this page and get it connected to my flask route
-// https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a 
-
+/*
+ * This React component fetches and displays weekly quarterback stats based on the player ID from the URL. It retrieves player statistics 
+ * through an API request, handles loading and error states, and presents the data in a table format. If no stats are found, a message is displayed. 
+ * The component also includes sticky breadcrumb navigation for easy navigation.
+ *
+ * I used ChatGPT to help me format this page and get it connected to my flask route. I had developed these routes 
+ * and had plenty of familiarity with them. I decided I wanted to make a page similar to our other pages styling for the tables
+ * and went in with chat. I gave it the route and data to display after plenty of iterations to improve styling and many tweaks by me, 
+ * I got this page. It became the basis for displaying player stats which I used for all of the other pages in the nfl-players folder. 
+ *
+ * Chat Link: https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a
+*/
 'use client';
 
 import { useEffect, useState } from 'react';

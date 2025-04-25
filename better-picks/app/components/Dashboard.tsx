@@ -2,15 +2,21 @@
 // https://chatgpt.com/share/680bbc72-c5a8-8012-ad81-103dff7f2367
 // Used the following link to help me with styling Dashboard.
 // https://chatgpt.com/share/680be84c-d5dc-8012-a330-c5908441595d
+
 "use client";
 import { useState, ReactNode } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
-type DashboardLayoutProps = {
-  children: ReactNode;
-};
 
+/**
+ * Dashboard Component
+ * 
+ * This component renders the top navigation bar for the Better Picks dashboard,
+ * including hover-activated dropdowns for each section (NBA, NFL, Performance Analysis, Account).
+ * Uses framer-motion for smooth dropdown animations and maintains UI state with React useState.
+ * 
+ */ 
 const menuItems = [
   {
     title: "NBA",

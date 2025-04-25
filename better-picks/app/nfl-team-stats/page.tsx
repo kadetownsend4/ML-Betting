@@ -1,3 +1,15 @@
+/*
+  * This component fetches and displays the season averages for all NFL teams. 
+  * It retrieves team data and their corresponding season statistics from an API, handles loading and error states, and 
+  * renders the information in a structured table format. The page includes team logos, names, and a variety of performance metrics, 
+  * such as total yards, touchdowns, passing stats, and more. Users can navigate to individual team pages for further details.
+  *
+  * After implementing the models for the NBA and NFL teams, I started working on a page to display NFL team season averages. 
+  * The design follows the style of my player display pages for the NFL. I received assistance from ChatGPT to speed up the development 
+  * of these pages, and made custom tweaks to improve the layout and aesthetics.
+  *
+  * Chat Link: https://chatgpt.com/share/6807185c-99d0-800f-a459-45b68633d38e
+*/
 "use client";
 import { useState, useEffect } from "react";
 import Dashboard from "../components/Dashboard";

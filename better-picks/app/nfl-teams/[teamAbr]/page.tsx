@@ -115,6 +115,7 @@ export default function TeamDetailsPage() {
      {/* Team Title Section */}
      <div className="flex items-center gap-4 mb-12 border-b-2 border-purple-500 pb-4">
         <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px]">
+
         <Image src={teamInfo.team_logo} alt="Team Logo" fill className="object-contain" unoptimized />
         </div>
         <div>

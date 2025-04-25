@@ -1,5 +1,15 @@
-// ChatGPT helped me format this page and get it connected to my flask route
-// https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a 
+/*
+ * This React component fetches and displays weekly tight end stats based on the player ID from the URL. It retrieves player statistics 
+ * through an API request, handles loading and error states, and presents the data in a table format. If no stats are found, a message is displayed. 
+ * The component also includes sticky breadcrumb navigation for easy navigation.
+ *
+ * I used ChatGPT to help me format this page and get it connected to my flask route. I had developed these routes 
+ * and had plenty of familiarity with them. After making the qb page, I simply copied the framework from that over to this page and
+ * got some help from chat gpt generating new types and table columns. This greatly speed up the process of implementing these pages
+ * since they were all so similar just displaying different positions and columns.
+ *
+ * Chat Link: https://chatgpt.com/share/68030ca6-ca1c-800f-bed1-19bf6cd02b0a
+*/
 
 'use client';
 
