@@ -8,6 +8,8 @@ import Link from "next/link";
 // Used this link to help me create this page after struggling for awhile to display the individual matchups.
 // https://chatgpt.com/c/67fb021a-8610-8004-9ea2-7caf90762f32
 
+
+// Displays the types associated with the box score 
 type GameDetail = {
   GAME_ID: number;
   GAME_DATE: string;
@@ -37,17 +39,20 @@ type GameDetail = {
   AWAY_PTS: number;
 };
 
-export default function MatchupDetailPage() {
-  const { team, gameId } = useParams();
-  const [game, setGame] = useState<GameDetail | null>(null);
 
+// Main component to display the matchup details 
+export default function MatchupDetailPage() {
+  const { team, gameId } = useParams(); // Gets the team nickname and game ID
+  const [game, setGame] = useState<GameDetail | null>(null); // Gets all of the game details 
+  
+  // Gets the matchup details for specific teams selected game
   useEffect(() => {
     if (team && gameId) {
       const formattedNickname = team
         .toString()
         .replace(/-/g, " ")
         .replace(/\b\w/g, (l) => l.toUpperCase());
-
+      // Gets the correct matchup 
       axios
         .get(`https://betterpicks-demo.onrender.com/NBAMatchups/${formattedNickname}`)
         .then((res) => {
@@ -56,7 +61,7 @@ export default function MatchupDetailPage() {
           );
 
           if (!match) throw new Error("Game not found");
-
+          // Get the detailed matchup stats based on the away team, home team, and game ID.
           return axios.get(
             `https://betterpicks-demo.onrender.com/NBAMatchups/${match.AWAY_TEAM}/${match.HOME_TEAM}/${match.GAME_ID}`
           );
@@ -71,6 +76,7 @@ export default function MatchupDetailPage() {
     .replace(/-/g, " ")
     .replace(/\b\w/g, (l) => l.toUpperCase());
 
+  //Shows the loading screen while fetching the data
   if (!game) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black text-white">
@@ -81,7 +87,7 @@ export default function MatchupDetailPage() {
 
   console.log("🏀 game data", game);
 
-
+  // Formatted Home and Away stats to make it easily accessible to call on all the combined elements
   const homeStats = {
     NAME: game.HOME_NAME,
     W: game.HOME_W,
@@ -114,6 +120,8 @@ export default function MatchupDetailPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-purple-900 text-white p-8">
+
+      {/* Link back to teams matchup history */}
       <div className="mb-6">
         <Link
           href={`/team-history/${team}`}
@@ -122,7 +130,8 @@ export default function MatchupDetailPage() {
           ← Back to {formattedTeam}'s Match History
         </Link>
       </div>
-
+      
+      {/* Game Title with the associated date */}
       <div className="mb-10">
         <h1 className="text-4xl font-bold text-purple-300 mb-2">
           {game.AWAY_NAME} @ {game.HOME_NAME}
@@ -130,6 +139,7 @@ export default function MatchupDetailPage() {
         <p className="text-md text-gray-300 mb-1">📅 {game.GAME_DATE}</p>
       </div>
 
+      {/* Final score */}
       <div className="text-xl font-semibold text-white mb-8">
         Final Score:{" "}
         <span className="text-green-400">{game.AWAY_NAME} {awayStats.PTS}</span>
@@ -137,19 +147,23 @@ export default function MatchupDetailPage() {
         <span className="text-green-300">{game.HOME_NAME} {homeStats.PTS}</span>
       </div>
 
+      {/* Team Statistics */}
       <div className="bg-gray-800 p-6 rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold text-white mb-6">Team Stats</h2>
+        {/* Displays the home and away stats */}
         <div className="grid gap-6">
           {[homeStats, awayStats].map((teamStat, index) => (
             <div key={index} className="bg-gray-900 p-4 rounded-lg shadow-md">
               <h3 className="text-xl font-semibold text-purple-300 mb-3">
                 {teamStat.NAME}
               </h3>
+
+              {/* List of the team stats */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-300">
                 {Object.entries(teamStat).map(([key, value]) => {
                   if (key === "NAME") return null;
 
-                  // ⛑️ Skip if value is not a primitive
+  
                   if (value === null || typeof value === "object") return null;
 
                   return (
@@ -157,9 +171,11 @@ export default function MatchupDetailPage() {
                       key={key}
                       className="flex justify-between border-b border-gray-700 py-1"
                     >
+                      {/* Stat Label */}
                       <span className="font-medium text-white">
                         {key.replace(/_/g, " ")}:
                       </span>
+                      {/* Stat Value */}
                       <span className="text-right text-purple-300">
                         {String(value)}
                       </span>

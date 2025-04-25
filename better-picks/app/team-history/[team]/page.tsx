@@ -19,17 +19,19 @@ type Game = {
   CITY: string;
 };
 
+// Main component to display a teams matchups history
 export default function TeamHistoryPage() {
-  const { team } = useParams();
-  const [games, setGames] = useState<Game[]>([]);
-  const [teamInfo, setTeamInfo] = useState<any | null>(null);
+  const { team } = useParams(); // Get the team dynamically 
+  const [games, setGames] = useState<Game[]>([]); // All of the games for each team
+  const [teamInfo, setTeamInfo] = useState<any | null>(null); // Additional team information 
 
-
+  // Get the team information and matchup history 
   useEffect(() => {
     if (team) {
+      // Converts to readable nickname 
       const formattedNickname = team.toString().replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
   
-      // Fetch team info + game data
+      // Get all the teams and then find the matching one to display all of their games
       axios
         .get("https://betterpicks-demo.onrender.com/NBATeams")
         .then((res) => {
@@ -37,7 +39,7 @@ export default function TeamHistoryPage() {
             (t: any) => t.TEAM_NICKNAME.toLowerCase() === formattedNickname.toLowerCase()
           );
           setTeamInfo(match);
-  
+          // Returns the full matchups history of the specified team
           return axios.get(`https://betterpicks-demo.onrender.com/NBAMatchups/${formattedNickname}`);
         })
         .then((res) => setGames(res.data))
@@ -51,6 +53,7 @@ export default function TeamHistoryPage() {
 
   return (
 <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-900 text-white p-8 font-sans">
+{/* Displaying team header */}
 {teamInfo && (
   <div className="flex items-center gap-4 mb-10 border-b-2 border-purple-500 pb-4">
     <Image
@@ -66,9 +69,9 @@ export default function TeamHistoryPage() {
   </div>
 )}
     
-
+{/* List of games */}
 <ul className="space-y-4">
-
+{/* Breadcrumb navigation  (Home > NBA Teams > Team) */}
 <div className="sticky top-0 z-50 bg-gradient-to-r from-black/80 via-purple-900/80 to-black/80 backdrop-blur-md py-3 px-4 rounded-b-lg shadow-lg border-b border-white/10 mb-8">
 <div className="text-sm text-gray-400 mb-6">
   <Link href="/" className="hover:text-purple-300 transition">Home</Link>
@@ -78,6 +81,8 @@ export default function TeamHistoryPage() {
   <span className="text-purple-300 font-semibold">{formattedTitle}</span>
 </div>
 </div>
+
+{/* Maps through each game and creates a link to the details of the game page */}
 {games.map((game) => (
   <Link
     key={game.GAME_ID}
@@ -90,7 +95,7 @@ export default function TeamHistoryPage() {
     </li>
   </Link>
 ))}
-
+      {/* Back to home button */}
       </ul>
       <div className="mt-6">
         <Link href="/" className="text-green-400 underline">← Back to Home</Link>
