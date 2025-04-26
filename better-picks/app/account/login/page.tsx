@@ -64,7 +64,7 @@ export default function Login() {
         // This is due to the fact that we have not set up the check user function as we did not have time
         // to worry about it during the semester. Our first priority was displaying the data. We will worry
         // more about user functionality at a later time
-        window.location.href = 'profile';
+        window.location.href = 'login';
       } else {
         setError(data.error || 'Login failed');
       }
