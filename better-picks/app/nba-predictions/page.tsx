@@ -12,8 +12,11 @@ import Dashboard from "../components/Dashboard"; // Custom Dashboard Component
 
 
 /**
+ * NBA Predictions Page
+ * 
  * This page allows the user to filter through different NBA game predictions based on specific team or by specific date. 
  * Feature sets and models are also filters that bring up different predictions based on different combinations. 
+ * 
  */
 
 

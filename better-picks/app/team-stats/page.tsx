@@ -10,6 +10,8 @@ import Dashboard from "../components/Dashboard";
 
 
 /**
+ * NBA Team Statistics Page
+ * 
  * This page displays NBA team statistics for multple seasons (2020-2024),
  * allowing users to switch between seasons and toggle between core stats and full stats
  */

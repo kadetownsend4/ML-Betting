@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Dashboard from "../app/components/Dashboard";
 
 // Used these conversations to help me get this home page started.
+// There was a lot of time spent on this time. I should have been more organized but 
+// I started new chats so I included the ones that were helping in the creation of this page. 
 // https://chatgpt.com/c/67ace34d-802c-8009-824a-a33daf4d2b46
 // https://chatgpt.com/c/67b7ac5f-99e0-8009-884b-0b7e9280b1bf
 // https://chatgpt.com/c/67b7af4b-9160-8009-bea7-1d7052bc9a8e
@@ -14,6 +16,19 @@ import Dashboard from "../app/components/Dashboard";
 // https://chatgpt.com/c/67c498d1-a748-8004-bd75-eae3ccf526c8
 // https://chatgpt.com/c/67c88ce7-e964-8004-85c2-bb8bded6ab6b
 // https://chatgpt.com/c/67ca1312-9684-8004-a31f-13e186c3112b
+
+
+
+/**
+ * Home Page
+ * 
+ * This page represents our home page for Better Picks
+ * It includes a drop down menu for different categories such as NBA, NFL, Performance analysis,
+ * and Account. There are get started and learn more pages that the user can navigate to to grasp
+ * a better understanding of how our application works. 
+ * 
+ */
+
 
 // Navigation menu structure containing categorized links.
 const menuItems = [

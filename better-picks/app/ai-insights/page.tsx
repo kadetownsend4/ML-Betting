@@ -34,12 +34,14 @@ export default function PlayerPropAnalysisPage() {
 
   return (
 
-      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white px-6 py-10 flex flex-col items-center font-['Orbitron']">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans">
         {/* Title */}
-        <h1 className="text-4xl font-bold text-purple-400 mt-10 mb-6 tracking-wide uppercase font-['Rajdhani']">
+
+              <Dashboard></Dashboard>
+
+              <h1 className="text-4xl font-bold text-white-400 mt-10 mb-6 tracking-wide uppercase font-['Rajdhani']">
           AI Insights : Player Prop Analysis
         </h1>
-              <Dashboard></Dashboard>
 
         {/* Table Section */}
         <div className="w-full max-w-6xl bg-white/10 shadow-xl rounded-xl p-6">

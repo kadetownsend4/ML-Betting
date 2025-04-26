@@ -30,7 +30,7 @@ export default function PropStreaks() {
 
   return (
 
-      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white p-10 flex flex-col items-center font-['Orbitron']">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-purple-800 text-white p-10 flex flex-col items-center font-sans">
         <Dashboard></Dashboard>
         {/* Filter Controls */}
         <div className="mt-10 w-full max-w-5xl flex flex-col md:flex-row justify-end gap-4">

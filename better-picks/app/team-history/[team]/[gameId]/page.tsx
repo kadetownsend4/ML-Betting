@@ -10,9 +10,12 @@ import Link from "next/link";
 
 
 /**
+ * NBA Matchup Statistics Page
+ * 
  * This page displays a box score for a specific NBA matchup between two teams
  * It dynamically reads the team nickname and game ID from the URL and then gets 
  * the teams full list of games to find the correct game ID. 
+ * 
  */
 
 // Displays the types associated with the box score 

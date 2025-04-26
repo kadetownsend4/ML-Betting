@@ -5,8 +5,11 @@ import Link from "next/link";
 
 
 /** 
+ * Learn More Page
+ * 
  * This page serves as a 'learn more' page for users to learn about our purpose and vision
  * with Better Picks. 
+ * 
  */
 
 // Main component for the "Learn More" page. 

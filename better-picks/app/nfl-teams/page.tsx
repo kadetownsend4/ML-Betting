@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { FaFootballBall } from "react-icons/fa";
 import axios from "axios";
 import Dashboard from "../components/Dashboard";
 import Link from "next/link";
