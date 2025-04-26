@@ -7,7 +7,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 
-
+// Defines the type for a team object 
 type Team = {
   TEAM_NAME: string;
   TEAM_CONF: string;
@@ -17,15 +17,15 @@ type Team = {
   TEAM_ABR: string;
 };
 
-
+// Groups the teams by division and conference 
 const divisions = ["East", "North", "South", "West"];
 const conferences = ["AFC", "NFC"];
 
 function NFLTeams() {
+  // State to store all the NFL teams 
   const [teams, setTeams] = useState<Team[]>([]);
-  const [activeDropdown, setActiveDropdown] =useState<string | null>(null);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
+  
+  // Gets the NFL team data from the backend 
   useEffect(() => {
     axios
       .get("https://betterpicks-demo.onrender.com/nfl_teams")
