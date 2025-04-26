@@ -1,6 +1,14 @@
-// Used the following link to help me generate a starting page for player prop trends.
-// https://chatgpt.com/share/680bde8c-4c40-8012-ab5e-a17f007778e2
+/**
+ * This component displays trending player props where users can select their prefered leauge
+ * NFL or NBA. After picking a league the user is met with trending player props that display
+ * a players name, team, bet type, and odds the bet will hit.
+ * 
+ * 
+ * Used the following link to help me generate a starting page for player prop trends.
+ * https://chatgpt.com/share/680bde8c-4c40-8012-ab5e-a17f007778e2
+ */
 "use client";
+
 import { useState } from "react";
 import { FaChartLine } from "react-icons/fa";
 import Dashboard from "../components/Dashboard";

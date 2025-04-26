@@ -1,3 +1,10 @@
+/**
+ * React componenet that displays a table of player props that have won or lost.
+ * The table provides an analysis as to why these props had the outcome that they did.
+ * The props player name, bet type, line, result, and analysis are displayed.
+ * 
+ */
+
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -23,7 +30,9 @@ async function fetchPlayerPropData() {
 }
 
 export default function PlayerPropAnalysisPage() {
+  // useState initalizes the 'props' array to empty and will store player prop data.
   const [props, setProps] = useState<PlayerProp[]>([]);
+  // Calls 'loadProps' which will fetch player prop data and updates the current state.
   useEffect(() => {
     async function loadProps() {
       const data = await fetchPlayerPropData();

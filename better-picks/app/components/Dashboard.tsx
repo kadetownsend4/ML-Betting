@@ -48,7 +48,6 @@ const menuItems = [
   {
     title: "Account",
     links: [
-      { name: "Profile", path: "/account/profile" },
       { name: "Settings", path: "/account/settings" },
       { name: "Login", path: "/account/login" },
     ],
