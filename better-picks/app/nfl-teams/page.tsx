@@ -1,3 +1,18 @@
+/**
+ * 
+ * React component for NFL teams page
+ * Pulled all the team data from the backend and grouped them by conference and division.
+ * Each team links to its own page with more info.
+ * 
+ * These conversation were used to help set up the page in the same manner as the nba team page.
+ * 
+ * Chat Links: 
+ * https://chatgpt.com/share/67f01feb-9e68-8009-98cf-a01ea6234bb9 
+ * https://chatgpt.com/share/67e85813-285c-8009-abbf-8b658d9720b9
+ * 
+ */
+
+
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
