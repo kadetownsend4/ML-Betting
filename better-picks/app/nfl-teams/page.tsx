@@ -1,3 +1,18 @@
+/**
+ * 
+ * React component for NFL teams page
+ * Pulled all the team data from the backend and grouped them by conference and division.
+ * Each team links to its own page with more info.
+ * 
+ * These conversation were used to help set up the page in the same manner as the nba team page.
+ * 
+ * Chat Links: 
+ * https://chatgpt.com/share/67f01feb-9e68-8009-98cf-a01ea6234bb9 
+ * https://chatgpt.com/share/67e85813-285c-8009-abbf-8b658d9720b9
+ * 
+ */
+
+
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -7,7 +22,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 
-
+// Defines the type for a team object 
 type Team = {
   TEAM_NAME: string;
   TEAM_CONF: string;
@@ -17,15 +32,15 @@ type Team = {
   TEAM_ABR: string;
 };
 
-
+// Groups the teams by division and conference 
 const divisions = ["East", "North", "South", "West"];
 const conferences = ["AFC", "NFC"];
 
 function NFLTeams() {
+  // State to store all the NFL teams 
   const [teams, setTeams] = useState<Team[]>([]);
-  const [activeDropdown, setActiveDropdown] =useState<string | null>(null);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
+  
+  // Gets the NFL team data from the backend 
   useEffect(() => {
     axios
       .get("https://betterpicks-demo.onrender.com/nfl_teams")

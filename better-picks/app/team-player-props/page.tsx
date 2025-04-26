@@ -1,3 +1,11 @@
+/**
+ * React component that lets users select an NFL team and view a list of player names
+ * and there associated position such as qb, rb, etc. After the user selects a team the
+ * app fetches player and position data from a API endpoint call to the backend. The player
+ * name will also be a link leading the user to a page where there player prop data is shown.
+ * 
+ */
+
 'use client'; 
 
 import { useEffect, useState } from 'react';
@@ -24,10 +32,14 @@ type TeamData = {
 };
 
 export default function NFLPropPositionsPage() {
+  // Stores the currently selected NFL team.
   const [selectedTeam, setSelectedTeam] = useState<string>("");
+  // Holds data from API call for the selected player's team.
   const [teamData, setTeamData] = useState<TeamData | null>(null);
+  // Declares if data is being fetched or not.
   const [loading, setLoading] = useState(false);
 
+  // Runs whenever selected team changes and fetchs player data from the API endpoint through the backend.
   useEffect(() => {
     if (!selectedTeam) return;
 
