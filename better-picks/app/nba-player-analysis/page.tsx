@@ -1,5 +1,11 @@
-// Used the following link to help me style the player cards.
-// https://chatgpt.com/share/680bba06-5cc0-8012-a00a-92429b5bd4a0
+/**
+ * This component displays a dashboard of trending player prop streaks from the NFL and NBA. 
+ * Users can select a league and a preffered prop type such as points, rebounds, rushing yards.
+ * The prop will display the players name, team, prop type as well as the odds the prop will hit. 
+ * 
+ * Used the following link to help me style the player cards.
+ * https://chatgpt.com/share/680bba06-5cc0-8012-a00a-92429b5bd4a0
+ */
 "use client";
 
 import { useState } from "react";
@@ -19,7 +25,9 @@ const trendingProps = [
 const uniquePropTypes = [...new Set(trendingProps.map((prop) => prop.betType.split(" ")[0]))];
 
 export default function PropStreaks() {
+  // Initalize variable 'selectedSport' to keep track of the sport that the user selects on the application.
   const [selectedSport, setSelectedSport] = useState("");
+  // Initalize variable 'selectedPropType' to keep track of the prop type that the user selects on the application.
   const [selectedPropType, setSelectedPropType] = useState("");
 
   const filteredProps = trendingProps.filter(

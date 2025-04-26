@@ -1,3 +1,10 @@
+/**
+ * React componenet that displays a dashboard with buttons leading to player prop analysis.
+ * The user can filter which props they want to see based on teams and stats such as rushing yards,
+ * passing yards, etc. The player cards act as links for users to get a deeper analysis of there favorite
+ * player props.
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -25,7 +32,9 @@ const statOptions = [
 ];
 
 export default function PlayerAnalysis() {
+  // useState keeps track of which team was selected on the dropdown with the array 'selectedTeam' initalized as empty.
   const [selectedTeam, setSelectedTeam] = useState("");
+  // useState keeps track of which stat was selected on the dropdown with the array 'selectedStat' initalized as 'All Stats'.
   const [selectedStat, setSelectedStat] = useState("All Stats");
 
   const filteredPlayers = playerData.filter((player) => {
@@ -51,6 +60,7 @@ export default function PlayerAnalysis() {
         </h2>
         </div>
 
+        {/* Used the following link to help style the dropdown - https://chatgpt.com/share/680bed4e-4d2c-8012-83da-09cc5133bc9e */}
         {/* Dropdowns */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
           <select

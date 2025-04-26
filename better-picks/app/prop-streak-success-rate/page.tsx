@@ -1,5 +1,12 @@
-// Used the following link to generate help for the dropdowns on NBA and NFL.
-// https://chatgpt.com/share/680be2d7-3e8c-8012-856d-9b8308d9c7bd
+/**
+ * This component displays a dashboard of trending player prop streaks from the NFL and NBA. 
+ * Users can select a league and a preffered prop type such as points, rebounds, rushing yards.
+ * The prop will display the players name, team, prop type as well as the odds the prop will hit. 
+ * 
+ * Used the following link to generate help for the dropdowns on NBA and NFL.
+ *  https://chatgpt.com/share/680be2d7-3e8c-8012-856d-9b8308d9c7bd
+ */
+
 "use client";
 import { useState } from "react";
 import { FaChartLine } from "react-icons/fa";
