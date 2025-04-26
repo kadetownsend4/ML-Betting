@@ -3,7 +3,9 @@
  * allows customization to the UI for the user. This includes a dark mode, email
  * notifications, and a dropdown to select a favorite sport. The bottom of the page
  * also provides buttons to delete your account, updating account information, and
- * changing a password.
+ * changing a password. This page is not functional. It is a page meant to be for a logged 
+ * in user, however we did not finish implementing the logic required for user and session
+ * authentification 
  * 
  * Used the following link to generate a starting page for the "Settings" feature on our application.
  * https://chatgpt.com/share/680bb56e-3f84-8012-b33c-929ea63b8a94

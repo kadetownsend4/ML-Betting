@@ -31,7 +31,7 @@ const conferences = ["AFC", "NFC"];
 
 function NFLTeams() {
   const [teams, setTeams] = useState<Team[]>([]);
-  
+
   useEffect(() => {
     axios
       .get("https://betterpicks-demo.onrender.com/nfl_teams")
