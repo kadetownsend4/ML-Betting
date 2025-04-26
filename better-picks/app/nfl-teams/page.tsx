@@ -1,3 +1,11 @@
+/**
+ * NFL Team Page Component 
+ * 
+ * Responsible for pulling all the team data from the backend and grouping them 
+ * by conference + division. Each team links to its own page with more info about the 
+ * roster and schedule. 
+ * 
+ */
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -23,9 +31,7 @@ const conferences = ["AFC", "NFC"];
 
 function NFLTeams() {
   const [teams, setTeams] = useState<Team[]>([]);
-  const [activeDropdown, setActiveDropdown] =useState<string | null>(null);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
+  
   useEffect(() => {
     axios
       .get("https://betterpicks-demo.onrender.com/nfl_teams")
@@ -88,7 +94,7 @@ function NFLTeams() {
                       <Link
                         key={index}
                         href={`/nfl-teams/${team.TEAM_ABR}`}
-                       className="w-52 h-60 bg-gray-700 p-5 rounded-2xl shadow-xl border border-white/10 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-gray-800"
+                       className="w-52 h-60 bg-gray-600 p-5 rounded-2xl shadow-xl border border-white/10 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-gray-800"
                       >
                         <h2 className="text-xl font-bold text-white text-center tracking-wide mb-2">
                           {team.TEAM_NAME}
