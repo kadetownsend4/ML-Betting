@@ -1,5 +1,3 @@
-# ML-Betting
-
 # Better Picks
 
 *Using Machine Learning to Make Smarter Sports Betting Decisions*
