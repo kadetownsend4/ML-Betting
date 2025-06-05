@@ -2,8 +2,6 @@
 
 *Using Machine Learning to Make Smarter Sports Betting Decisions*
 
-A senior capstone project developed by students at Southwestern University, Spring 2025.
-
 ## Overview
 
 **Better Picks** is a full-stack web application designed to help users make more informed sports betting decisions. Using machine learning models trained on real-world NFL and NBA data, the platform provides dynamic predictions such as:
